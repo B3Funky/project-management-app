@@ -1,14 +1,12 @@
 import React from 'react';
 
-import { Header } from './components/Header';
-import { Main } from './components/Main';
+import { Welcome } from './pages/Welcome';
 import { Footer } from './components/Footer';
 
 function App() {
   return (
     <>
-      <Header />
-      <Main />
+      <Welcome />
       <Footer />
     </>
   );
