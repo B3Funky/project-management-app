@@ -1,14 +1,15 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 
-import { Welcome } from './pages/Welcome';
+import { AppRoutes } from './routes';
 import { Footer } from './components/Footer';
 
 function App() {
   return (
-    <>
-      <Welcome />
+    <BrowserRouter>
+      <AppRoutes />
       <Footer />
-    </>
+    </BrowserRouter>
   );
 }
 
