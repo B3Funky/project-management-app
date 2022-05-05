@@ -8,7 +8,7 @@ import './welcome.css';
 export function Welcome() {
   return (
     <>
-      <header>
+      <header className={'welcome-header'}>
         <NavLink to={paths.login}>Login</NavLink>
         <NavLink to={paths.login}>Sign up</NavLink>
       </header>
