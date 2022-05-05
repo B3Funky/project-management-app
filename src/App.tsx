@@ -1,7 +1,17 @@
 import React from 'react';
 
+import { Header } from './components/Header';
+import { Main } from './components/Main';
+import { Footer } from './components/Footer';
+
 function App() {
-  return <h1>Project Management App</h1>;
+  return (
+    <>
+      <Header />
+      <Main />
+      <Footer />
+    </>
+  );
 }
 
 export default App;
