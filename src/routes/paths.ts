@@ -3,4 +3,5 @@ export const paths = {
   login: '/login',
   main: '/main',
   board: '/board',
+  notFound: '/*',
 };
