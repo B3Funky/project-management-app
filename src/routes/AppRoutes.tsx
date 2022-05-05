@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Welcome } from '../pages/Welcome';
 import { Login } from '../pages/Login';
 import { Main } from '../pages/Main';
+import { Board } from '../pages/Board';
 import { paths } from './paths';
 
 export function AppRoutes() {
@@ -12,6 +13,7 @@ export function AppRoutes() {
       <Route path={paths.welcome} element={<Welcome />} />
       <Route path={paths.login} element={<Login />} />
       <Route path={paths.main} element={<Main />} />
+      <Route path={paths.board} element={<Board />} />
     </Routes>
   );
 }
