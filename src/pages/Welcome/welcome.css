@@ -1,17 +1,34 @@
 .welcome-header {
   position: fixed;
   top: 0;
-  height: 100px;
   width: 100%;
   display: flex;
   justify-content: flex-end;
   align-items: center;
   box-sizing: border-box;
-  padding: 50px 40px;
+  padding: 40px;
 }
 
-.welcome-header :first-child {
-  margin-right: 20px;
+.welcome-header a {
+  box-sizing: content-box;
+  white-space: nowrap;
+}
+
+.welcome-header :last-child {
+  margin-left: 20px;
+}
+
+@media (max-width: 320px) {
+  .welcome-header {
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    align-items: flex-end;
+  }
+
+  .welcome-header :last-child {
+    margin-left: 0;
+    margin-bottom: 15px;
+  }
 }
 
 .welcome-h1 {
