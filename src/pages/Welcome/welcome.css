@@ -34,3 +34,43 @@
 .welcome-h1 {
   font-size: 50px;
 }
+
+.about {
+  width: 50%;
+  margin-top: 50px;
+  transition: 0.5s;
+}
+
+.about p {
+  max-width: 300px;
+  text-align: left;
+}
+
+.show-team {
+  margin-top: 50px;
+  color: black;
+  font-size: 18px;
+  text-decoration: none;
+}
+
+.show-team:hover {
+  text-decoration: underline;
+}
+
+.show-team:hover .show-team-arrow {
+  transform: rotate(0.25turn);
+}
+
+.show-team p {
+  margin-bottom: 5px;
+}
+
+.show-team .show-team-arrow {
+  transition: 0.5s;
+}
+
+@media (max-width: 1200px) {
+  .about {
+    width: 75%;
+  }
+}
