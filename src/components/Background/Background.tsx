@@ -33,6 +33,7 @@ export function Background() {
       {circle('circle-1', 800, 'crimson')}
       {circle('circle-2', 500, 'blueviolet')}
       {circle('circle-3', 100, 'lightcoral')}
+      <div className={'writing-board-img'}></div>
     </div>
   );
 }
