@@ -7,7 +7,7 @@
   justify-content: flex-end;
   align-items: center;
   box-sizing: border-box;
-  padding: 40px;
+  padding: 50px 40px;
 }
 
 .welcome-header :first-child {
