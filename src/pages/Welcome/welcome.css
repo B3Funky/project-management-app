@@ -10,17 +10,6 @@
   padding: 40px;
 }
 
-.welcome-header a {
-  padding: 10px;
-  border: 1px solid black;
-  cursor: pointer;
-}
-
-.welcome-header a:hover {
-  color: white;
-  background-color: gray;
-}
-
 .welcome-header :first-child {
   margin-right: 20px;
 }
