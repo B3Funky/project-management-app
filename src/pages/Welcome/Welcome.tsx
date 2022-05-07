@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Button } from '@mui/material';
 
+import { Background } from '../../components/Background';
 import { paths } from '../../routes/paths';
 
 import './welcome.css';
@@ -18,7 +19,8 @@ export function Welcome() {
         </Button>
       </header>
       <main>
-        <h1>Welcome Page</h1>
+        <h1 className={'welcome-h1'}>Welcome Page</h1>
+        <Background></Background>
       </main>
     </>
   );
