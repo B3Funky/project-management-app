@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './board.css';
+import './background.css';
 
 export function Background() {
   function circle(
