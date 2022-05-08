@@ -35,10 +35,22 @@
   font-size: 50px;
 }
 
+.main-show-team {
+  justify-content: flex-start;
+  box-sizing: border-box;
+  padding-top: 100px;
+}
+
 .about {
   width: 50%;
   margin-top: 50px;
   transition: 0.5s;
+}
+
+@media (max-width: 1200px) {
+  .about {
+    width: 75%;
+  }
 }
 
 .about p {
@@ -51,14 +63,11 @@
   color: black;
   font-size: 18px;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .show-team:hover {
   text-decoration: underline;
-}
-
-.show-team:hover .show-team-arrow {
-  transform: rotate(0.25turn);
 }
 
 .show-team p {
@@ -69,8 +78,91 @@
   transition: 0.5s;
 }
 
-@media (max-width: 1200px) {
-  .about {
-    width: 75%;
+.show-team:hover .show-team-arrow {
+  transform: rotate(0.25turn);
+}
+
+.show-team-arrow-right {
+  transform: rotate(0.5turn);
+}
+
+.show-team:hover .show-team-arrow-right {
+  transform: rotate(0.75turn);
+}
+
+.team {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0 50px;
+}
+
+.team p {
+  font-size: 18px;
+  font-weight: bold;
+  padding-left: 50px;
+  padding-top: 10px;
+}
+
+.dev-team {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.team > :last-child {
+  margin-bottom: 100px;
+}
+
+@media (max-width: 800px) {
+  .team {
+    align-items: center;
   }
+
+  .dev-team {
+    flex-direction: column;
+  }
+
+  .team p {
+    padding-left: 0;
+  }
+}
+
+.team-member-link-wrapper {
+  text-decoration: none;
+  transition: 0.5s;
+}
+
+.team-member-link-wrapper:hover {
+  transform: scale(1.05);
+}
+
+.team-member {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 310px;
+  height: 110px;
+  margin: 10px 15px;
+  padding: 10px 5px;
+}
+
+.git-avatar {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+}
+
+.team-member-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.team-member-info :first-child {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.team-member-info :last-child {
+  margin-top: 10px;
 }
