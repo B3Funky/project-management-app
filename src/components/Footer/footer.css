@@ -4,17 +4,17 @@ footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 80px;
   width: 100%;
   box-sizing: border-box;
-  padding: 10px 30px;
-  background-color: #2e8b67;
-  border-top: solid 1px black;
+  padding: 9px 20px;
+  background-color: #009688;
+  box-shadow: rgb(0 0 0 / 20%) 0 2px 4px 3px, rgb(0 0 0 / 14%) 0 4px 5px 5px,
+    rgb(0 0 0 / 12%) 0 1px 10px 8px;
 }
 
 .rss-link {
-  height: 40px;
-  width: 100px;
+  height: 30px;
+  width: 81px;
   min-width: 50px;
   margin-right: 10px;
   background-position: center;
@@ -29,7 +29,7 @@ footer {
 }
 
 .developers p:first-child {
-  font-size: 18px;
+  font-size: 15px;
   font-weight: bold;
   margin-bottom: 3px;
 }
@@ -41,6 +41,7 @@ footer {
 
 .link-to-github {
   display: flex;
+  align-items: center;
   text-decoration: none;
   color: black;
   margin-right: 10px;
@@ -51,15 +52,20 @@ footer {
 }
 
 .git-icon {
-  height: 20px;
-  width: 20px;
+  height: 16px;
+  width: 16px;
   background-position: center;
   background-repeat: no-repeat;
   background-image: url('../../assets/icons/github.svg');
 }
 
+.link-to-github p {
+  margin-left: 2px;
+  font-size: 14px;
+}
+
 .year {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
 }
 
