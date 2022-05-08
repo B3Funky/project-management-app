@@ -31,35 +31,44 @@
   }
 }
 
-.welcome-h1 {
-  font-size: 50px;
+.welcome-main {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
-.main-show-team {
+.welcome-main-show-team {
   height: auto;
   justify-content: flex-start;
   box-sizing: border-box;
   padding: 100px 0;
 }
 
-.about {
+.welcome-h1 {
+  font-size: 50px;
+}
+
+.welcome-about {
   width: 50%;
   margin-top: 50px;
   transition: 0.5s;
 }
 
 @media (max-width: 1200px) {
-  .about {
+  .welcome-about {
     width: 75%;
   }
 }
 
-.about p {
+.welcome-about p {
   max-width: 300px;
   text-align: left;
 }
 
-.show-team {
+.welcome-show-team {
   margin-top: 50px;
   color: black;
   font-size: 18px;
@@ -67,59 +76,59 @@
   cursor: pointer;
 }
 
-.show-team:hover {
+.welcome-show-team:hover {
   text-decoration: underline;
 }
 
-.show-team p {
+.welcome-show-team p {
   margin-bottom: 5px;
 }
 
-.show-team .show-team-arrow {
+.welcome-show-team .welcome-show-team-arrow {
   transition: 0.5s;
 }
 
-.show-team:hover .show-team-arrow {
+.welcome-show-team:hover .welcome-show-team-arrow {
   transform: rotate(0.25turn);
 }
 
-.show-team-arrow-right {
+.welcome-show-team-arrow-right {
   transform: rotate(0.5turn);
 }
 
-.show-team:hover .show-team-arrow-right {
+.welcome-show-team:hover .welcome-show-team-arrow-right {
   transform: rotate(0.75turn);
 }
 
-.team {
+.welcome-team {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   margin: 0 50px;
 }
 
-.team p {
+.welcome-team p {
   font-size: 18px;
   font-weight: bold;
   padding-left: 50px;
   padding-top: 10px;
 }
 
-.dev-team {
+.welcome-dev-team {
   display: flex;
   flex-wrap: wrap;
 }
 
 @media (max-width: 800px) {
-  .team {
+  .welcome-team {
     align-items: center;
   }
 
-  .dev-team {
+  .welcome-dev-team {
     flex-direction: column;
   }
 
-  .team p {
+  .welcome-team p {
     padding-left: 0;
   }
 }

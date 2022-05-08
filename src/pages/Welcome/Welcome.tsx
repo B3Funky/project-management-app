@@ -93,33 +93,35 @@ export function Welcome() {
         </Button>
       </header>
 
-      <main className={classNames({ 'main-show-team': showTeam })}>
+      <main className={classNames('welcome-main', { 'welcome-main-show-team': showTeam })}>
         <h1 className={'welcome-h1'}>{text.h1}</h1>
         <h2>{text.h2}</h2>
 
         {!showTeam && (
-          <div className={'about'}>
+          <div className={'welcome-about'}>
             <p>{text.about}</p>
           </div>
         )}
 
         <a
-          className={'show-team'}
+          className={'welcome-show-team'}
           onClick={() => {
             setShowTeam(!showTeam);
           }}
         >
           <p>{showTeam ? text.showAbout : text.showTeam}</p>
           <DoubleArrowIcon
-            className={classNames('show-team-arrow', { 'show-team-arrow-right': showTeam })}
+            className={classNames('welcome-show-team-arrow', {
+              'welcome-show-team-arrow-right': showTeam,
+            })}
             fontSize={'large'}
           ></DoubleArrowIcon>
         </a>
 
         {showTeam && (
-          <div className={'team'}>
+          <div className={'welcome-team'}>
             <p>Dev.team</p>
-            <div className={'dev-team'}>
+            <div className={'welcome-dev-team'}>
               {text.team.map((member, i) => {
                 return teamMemberCard(member, i);
               })}
