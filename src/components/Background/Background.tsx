@@ -30,10 +30,10 @@ export function Background() {
 
   return (
     <div className={'background'}>
-      {circle('circle-1', 800, 'crimson')}
-      {circle('circle-2', 500, 'blueviolet')}
-      {circle('circle-3', 100, 'lightcoral')}
-      <div className={'writing-board-img'}></div>
+      {circle('background-circle-1', 800, 'crimson')}
+      {circle('background-circle-2', 500, 'blueviolet')}
+      {circle('background-circle-3', 100, 'lightcoral')}
+      <div className={'background-writing-board-img'}></div>
     </div>
   );
 }

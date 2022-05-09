@@ -9,7 +9,7 @@
   filter: opacity(80%);
 }
 
-.writing-board-img {
+.background-writing-board-img {
   position: absolute;
   bottom: 80px;
   right: 0;
@@ -21,20 +21,20 @@
   transition: 0.5s;
 }
 
-.circle-1 {
+.background-circle-1 {
   position: relative;
   top: -420px;
   right: -780px;
 }
 
-.circle-2 {
+.background-circle-2 {
   position: absolute;
   top: -130px;
   left: -310px;
   transition: 0.5s;
 }
 
-.circle-3 {
+.background-circle-3 {
   position: absolute;
   bottom: 140px;
   left: 90px;
@@ -42,18 +42,18 @@
 }
 
 @media (max-width: 800px) {
-  .writing-board-img {
+  .background-writing-board-img {
     left: 420px;
     height: 300px;
     width: 300px;
   }
 
-  .circle-2 {
+  .background-circle-2 {
     top: -280px;
     left: -210px;
   }
 
-  .circle-3 {
+  .background-circle-3 {
     bottom: 200px;
     left: -60px;
   }
