@@ -113,6 +113,12 @@
   padding-top: 10px;
 }
 
+@media (max-width: 1200px) {
+  .welcome-team {
+    width: 700px;
+  }
+}
+
 .welcome-dev-team {
   display: flex;
   flex-wrap: wrap;
@@ -120,6 +126,7 @@
 
 @media (max-width: 800px) {
   .welcome-team {
+    width: auto;
     align-items: center;
   }
 
