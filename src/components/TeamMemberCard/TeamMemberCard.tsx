@@ -17,7 +17,7 @@ export function TeamMemberCard(props: ITeamMember) {
     <a className={'team-member-link-wrapper'} href={props.githubUrl} target="blank">
       <Paper className={'team-member'} elevation={3}>
         <img
-          className={'git-avatar'}
+          className={'team-member-github-avatar'}
           src={props.githubAvatar}
           alt={`${props.githubName} GitHub avatar image`}
         ></img>
