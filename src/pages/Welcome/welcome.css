@@ -38,13 +38,12 @@
   justify-content: center;
   align-items: center;
   text-align: center;
+  box-sizing: border-box;
+  padding: 100px 0;
 }
 
 .welcome-main-show-team {
   height: auto;
-  justify-content: flex-start;
-  box-sizing: border-box;
-  padding: 100px 0;
 }
 
 .welcome-h1 {

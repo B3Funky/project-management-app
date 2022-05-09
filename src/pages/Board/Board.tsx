@@ -11,7 +11,7 @@ export function Board() {
   return (
     <>
       <Header />
-      <main>
+      <main className={'board-main'}>
         <h1>Board Page</h1>
         <NavLink to={paths.main}>back to Main page</NavLink>
       </main>

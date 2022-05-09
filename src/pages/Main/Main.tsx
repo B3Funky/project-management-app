@@ -11,7 +11,7 @@ export function Main() {
   return (
     <>
       <Header />
-      <main>
+      <main className={'main'}>
         <h1>Main Page</h1>
         <NavLink to={paths.board}>to Board page</NavLink>
       </main>
