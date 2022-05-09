@@ -1,0 +1,41 @@
+{
+  "buttons": {
+    "login": "Login",
+    "signUp": "Sign up"
+  },
+  "h1": "Project Management App",
+  "h2": "by Team 50",
+  "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "showTeam": "Show our team:",
+  "showAbout": "About this project",
+  "team": [
+    {
+      "name": "Sergei Tiutin",
+      "role": "Coding",
+      "githubName": "B3Funky",
+      "githubUrl": "https://github.com/B3Funky",
+      "githubAvatar": "https://avatars.githubusercontent.com/u/50629262?v=4"
+    },
+    {
+      "name": "Anastasia Gubina",
+      "role": "Coding",
+      "githubName": "Anasstassia",
+      "githubUrl": "https://github.com/Anasstassia",
+      "githubAvatar": "https://avatars.githubusercontent.com/u/74318575?v=4"
+    },
+    {
+      "name": "Name Surname",
+      "role": "???",
+      "githubName": "GitHub Name",
+      "githubUrl": "https://github.com/",
+      "githubAvatar": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+    }
+  ],
+  "mentor": {
+    "name": "Mikhail Chernyshenko",
+    "role": "Mentor",
+    "githubName": "chermic",
+    "githubUrl": "https://github.com/chermic",
+    "githubAvatar": "https://avatars.githubusercontent.com/u/29860818?v=4"
+  }
+}
