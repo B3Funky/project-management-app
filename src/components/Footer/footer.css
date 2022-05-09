@@ -1,4 +1,4 @@
-footer {
+.footer {
   position: fixed;
   bottom: 0;
   display: flex;
@@ -12,7 +12,7 @@ footer {
     rgb(0 0 0 / 12%) 0 1px 10px 8px;
 }
 
-.rss-link {
+.footer-rss-link {
   height: 30px;
   width: 81px;
   min-width: 50px;
@@ -22,24 +22,24 @@ footer {
   background-image: url('../../assets/img/rs_school_js.svg');
 }
 
-.developers {
+.footer-developers {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.developers p:first-child {
+.footer-developers p:first-child {
   font-size: 15px;
   font-weight: bold;
   margin-bottom: 3px;
 }
 
-.github-accounts {
+.footer-github-accounts {
   display: flex;
   align-items: center;
 }
 
-.link-to-github {
+.footer-link-to-github {
   display: flex;
   align-items: center;
   text-decoration: none;
@@ -47,11 +47,11 @@ footer {
   margin-right: 10px;
 }
 
-.link-to-github:hover {
+.footer-link-to-github:hover {
   text-decoration: underline;
 }
 
-.git-icon {
+.footer-link-to-github-icon {
   height: 16px;
   width: 16px;
   background-position: center;
@@ -59,22 +59,22 @@ footer {
   background-image: url('../../assets/icons/github.svg');
 }
 
-.link-to-github p {
+.footer-link-to-github p {
   margin-left: 2px;
   font-size: 14px;
 }
 
-.year {
+.footer-year {
   font-size: 16px;
   font-weight: bold;
 }
 
 @media (max-width: 380px) {
-  .developers {
+  .footer-developers {
     background-position: center;
   }
 
-  .github-accounts {
+  .footer-github-accounts {
     display: flex;
     flex-direction: column;
   }
