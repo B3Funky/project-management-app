@@ -1,4 +1,7 @@
 {
+  "footer": {
+    "developed": "Developed by:"
+  },
   "welcome": {
     "buttons": {
       "login": "Login",

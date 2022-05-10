@@ -69,13 +69,13 @@
   font-weight: bold;
 }
 
-@media (max-width: 380px) {
-  .footer-developers {
-    background-position: center;
+@media (max-width: 440px) {
+  .footer-developers p:first-child {
+    display: none;
   }
 
   .footer-github-accounts {
-    display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 }

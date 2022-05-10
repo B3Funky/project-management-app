@@ -1,13 +1,15 @@
 import React from 'react';
 
+import text from '../../assets/data/locale/en.json';
+
 import './footer.css';
 
 export function Footer() {
-  function githubAccount(name: string, link: string) {
+  function githubAccount(githubName: string, githubUrl: string, key?: number) {
     return (
-      <a className={'footer-link-to-github'} href={link} target={'blank'}>
+      <a key={key} className={'footer-link-to-github'} href={githubUrl} target={'blank'}>
         <div className={'footer-link-to-github-icon'}></div>
-        <p>{name}</p>
+        <p>{githubName}</p>
       </a>
     );
   }
@@ -16,10 +18,11 @@ export function Footer() {
     <footer className={'footer'}>
       <a className={'footer-rss-link'} href={'https://rs.school/react/'} target={'blank'} />
       <div className={'footer-developers'}>
-        <p>Devs:</p>
+        <p>{text.footer.developed}</p>
         <div className={'footer-github-accounts'}>
-          {githubAccount('B3Funky', 'https://github.com/B3Funky')}
-          {githubAccount('Anasstassia', 'https://github.com/Anasstassia')}
+          {text.team.map((member, i) => {
+            return githubAccount(member.githubName, member.githubUrl, i);
+          })}
         </div>
       </div>
       <p className={'footer-year'}>©2022</p>
