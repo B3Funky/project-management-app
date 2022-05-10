@@ -1,13 +1,15 @@
 {
-  "buttons": {
-    "login": "Login",
-    "signUp": "Sign up"
+  "welcome": {
+    "buttons": {
+      "login": "Login",
+      "signUp": "Sign up"
+    },
+    "h1": "Project Management App",
+    "h2": "by Team 50",
+    "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    "showTeam": "Show our team:",
+    "showAbout": "About this project"
   },
-  "h1": "Project Management App",
-  "h2": "by Team 50",
-  "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "showTeam": "Show our team:",
-  "showAbout": "About this project",
   "team": [
     {
       "name": "Sergei Tiutin",

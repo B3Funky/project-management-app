@@ -7,7 +7,7 @@ import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import { Background } from '../../components/Background';
 import { TeamMemberCard } from '../../components/TeamMemberCard';
 import { paths } from '../../routes/paths';
-import text from './text.json';
+import text from '../../assets/data/locale/en.json';
 
 import './welcome.css';
 
@@ -18,20 +18,20 @@ export function Welcome() {
     <>
       <header className={'welcome-header'}>
         <Button component={NavLink} to={paths.login} variant="contained" size={'large'}>
-          {text.buttons.login}
+          {text.welcome.buttons.login}
         </Button>
         <Button component={NavLink} to={paths.login} variant="contained" size={'large'}>
-          {text.buttons.signUp}
+          {text.welcome.buttons.signUp}
         </Button>
       </header>
 
       <main className={classNames('welcome-main', { 'welcome-main-show-team': showTeam })}>
-        <h1 className={'welcome-h1'}>{text.h1}</h1>
-        <h2>{text.h2}</h2>
+        <h1 className={'welcome-h1'}>{text.welcome.h1}</h1>
+        <h2>{text.welcome.h2}</h2>
 
         {!showTeam && (
           <div className={'welcome-about'}>
-            <p>{text.about}</p>
+            <p>{text.welcome.about}</p>
           </div>
         )}
 
@@ -41,7 +41,7 @@ export function Welcome() {
             setShowTeam(!showTeam);
           }}
         >
-          <p>{showTeam ? text.showAbout : text.showTeam}</p>
+          <p>{showTeam ? text.welcome.showAbout : text.welcome.showTeam}</p>
           <DoubleArrowIcon
             className={classNames('welcome-show-team-arrow', {
               'welcome-show-team-arrow-right': showTeam,
