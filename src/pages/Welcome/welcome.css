@@ -7,28 +7,29 @@
   align-items: center;
   box-sizing: border-box;
   padding: 40px;
+  transition: 0.3s;
+}
+
+.welcome-header-mini {
+  background-color: white;
+  padding: 15px;
+  box-shadow: rgb(0 0 0 / 20%) 0 2px 4px -1px, rgb(0 0 0 / 14%) 0 4px 5px 0,
+    rgb(0 0 0 / 12%) 0 1px 10px 0;
+  z-index: 100;
 }
 
 .welcome-header a {
   box-sizing: content-box;
   white-space: nowrap;
+  transition: 0.3s;
 }
 
 .welcome-header :last-child {
   margin-left: 20px;
 }
 
-@media (max-width: 320px) {
-  .welcome-header {
-    flex-direction: column-reverse;
-    justify-content: flex-end;
-    align-items: flex-end;
-  }
-
-  .welcome-header :last-child {
-    margin-left: 0;
-    margin-bottom: 15px;
-  }
+.welcome-header-mini :last-child {
+  margin-left: 10px;
 }
 
 .welcome-main {

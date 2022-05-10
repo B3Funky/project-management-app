@@ -36,7 +36,8 @@
 
 .footer-github-accounts {
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .footer-link-to-github {
@@ -69,13 +70,8 @@
   font-weight: bold;
 }
 
-@media (max-width: 440px) {
+@media (max-width: 481px) {
   .footer-developers p:first-child {
     display: none;
-  }
-
-  .footer-github-accounts {
-    flex-wrap: wrap;
-    justify-content: center;
   }
 }

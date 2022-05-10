@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import classNames from 'classnames';
 import { Button } from '@mui/material';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
+import useScrollTrigger from '@mui/material/useScrollTrigger';
 
 import { Background } from '../../components/Background';
 import { TeamMemberCard } from '../../components/TeamMemberCard';
@@ -13,14 +14,25 @@ import './welcome.css';
 
 export function Welcome() {
   const [showTeam, setShowTeam] = useState(false);
+  const scrollTrigger = useScrollTrigger({ disableHysteresis: true, threshold: 10 });
 
   return (
     <>
-      <header className={'welcome-header'}>
-        <Button component={NavLink} to={paths.login} variant="contained" size={'large'}>
+      <header className={classNames('welcome-header', { 'welcome-header-mini': scrollTrigger })}>
+        <Button
+          component={NavLink}
+          to={paths.login}
+          variant="contained"
+          size={scrollTrigger ? 'small' : 'large'}
+        >
           {text.welcome.buttons.login}
         </Button>
-        <Button component={NavLink} to={paths.login} variant="contained" size={'large'}>
+        <Button
+          component={NavLink}
+          to={paths.login}
+          variant="contained"
+          size={scrollTrigger ? 'small' : 'large'}
+        >
           {text.welcome.buttons.signUp}
         </Button>
       </header>
