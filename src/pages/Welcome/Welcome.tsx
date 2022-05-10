@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { Button } from '@mui/material';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
+import { useTranslation } from 'react-i18next';
 
 import { Background } from '../../components/Background';
 import { TeamMemberCard } from '../../components/TeamMemberCard';
@@ -15,6 +16,8 @@ import './welcome.css';
 export function Welcome() {
   const [showTeam, setShowTeam] = useState(false);
   const scrollTrigger = useScrollTrigger({ disableHysteresis: true, threshold: 10 });
+
+  const { t } = useTranslation();
 
   return (
     <>
