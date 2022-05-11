@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   AppBar,
   Toolbar,
   IconButton,
   MenuItem,
+  SvgIcon,
   Button,
   Box,
   Menu,
   Tooltip,
   ListItemIcon,
   ThemeProvider,
+  useScrollTrigger,
 } from '@mui/material';
-import useScrollTrigger from '@mui/material/useScrollTrigger';
 import {
   AddCircle,
   AccountCircle,
@@ -21,10 +22,12 @@ import {
   KeyboardArrowUp,
 } from '@mui/icons-material';
 import { createTheme } from '@mui/material/styles';
+import { useTranslation } from 'react-i18next';
+
+import { ReactComponent as EnIcon } from '../../assets/icons/en.svg';
+import { ReactComponent as RuIcon } from '../../assets/icons/ru.svg';
 
 import './header.css';
-
-const lang = ['EN', 'RU'];
 
 const theme = createTheme({
   palette: {
@@ -46,7 +49,6 @@ const theme = createTheme({
 export function Header() {
   const scrollTrigger = useScrollTrigger({ disableHysteresis: true, threshold: 0 });
 
-  const [language, setLanguage] = useState(lang[0]);
   const [anchorLanguageToggle, setAnchorLanguageToggle] = React.useState<null | HTMLElement>(null);
   const isLanguageToggleClicked = Boolean(anchorLanguageToggle);
 
@@ -57,14 +59,15 @@ export function Header() {
     setAnchorLanguageToggle(null);
   };
 
-  const handleLanguageToggleEn = () => {
-    setLanguage(lang[0]);
-    handleLanguageToggleClose();
-  };
-  const handleLanguageToggleRu = () => {
-    setLanguage(lang[1]);
-    handleLanguageToggleClose();
-  };
+  const { t, i18n } = useTranslation();
+
+  const handleLanguageToggle = useCallback(
+    (event: React.MouseEvent<HTMLLIElement>) => {
+      i18n.changeLanguage(event.currentTarget.dataset.value).then();
+      handleLanguageToggleClose();
+    },
+    [i18n]
+  );
 
   const handleCreateNewBoard = () => {};
 
@@ -115,7 +118,7 @@ export function Header() {
             aria-expanded={isLanguageToggleClicked ? 'true' : undefined}
             onClick={handleLanguageToggleClick}
           >
-            {language}
+            {i18n.language}
           </Button>
           <Menu
             id="basic-menu"
@@ -126,8 +129,14 @@ export function Header() {
               'aria-labelledby': 'basic-button',
             }}
           >
-            <MenuItem onClick={handleLanguageToggleEn}>{lang[0]}</MenuItem>
-            <MenuItem onClick={handleLanguageToggleRu}>{lang[1]}</MenuItem>
+            <MenuItem data-value={'en'} onClick={handleLanguageToggle}>
+              <SvgIcon sx={{ marginRight: '8px' }} inheritViewBox component={EnIcon} />
+              {t('en')}
+            </MenuItem>
+            <MenuItem data-value={'ru'} onClick={handleLanguageToggle}>
+              <SvgIcon sx={{ marginRight: '8px' }} inheritViewBox component={RuIcon} />
+              {t('ru')}
+            </MenuItem>
           </Menu>
 
           <Box>
