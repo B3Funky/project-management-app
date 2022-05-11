@@ -7,7 +7,7 @@ import './not-found.css';
 
 export function NotFound() {
   return (
-    <main>
+    <main className={'not-found-main'}>
       <h1>404</h1>
       <h2>Page not found</h2>
       <NavLink to={paths.main}>back to Main page</NavLink>

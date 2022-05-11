@@ -7,7 +7,7 @@ import './login.css';
 
 export function Login() {
   return (
-    <main>
+    <main className={'login-main'}>
       <h1>
         Login / Sign up
         <br /> Page
