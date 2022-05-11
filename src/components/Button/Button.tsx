@@ -11,7 +11,7 @@ interface IButton {
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-const ButtonComponent = ({
+export const ButtonComponent = ({
   className,
   variant,
   children,
@@ -33,5 +33,3 @@ const ButtonComponent = ({
     </Button>
   );
 };
-
-export default ButtonComponent;
