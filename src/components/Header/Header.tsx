@@ -24,8 +24,8 @@ import {
 import { createTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 
-import { ReactComponent as EnIcon } from './eng.svg';
-import { ReactComponent as RuIcon } from './rus.svg';
+import { ReactComponent as EnIcon } from '../../assets/icons/en.svg';
+import { ReactComponent as RuIcon } from '../../assets/icons/ru.svg';
 
 import './header.css';
 
