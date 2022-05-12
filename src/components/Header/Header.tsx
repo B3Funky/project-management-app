@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   AppBar,
   Toolbar,
@@ -24,6 +25,7 @@ import {
 import { createTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 
+import { paths } from '../../routes/paths';
 import { ReactComponent as EnIcon } from '../../assets/icons/en.svg';
 import { ReactComponent as RuIcon } from '../../assets/icons/ru.svg';
 
@@ -49,7 +51,7 @@ const theme = createTheme({
 export function Header() {
   const scrollTrigger = useScrollTrigger({ disableHysteresis: true, threshold: 0 });
 
-  const [anchorLanguageToggle, setAnchorLanguageToggle] = React.useState<null | HTMLElement>(null);
+  const [anchorLanguageToggle, setAnchorLanguageToggle] = useState<null | HTMLElement>(null);
   const isLanguageToggleClicked = Boolean(anchorLanguageToggle);
 
   const handleLanguageToggleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -84,9 +86,11 @@ export function Header() {
     handleAccountMenuClose();
   };
 
-  const handleEditProfile = () => {
+  const navigate = useNavigate();
+  const handleEditProfile = useCallback(() => {
     handleAccountMenuClose();
-  };
+    navigate(paths.profile);
+  }, [navigate]);
 
   return (
     <ThemeProvider theme={theme}>
