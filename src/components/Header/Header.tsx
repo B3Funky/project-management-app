@@ -82,11 +82,12 @@ export function Header() {
     setAnchorAccountMenu(null);
   };
 
-  const handleLogout = () => {
-    handleAccountMenuClose();
-  };
-
   const navigate = useNavigate();
+  const handleLogout = useCallback(() => {
+    handleAccountMenuClose();
+    navigate(paths.welcome);
+  }, [navigate]);
+
   const handleEditProfile = useCallback(() => {
     handleAccountMenuClose();
     navigate(paths.profile);
