@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import Button from '@mui/material/Button';
 
 interface IButton {
-  size?: 'small' | 'medium' | 'large
+  size?: 'small' | 'medium' | 'large';
   variant?: 'text' | 'outlined' | 'contained';
   children: ReactElement | string;
   className?: string;
