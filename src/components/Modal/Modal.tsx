@@ -17,6 +17,7 @@ const style = {
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
+  borderRadius: 2,
 };
 
 export const ModalComponent = ({ active, children, setActive }: IModal) => {
