@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import Button from '@mui/material/Button';
 
 interface IButton {
-  currentSize?: 'small' | 'medium' | 'large';
+  size?: 'small' | 'medium' | 'large
   variant?: 'text' | 'outlined' | 'contained';
   children: ReactElement | string;
   className?: string;
@@ -15,7 +15,7 @@ export const ButtonComponent = ({
   className,
   variant,
   children,
-  currentSize,
+  size,
   color,
   isDisabled,
   onClick,
@@ -25,7 +25,7 @@ export const ButtonComponent = ({
       className={className}
       color={color}
       variant={variant}
-      size={currentSize}
+      size={size}
       disabled={isDisabled}
       onClick={onClick}
     >
