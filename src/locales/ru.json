@@ -3,6 +3,52 @@
     "en": "EN",
     "ru": "RU",
     "welcome_to_react": "Добро пожаловать в Реакт!",
-    "to_board_page": "к Доске"
+    "to_board_page": "к Доске",
+    "create_new_board": "Создать новую доску",
+    "account_of_current_user": "Профиль пользователя",
+    "edit_profile": "Редактировать профиль",
+    "logout": "Выйти",
+    "footer": {
+      "developed": "Разработано:"
+    },
+    "welcome": {
+      "buttons": {
+        "login": "Вход",
+        "signUp": "Регистрация"
+      },
+      "h1": "Управление проектами",
+      "h2": "от Team 50",
+      "about": "Лорем ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "showTeam": "Наша команда:",
+      "showAbout": "О проекте"
+    },
+    "sergei": {
+      "name": "Сергей Тютин",
+      "role": "Разработчик",
+      "githubName": "B3Funky",
+      "githubUrl": "https://github.com/B3Funky",
+      "githubAvatar": "https://avatars.githubusercontent.com/u/50629262?v=4"
+    },
+    "anastasia": {
+      "name": "Анастасия Губина",
+      "role": "Разработчик",
+      "githubName": "Anasstassia",
+      "githubUrl": "https://github.com/Anasstassia",
+      "githubAvatar": "https://avatars.githubusercontent.com/u/74318575?v=4"
+    },
+    "victor": {
+      "name": "Виктор Касилкин",
+      "role": "Разработчик",
+      "githubName": "Victordobryi",
+      "githubUrl": "https://github.com/Victordobryi",
+      "githubAvatar": "https://avatars.githubusercontent.com/u/71153759?v=4"
+    },
+    "mentor": {
+      "name": "Михаил Чернышенко",
+      "role": "Ментор",
+      "githubName": "Chermic",
+      "githubUrl": "https://github.com/Chermic",
+      "githubAvatar": "https://avatars.githubusercontent.com/u/29860818?v=4"
+    }
   }
 }
