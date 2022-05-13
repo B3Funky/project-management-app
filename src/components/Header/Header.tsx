@@ -63,7 +63,11 @@ export function Header() {
 
   const handleLanguageToggle = useCallback(
     (event: React.MouseEvent<HTMLLIElement>) => {
-      i18n.changeLanguage(event.currentTarget.dataset.value).then();
+      const locale = event.currentTarget.dataset.value;
+      if (locale) {
+        i18n.changeLanguage(locale);
+        localStorage.setItem('locale', locale);
+      }
       handleLanguageToggleClose();
     },
     [i18n]
@@ -140,7 +144,7 @@ export function Header() {
           </Menu>
 
           <Box>
-            <Tooltip title="Create new board" arrow>
+            <Tooltip title={t('create_new_board')} arrow>
               <IconButton
                 size="large"
                 aria-label="Create new board"
@@ -152,7 +156,7 @@ export function Header() {
                 <AddCircle />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Account of current user" arrow>
+            <Tooltip title={t('account_of_current_user')} arrow>
               <IconButton
                 size="large"
                 aria-label="Account of current user"
@@ -183,13 +187,13 @@ export function Header() {
                 <ListItemIcon>
                   <Settings fontSize="small" />
                 </ListItemIcon>
-                Edit Profile
+                {t('edit_profile')}
               </MenuItem>
               <MenuItem onClick={handleLogout}>
                 <ListItemIcon>
                   <Logout fontSize="small" />
                 </ListItemIcon>
-                Logout
+                {t('logout')}
               </MenuItem>
             </Menu>
           </Box>

@@ -9,8 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { Background } from '../../components/Background';
 import { TeamMemberCard } from '../../components/TeamMemberCard';
 import { paths } from '../../routes/paths';
-import text from '../../assets/data/locale/en.json';
-
+import { MEMBERS_LIST } from '../../constants';
 import './welcome.css';
 
 export function Welcome() {
@@ -28,7 +27,7 @@ export function Welcome() {
           variant="contained"
           size={scrollTrigger ? 'small' : 'large'}
         >
-          {text.welcome.buttons.login}
+          {t('welcome.buttons.login')}
         </Button>
         <Button
           component={NavLink}
@@ -36,17 +35,17 @@ export function Welcome() {
           variant="contained"
           size={scrollTrigger ? 'small' : 'large'}
         >
-          {text.welcome.buttons.signUp}
+          {t('welcome.buttons.signUp')}
         </Button>
       </header>
 
       <main className={classNames('welcome-main', { 'welcome-main-show-team': showTeam })}>
-        <h1 className={'welcome-h1'}>{text.welcome.h1}</h1>
-        <h2>{text.welcome.h2}</h2>
+        <h1 className={'welcome-h1'}>{t('welcome.h1')}</h1>
+        <h2>{t('welcome.h2')}</h2>
 
         {!showTeam && (
           <div className={'welcome-about'}>
-            <p>{text.welcome.about}</p>
+            <p>{t('welcome.about')}</p>
           </div>
         )}
 
@@ -56,7 +55,7 @@ export function Welcome() {
             setShowTeam(!showTeam);
           }}
         >
-          <p>{showTeam ? text.welcome.showAbout : text.welcome.showTeam}</p>
+          <p>{showTeam ? t('welcome.showAbout') : t('welcome.showTeam')}</p>
           <DoubleArrowIcon
             className={classNames('welcome-show-team-arrow', {
               'welcome-show-team-arrow-right': showTeam,
@@ -69,12 +68,12 @@ export function Welcome() {
           <div className={'welcome-team'}>
             <p>Dev.team</p>
             <div className={'welcome-dev-team'}>
-              {text.team.map((member, i) => {
-                return <TeamMemberCard key={i} {...member}></TeamMemberCard>;
+              {MEMBERS_LIST.map((member, i) => {
+                return <TeamMemberCard key={i} name={member} />;
               })}
             </div>
             <p>Mentor</p>
-            <TeamMemberCard {...text.mentor}></TeamMemberCard>
+            <TeamMemberCard name={'mentor'}></TeamMemberCard>
           </div>
         )}
 
