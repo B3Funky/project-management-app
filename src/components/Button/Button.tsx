@@ -9,6 +9,7 @@ interface IButton {
   color?: 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning';
   isDisabled?: boolean;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  type?: 'button' | 'submit' | 'reset';
 }
 
 export const ButtonComponent = ({
@@ -19,6 +20,7 @@ export const ButtonComponent = ({
   color,
   isDisabled,
   onClick,
+  type,
 }: IButton) => {
   return (
     <Button
@@ -28,6 +30,7 @@ export const ButtonComponent = ({
       size={size}
       disabled={isDisabled}
       onClick={onClick}
+      type={type}
     >
       {children}
     </Button>
