@@ -3,7 +3,7 @@
   top: 0;
   width: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
   padding: 40px;
@@ -19,16 +19,22 @@
 }
 
 .welcome-header button {
-  box-sizing: content-box;
-  white-space: nowrap;
   transition: 0.3s;
 }
 
-.welcome-header :last-child {
+.welcome-header-sign-buttons-wrapper {
+  display: flex;
+}
+
+.welcome-header-sign-buttons-wrapper button {
+  white-space: nowrap;
+}
+
+.welcome-header .welcome-header-sign-buttons-wrapper button {
   margin-left: 20px;
 }
 
-.welcome-header-mini :last-child {
+.welcome-header-mini .welcome-header-sign-buttons-wrapper button {
   margin-left: 10px;
 }
 
