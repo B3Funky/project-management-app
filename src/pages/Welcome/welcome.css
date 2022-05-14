@@ -4,7 +4,7 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   box-sizing: border-box;
   padding: 40px;
   transition: 0.3s;
