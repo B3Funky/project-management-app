@@ -5,8 +5,6 @@ import {
   Toolbar,
   IconButton,
   MenuItem,
-  SvgIcon,
-  Button,
   Box,
   Menu,
   Tooltip,
@@ -14,21 +12,13 @@ import {
   ThemeProvider,
   useScrollTrigger,
 } from '@mui/material';
-import {
-  AddCircle,
-  AccountCircle,
-  Logout,
-  Settings,
-  KeyboardArrowDown,
-  KeyboardArrowUp,
-} from '@mui/icons-material';
+import { AddCircle, AccountCircle, Logout, Settings } from '@mui/icons-material';
 import { createTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 
+import { LanguageToggle } from '../LanguageToggle';
 import { ModalComponent } from '../Modal';
 import { paths } from '../../routes/paths';
-import { ReactComponent as EnIcon } from '../../assets/icons/en.svg';
-import { ReactComponent as RuIcon } from '../../assets/icons/ru.svg';
 
 import './header.css';
 
@@ -48,33 +38,12 @@ const theme = createTheme({
     },
   },
 });
+const transition = '0.5s';
 
 export function Header() {
   const scrollTrigger = useScrollTrigger({ disableHysteresis: true, threshold: 0 });
 
-  const [anchorLanguageToggle, setAnchorLanguageToggle] = useState<null | HTMLElement>(null);
-  const isLanguageToggleClicked = Boolean(anchorLanguageToggle);
-
-  const handleLanguageToggleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorLanguageToggle(event.currentTarget);
-  };
-  const handleLanguageToggleClose = () => {
-    setAnchorLanguageToggle(null);
-  };
-
-  const { t, i18n } = useTranslation();
-
-  const handleLanguageToggle = useCallback(
-    (event: React.MouseEvent<HTMLLIElement>) => {
-      const locale = event.currentTarget.dataset.value;
-      if (locale) {
-        i18n.changeLanguage(locale);
-        localStorage.setItem('locale', locale);
-      }
-      handleLanguageToggleClose();
-    },
-    [i18n]
-  );
+  const { t } = useTranslation();
 
   const [openModal, setOpenModal] = useState(false);
 
@@ -108,51 +77,19 @@ export function Header() {
         <AppBar
           sx={{
             bgcolor: scrollTrigger ? theme.palette.primary.dark : theme.palette.primary.main,
-            transition: '0.5s',
+            transition: transition,
           }}
           elevation={scrollTrigger ? 5 : 2}
         >
           <Toolbar sx={{ justifyContent: 'space-between' }}>
-            <Button
-              sx={{
-                bgcolor: scrollTrigger ? theme.palette.primary.dark : theme.palette.primary.main,
-                transition: '0.5s',
-                '&:hover': {
-                  backgroundColor: scrollTrigger
-                    ? theme.palette.primary.main
-                    : theme.palette.primary.dark,
-                },
-              }}
-              color={'primary'}
-              endIcon={isLanguageToggleClicked ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
-              variant="contained"
-              disableElevation
-              id="basic-button"
-              aria-controls={isLanguageToggleClicked ? 'basic-menu' : undefined}
-              aria-haspopup="true"
-              aria-expanded={isLanguageToggleClicked ? 'true' : undefined}
-              onClick={handleLanguageToggleClick}
-            >
-              {i18n.language}
-            </Button>
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorLanguageToggle}
-              open={isLanguageToggleClicked}
-              onClose={handleLanguageToggleClose}
-              MenuListProps={{
-                'aria-labelledby': 'basic-button',
-              }}
-            >
-              <MenuItem data-value={'en'} onClick={handleLanguageToggle}>
-                <SvgIcon sx={{ marginRight: '8px' }} inheritViewBox component={EnIcon} />
-                {t('en')}
-              </MenuItem>
-              <MenuItem data-value={'ru'} onClick={handleLanguageToggle}>
-                <SvgIcon sx={{ marginRight: '8px' }} inheritViewBox component={RuIcon} />
-                {t('ru')}
-              </MenuItem>
-            </Menu>
+            <LanguageToggle
+              color={
+                scrollTrigger
+                  ? { background: theme.palette.primary.dark, hover: theme.palette.primary.main }
+                  : null
+              }
+              transition={transition}
+            />
 
             <Box>
               <Tooltip title={t('create_new_board')} arrow>
