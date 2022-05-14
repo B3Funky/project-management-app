@@ -18,7 +18,7 @@
   z-index: 100;
 }
 
-.welcome-header a {
+.welcome-header button {
   box-sizing: content-box;
   white-space: nowrap;
   transition: 0.3s;

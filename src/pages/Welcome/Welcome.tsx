@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
-import { Button } from '@mui/material';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import { useTranslation } from 'react-i18next';
 
+import { ButtonComponent } from '../../components/Button';
 import { Background } from '../../components/Background';
 import { TeamMemberCard } from '../../components/TeamMemberCard';
 import { paths } from '../../routes/paths';
@@ -18,25 +18,32 @@ export function Welcome() {
 
   const { t } = useTranslation();
 
+  const navigate = useNavigate();
+  const handleSignIn = useCallback(() => {
+    navigate(paths.login);
+  }, [navigate]);
+
+  const handleSignUp = useCallback(() => {
+    navigate(paths.signUp);
+  }, [navigate]);
+
   return (
     <>
       <header className={classNames('welcome-header', { 'welcome-header-mini': scrollTrigger })}>
-        <Button
-          component={NavLink}
-          to={paths.login}
+        <ButtonComponent
           variant="contained"
           size={scrollTrigger ? 'small' : 'large'}
+          onClick={handleSignIn}
         >
-          {t('welcome.buttons.login')}
-        </Button>
-        <Button
-          component={NavLink}
-          to={paths.login}
+          {t('welcome.buttons.signIn')}
+        </ButtonComponent>
+        <ButtonComponent
           variant="contained"
           size={scrollTrigger ? 'small' : 'large'}
+          onClick={handleSignUp}
         >
           {t('welcome.buttons.signUp')}
-        </Button>
+        </ButtonComponent>
       </header>
 
       <main className={classNames('welcome-main', { 'welcome-main-show-team': showTeam })}>
