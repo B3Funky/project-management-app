@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   AppBar,
   Toolbar,
@@ -24,6 +25,8 @@ import {
 import { createTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 
+import { ModalComponent } from '../Modal';
+import { paths } from '../../routes/paths';
 import { ReactComponent as EnIcon } from '../../assets/icons/en.svg';
 import { ReactComponent as RuIcon } from '../../assets/icons/ru.svg';
 
@@ -49,7 +52,7 @@ const theme = createTheme({
 export function Header() {
   const scrollTrigger = useScrollTrigger({ disableHysteresis: true, threshold: 0 });
 
-  const [anchorLanguageToggle, setAnchorLanguageToggle] = React.useState<null | HTMLElement>(null);
+  const [anchorLanguageToggle, setAnchorLanguageToggle] = useState<null | HTMLElement>(null);
   const isLanguageToggleClicked = Boolean(anchorLanguageToggle);
 
   const handleLanguageToggleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -73,7 +76,11 @@ export function Header() {
     [i18n]
   );
 
-  const handleCreateNewBoard = () => {};
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleCreateNewBoard = () => {
+    setOpenModal(true);
+  };
 
   const [anchorAccountMenu, setAnchorAccountMenu] = useState<null | HTMLElement>(null);
 
@@ -84,121 +91,134 @@ export function Header() {
     setAnchorAccountMenu(null);
   };
 
-  const handleLogout = () => {
+  const navigate = useNavigate();
+  const handleLogout = useCallback(() => {
     handleAccountMenuClose();
-  };
+    navigate(paths.welcome);
+  }, [navigate]);
 
-  const handleEditProfile = () => {
+  const handleEditProfile = useCallback(() => {
     handleAccountMenuClose();
-  };
+    navigate(paths.profile);
+  }, [navigate]);
 
   return (
-    <ThemeProvider theme={theme}>
-      <AppBar
-        sx={{
-          bgcolor: scrollTrigger ? theme.palette.primary.dark : theme.palette.primary.main,
-          transition: '0.5s',
-        }}
-        elevation={scrollTrigger ? 5 : 2}
-      >
-        <Toolbar sx={{ justifyContent: 'space-between' }}>
-          <Button
-            sx={{
-              bgcolor: scrollTrigger ? theme.palette.primary.dark : theme.palette.primary.main,
-              transition: '0.5s',
-              '&:hover': {
-                backgroundColor: scrollTrigger
-                  ? theme.palette.primary.main
-                  : theme.palette.primary.dark,
-              },
-            }}
-            color={'primary'}
-            endIcon={isLanguageToggleClicked ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
-            variant="contained"
-            disableElevation
-            id="basic-button"
-            aria-controls={isLanguageToggleClicked ? 'basic-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={isLanguageToggleClicked ? 'true' : undefined}
-            onClick={handleLanguageToggleClick}
-          >
-            {i18n.language}
-          </Button>
-          <Menu
-            id="basic-menu"
-            anchorEl={anchorLanguageToggle}
-            open={isLanguageToggleClicked}
-            onClose={handleLanguageToggleClose}
-            MenuListProps={{
-              'aria-labelledby': 'basic-button',
-            }}
-          >
-            <MenuItem data-value={'en'} onClick={handleLanguageToggle}>
-              <SvgIcon sx={{ marginRight: '8px' }} inheritViewBox component={EnIcon} />
-              {t('en')}
-            </MenuItem>
-            <MenuItem data-value={'ru'} onClick={handleLanguageToggle}>
-              <SvgIcon sx={{ marginRight: '8px' }} inheritViewBox component={RuIcon} />
-              {t('ru')}
-            </MenuItem>
-          </Menu>
-
-          <Box>
-            <Tooltip title={t('create_new_board')} arrow>
-              <IconButton
-                size="large"
-                aria-label="Create new board"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleCreateNewBoard}
-                color="inherit"
-              >
-                <AddCircle />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title={t('account_of_current_user')} arrow>
-              <IconButton
-                size="large"
-                aria-label="Account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleAccountMenuClick}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorAccountMenu}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
+    <>
+      <ThemeProvider theme={theme}>
+        <AppBar
+          sx={{
+            bgcolor: scrollTrigger ? theme.palette.primary.dark : theme.palette.primary.main,
+            transition: '0.5s',
+          }}
+          elevation={scrollTrigger ? 5 : 2}
+        >
+          <Toolbar sx={{ justifyContent: 'space-between' }}>
+            <Button
+              sx={{
+                bgcolor: scrollTrigger ? theme.palette.primary.dark : theme.palette.primary.main,
+                transition: '0.5s',
+                '&:hover': {
+                  backgroundColor: scrollTrigger
+                    ? theme.palette.primary.main
+                    : theme.palette.primary.dark,
+                },
               }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorAccountMenu)}
-              onClose={handleAccountMenuClose}
+              color={'primary'}
+              endIcon={isLanguageToggleClicked ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+              variant="contained"
+              disableElevation
+              id="basic-button"
+              aria-controls={isLanguageToggleClicked ? 'basic-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={isLanguageToggleClicked ? 'true' : undefined}
+              onClick={handleLanguageToggleClick}
             >
-              <MenuItem onClick={handleEditProfile}>
-                <ListItemIcon>
-                  <Settings fontSize="small" />
-                </ListItemIcon>
-                {t('edit_profile')}
+              {i18n.language}
+            </Button>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorLanguageToggle}
+              open={isLanguageToggleClicked}
+              onClose={handleLanguageToggleClose}
+              MenuListProps={{
+                'aria-labelledby': 'basic-button',
+              }}
+            >
+              <MenuItem data-value={'en'} onClick={handleLanguageToggle}>
+                <SvgIcon sx={{ marginRight: '8px' }} inheritViewBox component={EnIcon} />
+                {t('en')}
               </MenuItem>
-              <MenuItem onClick={handleLogout}>
-                <ListItemIcon>
-                  <Logout fontSize="small" />
-                </ListItemIcon>
-                {t('logout')}
+              <MenuItem data-value={'ru'} onClick={handleLanguageToggle}>
+                <SvgIcon sx={{ marginRight: '8px' }} inheritViewBox component={RuIcon} />
+                {t('ru')}
               </MenuItem>
             </Menu>
-          </Box>
-        </Toolbar>
-      </AppBar>
-    </ThemeProvider>
+
+            <Box>
+              <Tooltip title={t('create_new_board')} arrow>
+                <IconButton
+                  size="large"
+                  aria-label="Create new board"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleCreateNewBoard}
+                  color="inherit"
+                >
+                  <AddCircle />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title={t('account_of_current_user')} arrow>
+                <IconButton
+                  size="large"
+                  aria-label="Account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleAccountMenuClick}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorAccountMenu}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorAccountMenu)}
+                onClose={handleAccountMenuClose}
+              >
+                <MenuItem onClick={handleEditProfile}>
+                  <ListItemIcon>
+                    <Settings fontSize="small" />
+                  </ListItemIcon>
+                  {t('edit_profile')}
+                </MenuItem>
+                <MenuItem onClick={handleLogout}>
+                  <ListItemIcon>
+                    <Logout fontSize="small" />
+                  </ListItemIcon>
+                  {t('logout')}
+                </MenuItem>
+              </Menu>
+            </Box>
+          </Toolbar>
+        </AppBar>
+      </ThemeProvider>
+      <ModalComponent
+        active={openModal}
+        setActive={() => {
+          setOpenModal(false);
+        }}
+      >
+        <p>Here you will create your board</p>
+      </ModalComponent>
+    </>
   );
 }
