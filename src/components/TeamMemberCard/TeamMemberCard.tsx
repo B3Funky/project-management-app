@@ -3,28 +3,26 @@ import React from 'react';
 import { Paper } from '@mui/material';
 
 import './team-member-card.css';
+import { useTranslation } from 'react-i18next';
 
 interface ITeamMember {
   name: string;
-  role: string;
-  githubName: string;
-  githubUrl: string;
-  githubAvatar: string;
 }
 
-export function TeamMemberCard(props: ITeamMember) {
+export function TeamMemberCard({ name }: ITeamMember) {
+  const { t } = useTranslation();
   return (
-    <a className={'team-member-link-wrapper'} href={props.githubUrl} target="blank">
+    <a className={'team-member-link-wrapper'} href={t(`${name}.githubUrl`)} target="blank">
       <Paper className={'team-member'} elevation={3}>
         <img
           className={'team-member-github-avatar'}
-          src={props.githubAvatar}
-          alt={`${props.githubName} GitHub avatar image`}
+          src={t(`${name}.githubAvatar`)}
+          alt={`${t(`${name}.githubName`)} GitHub avatar image`}
         ></img>
         <div className={'team-member-info'}>
-          <div>{props.name}</div>
-          <div>{props.githubName}</div>
-          <div>{props.role}</div>
+          <div>{t(`${name}.name`)}</div>
+          <div>{t(`${name}.githubName`)}</div>
+          <div>{t(`${name}.role`)}</div>
         </div>
       </Paper>
     </a>
