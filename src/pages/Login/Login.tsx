@@ -38,6 +38,7 @@ export function Login() {
       justifyContent="center"
       alignItems="center"
     >
+      <h2>Sign In</h2>
       <Grid item>
         <TextField label="Login" onChange={handleChangeLogin} />
       </Grid>
@@ -48,6 +49,11 @@ export function Login() {
         <Button disabled={!isFormFilled} onClick={handleLogin} variant="contained" type="submit">
           Submit
         </Button>
+      </Grid>
+      <Grid item>
+        <p>
+          Don&apos;t have an account? <NavLink to={paths.signUp}>Sign Up</NavLink>
+        </p>
       </Grid>
       <Grid item>
         <NavLink to={paths.main}>to Main page</NavLink>
