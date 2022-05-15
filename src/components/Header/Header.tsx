@@ -149,7 +149,7 @@ export function Header(props: IHeaderProps) {
                   <ListItemIcon>
                     <Logout fontSize="small" />
                   </ListItemIcon>
-                  {t('logout')}
+                  {t('sign_out')}
                 </MenuItem>
               </Menu>
             </Box>
