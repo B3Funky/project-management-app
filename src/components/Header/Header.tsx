@@ -40,7 +40,11 @@ const theme = createTheme({
 });
 const transition = '0.5s';
 
-export function Header() {
+interface IHeaderProps {
+  isProfilePage?: boolean;
+}
+
+export function Header(props: IHeaderProps) {
   const scrollTrigger = useScrollTrigger({ disableHysteresis: true, threshold: 0 });
 
   const { t } = useTranslation();
@@ -92,18 +96,20 @@ export function Header() {
             />
 
             <Box>
-              <Tooltip title={t('create_new_board')} arrow>
-                <IconButton
-                  size="large"
-                  aria-label="Create new board"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  onClick={handleCreateNewBoard}
-                  color="inherit"
-                >
-                  <AddCircle />
-                </IconButton>
-              </Tooltip>
+              {!props.isProfilePage && (
+                <Tooltip title={t('create_new_board')} arrow>
+                  <IconButton
+                    size="large"
+                    aria-label="Create new board"
+                    aria-controls="menu-appbar"
+                    aria-haspopup="true"
+                    onClick={handleCreateNewBoard}
+                    color="inherit"
+                  >
+                    <AddCircle />
+                  </IconButton>
+                </Tooltip>
+              )}
               <Tooltip title={t('account_of_current_user')} arrow>
                 <IconButton
                   size="large"
@@ -131,12 +137,14 @@ export function Header() {
                 open={Boolean(anchorAccountMenu)}
                 onClose={handleAccountMenuClose}
               >
-                <MenuItem onClick={handleEditProfile}>
-                  <ListItemIcon>
-                    <Settings fontSize="small" />
-                  </ListItemIcon>
-                  {t('edit_profile')}
-                </MenuItem>
+                {!props.isProfilePage && (
+                  <MenuItem onClick={handleEditProfile}>
+                    <ListItemIcon>
+                      <Settings fontSize="small" />
+                    </ListItemIcon>
+                    {t('edit_profile')}
+                  </MenuItem>
+                )}
                 <MenuItem onClick={handleLogout}>
                   <ListItemIcon>
                     <Logout fontSize="small" />
