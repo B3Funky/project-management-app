@@ -1,0 +1,16 @@
+.column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 75vh;
+  width: 20vw;
+}
+
+.column__button {
+  min-width: 0px !important;
+  visibility: hidden;
+}
+
+.isFocused {
+  visibility: visible;
+}
