@@ -7,7 +7,7 @@
     "create_new_board": "Create new board",
     "account_of_current_user": "Account of current user",
     "edit_profile": "Edit Profile",
-    "logout": "Logout",
+    "sign_out": "Sign Out",
     "footer": {
       "developed": "Developed by:"
     },

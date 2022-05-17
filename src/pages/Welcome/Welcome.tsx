@@ -5,16 +5,18 @@ import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import { useTranslation } from 'react-i18next';
 
+import { LanguageToggle } from '../../components/LanguageToggle';
 import { ButtonComponent } from '../../components/Button';
 import { Background } from '../../components/Background';
 import { TeamMemberCard } from '../../components/TeamMemberCard';
 import { paths } from '../../routes/paths';
 import { MEMBERS_LIST } from '../../constants';
+
 import './welcome.css';
 
 export function Welcome() {
   const [showTeam, setShowTeam] = useState(false);
-  const scrollTrigger = useScrollTrigger({ disableHysteresis: true, threshold: 10 });
+  const scrollTrigger = useScrollTrigger({ disableHysteresis: true, threshold: 0 });
 
   const { t } = useTranslation();
 
@@ -30,20 +32,23 @@ export function Welcome() {
   return (
     <>
       <header className={classNames('welcome-header', { 'welcome-header-mini': scrollTrigger })}>
-        <ButtonComponent
-          variant="contained"
-          size={scrollTrigger ? 'small' : 'large'}
-          onClick={handleSignIn}
-        >
-          {t('welcome.buttons.signIn')}
-        </ButtonComponent>
-        <ButtonComponent
-          variant="contained"
-          size={scrollTrigger ? 'small' : 'large'}
-          onClick={handleSignUp}
-        >
-          {t('welcome.buttons.signUp')}
-        </ButtonComponent>
+        <LanguageToggle size={scrollTrigger ? 'small' : 'medium'} />
+        <div className={'welcome-header-sign-buttons-wrapper'}>
+          <ButtonComponent
+            variant="contained"
+            size={scrollTrigger ? 'small' : 'large'}
+            onClick={handleSignIn}
+          >
+            {t('welcome.buttons.signIn')}
+          </ButtonComponent>
+          <ButtonComponent
+            variant="contained"
+            size={scrollTrigger ? 'small' : 'large'}
+            onClick={handleSignUp}
+          >
+            {t('welcome.buttons.signUp')}
+          </ButtonComponent>
+        </div>
       </header>
 
       <main className={classNames('welcome-main', { 'welcome-main-show-team': showTeam })}>

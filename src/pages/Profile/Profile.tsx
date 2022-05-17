@@ -11,7 +11,7 @@ export function Profile() {
 
   return (
     <>
-      <Header />
+      <Header isProfilePage={true} />
       <Grid
         height="100%"
         container

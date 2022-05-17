@@ -7,7 +7,7 @@
     "create_new_board": "Создать новую доску",
     "account_of_current_user": "Профиль пользователя",
     "edit_profile": "Редактировать профиль",
-    "logout": "Выйти",
+    "sign_out": "Выйти",
     "footer": {
       "developed": "Разработано:"
     },
