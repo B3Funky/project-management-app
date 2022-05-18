@@ -1,0 +1,8 @@
+.column__title {
+  width: 85%;
+  resize: none;
+  border: none;
+  overflow: hidden;
+  font-size: 18px;
+  height: 20px;
+}
