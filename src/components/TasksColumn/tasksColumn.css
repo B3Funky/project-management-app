@@ -1,4 +1,5 @@
 .column {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -9,6 +10,10 @@
 .column__button {
   min-width: 0px !important;
   visibility: hidden;
+}
+
+.column__action {
+  margin-right: 0 !important;
 }
 
 .isFocused {
