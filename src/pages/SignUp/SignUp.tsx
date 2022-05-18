@@ -21,6 +21,9 @@ export function SignUp() {
       >
         <h2>Sign Up</h2>
         <Grid item>
+          <InputComponent label="Name" onChange={() => {}} />
+        </Grid>
+        <Grid item>
           <InputComponent label="Login" onChange={() => {}} />
         </Grid>
         <Grid item>
