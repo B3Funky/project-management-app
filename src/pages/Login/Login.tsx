@@ -6,6 +6,7 @@ import { SignHeader } from '../../components/SignHeader';
 import { paths } from '../../routes/paths';
 import { useLogin } from '../../hooks/use-login';
 import { InputComponent } from '../../components/Input';
+import { ButtonComponent } from '../../components/Button';
 
 export function Login() {
   const [login, setLogin] = useState('');
@@ -47,12 +48,17 @@ export function Login() {
           <InputComponent label="Login" onChange={handleChangeLogin} />
         </Grid>
         <Grid item>
-          <TextField label="Password" type={'password'} onChange={handleChangePassword} />
+          <InputComponent label="Password" type={'password'} onChange={handleChangePassword} />
         </Grid>
         <Grid item>
-          <Button disabled={!isFormFilled} onClick={handleLogin} variant="contained" type="submit">
+          <ButtonComponent
+            isDisabled={!isFormFilled}
+            onClick={handleLogin}
+            variant="contained"
+            type="submit"
+          >
             Submit
-          </Button>
+          </ButtonComponent>
         </Grid>
         {Boolean(error) && (
           <Grid item>
