@@ -3,8 +3,8 @@ import { Button, Grid, TextField } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 
 import { SignHeader } from '../../components/SignHeader';
-import { signin } from '../../utils/login';
 import { paths } from '../../routes/paths';
+import { useLogin } from '../../hooks/use-login';
 
 export function Login() {
   const [login, setLogin] = useState('');
@@ -12,13 +12,7 @@ export function Login() {
 
   const isFormFilled = useMemo(() => Boolean(login && password), [login, password]);
 
-  const handleLogin = useCallback(() => {
-    if (isFormFilled) {
-      signin({ login, password });
-      setLogin('');
-      setPassword('');
-    }
-  }, [isFormFilled, login, password]);
+  const handleLogin = useLogin(isFormFilled, login, password);
 
   const handleChangeLogin = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => setLogin(event.target.value),
