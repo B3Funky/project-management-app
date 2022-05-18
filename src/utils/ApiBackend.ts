@@ -1,5 +1,33 @@
+import { AxiosInstance, AxiosError } from 'axios';
 import { axiosInstance } from './api';
-import { AxiosInstance } from 'axios';
+
+function errorHandler(e: unknown) {
+  if (e instanceof AxiosError) {
+    if (e.response?.status === 401) {
+      // Unauthorized
+      // e.response.data.message: "Unauthorized"
+      // TODO Redirect to Welcome page
+    } else if (e.response?.status === 400) {
+      // Bad Request
+      // e.response.data.message: [
+      //   "name must be a string",
+      //   "login must be a string",
+      //   "password must be a string"
+      // ]
+      //  e.response.data.error: "Bad Request"
+    } else if (e.response?.status === 404) {
+      // Not found
+      // e.response.data.message: "<...> was not founded!"
+      // or wrong url
+      // e.response.data.message: "Cannot GET <url>",
+      // e.response.data.error: "Not Found"
+    } else {
+      // others errors
+    }
+  } else {
+    // unknown error
+  }
+}
 
 interface IUserId {
   userId: string;
