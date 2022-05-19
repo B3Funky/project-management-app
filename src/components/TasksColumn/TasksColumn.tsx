@@ -78,7 +78,14 @@ export const TasksColumn = ({ title, onClick }: ITasksColumn) => {
         }
       />
       <CardContent sx={{ p: 0, '&:last-child': { pb: 0 }, height: '84%' }}>
-        <Grid height="100%" overflow="auto"></Grid>
+        <Grid
+          container
+          height="100%"
+          overflow="auto"
+          alignItems="center"
+          flexDirection="column"
+          flexWrap="nowrap"
+        ></Grid>
       </CardContent>
       <CardFooter>
         <ButtonComponent type="button">
