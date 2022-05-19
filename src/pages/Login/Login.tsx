@@ -1,32 +1,34 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { Button, Grid, TextField } from '@mui/material';
+import { Alert, AlertTitle, Grid } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 
 import { SignHeader } from '../../components/SignHeader';
-import { signin } from '../../utils/login';
 import { paths } from '../../routes/paths';
+import { useLogin } from '../../hooks/use-login';
+import { InputComponent } from '../../components/Input';
+import { ButtonComponent } from '../../components/Button';
 
 export function Login() {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
-
   const isFormFilled = useMemo(() => Boolean(login && password), [login, password]);
+  const [error, setError] = useState('');
 
-  const handleLogin = useCallback(() => {
-    if (isFormFilled) {
-      signin({ login, password });
-      setLogin('');
-      setPassword('');
-    }
-  }, [isFormFilled, login, password]);
+  const handleLogin = useLogin(isFormFilled, setError, login, password);
 
   const handleChangeLogin = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => setLogin(event.target.value),
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setError('');
+      setLogin(event.target.value);
+    },
     [setLogin]
   );
 
   const handleChangePassword = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => setPassword(event.target.value),
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setError('');
+      setPassword(event.target.value);
+    },
     [setPassword]
   );
 
@@ -43,16 +45,29 @@ export function Login() {
       >
         <h2>Sign In</h2>
         <Grid item>
-          <TextField label="Login" onChange={handleChangeLogin} />
+          <InputComponent label="Login" onChange={handleChangeLogin} />
         </Grid>
         <Grid item>
-          <TextField label="Password" type={'password'} onChange={handleChangePassword} />
+          <InputComponent label="Password" type="password" onChange={handleChangePassword} />
         </Grid>
         <Grid item>
-          <Button disabled={!isFormFilled} onClick={handleLogin} variant="contained" type="submit">
+          <ButtonComponent
+            isDisabled={!isFormFilled}
+            onClick={handleLogin}
+            variant="contained"
+            type="submit"
+          >
             Submit
-          </Button>
+          </ButtonComponent>
         </Grid>
+        {Boolean(error) && (
+          <Grid item>
+            <Alert severity="error">
+              <AlertTitle>Error</AlertTitle>
+              {error}
+            </Alert>
+          </Grid>
+        )}
         <Grid item>
           <p>
             Don&apos;t have an account? <NavLink to={paths.signUp}>Sign Up</NavLink>

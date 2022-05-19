@@ -1,13 +1,46 @@
-import React from 'react';
-import { Grid } from '@mui/material';
+import React, { useCallback, useMemo, useState } from 'react';
+import { Alert, AlertTitle, Grid } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 
 import { SignHeader } from '../../components/SignHeader';
 import { InputComponent } from '../../components/Input';
 import { ButtonComponent } from '../../components/Button';
 import { paths } from '../../routes/paths';
+import { signup } from '../../utils/login';
+import { useSignup } from '../../hooks/use-signup';
 
 export function SignUp() {
+  const [name, setName] = useState('');
+  const [login, setLogin] = useState('');
+  const [password, setPassword] = useState('');
+  const isFormFilled = useMemo(() => Boolean(name && login && password), [name, login, password]);
+  const [error, setError] = useState('');
+
+  // const handleSignUp = useCallback(() => {
+  //   if (isFormFilled) {
+  //     signup({ name, login, password });
+  //     setName('');
+  //     setLogin('');
+  //     setPassword('');
+  //   }
+  // }, [isFormFilled, name, login, password]);
+
+  const handleSignUp = useSignup(isFormFilled, setError, name, login, password);
+
+  const handleChangeName = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => setName(event.target.value),
+    [setName]
+  );
+
+  const handleChangeLogin = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => setLogin(event.target.value),
+    [setLogin]
+  );
+
+  const handleChangePassword = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => setPassword(event.target.value),
+    [setPassword]
+  );
   return (
     <>
       <SignHeader />
@@ -21,16 +54,32 @@ export function SignUp() {
       >
         <h2>Sign Up</h2>
         <Grid item>
-          <InputComponent label="Login" onChange={() => {}} />
+          <InputComponent label="Name" onChange={handleChangeName} />
         </Grid>
         <Grid item>
-          <InputComponent label="Password" type={'password'} onChange={() => {}} />
+          <InputComponent label="Login" onChange={handleChangeLogin} />
         </Grid>
         <Grid item>
-          <ButtonComponent isDisabled={true} onClick={() => {}} variant="contained" type="submit">
+          <InputComponent label="Password" type="password" onChange={handleChangePassword} />
+        </Grid>
+        <Grid item>
+          <ButtonComponent
+            isDisabled={!isFormFilled}
+            onClick={handleSignUp}
+            variant="contained"
+            type="submit"
+          >
             Submit
           </ButtonComponent>
         </Grid>
+        {Boolean(error) && (
+          <Grid item>
+            <Alert severity="error">
+              <AlertTitle>Error</AlertTitle>
+              {error}
+            </Alert>
+          </Grid>
+        )}
         <Grid item>
           <p>
             Already have an account? <NavLink to={paths.login}>Sign In</NavLink>
