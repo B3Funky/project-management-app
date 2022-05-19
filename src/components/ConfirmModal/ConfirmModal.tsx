@@ -10,6 +10,7 @@ interface IConfirmModal {
   children: ReactElement | string;
   confirmText?: string;
   cancelText?: string;
+  confirmAction: () => void;
 }
 
 const style = {
@@ -24,6 +25,7 @@ export const ConfirmModal = ({
   children,
   confirmText,
   title,
+  confirmAction,
 }: IConfirmModal) => {
   return (
     <ModalComponent active={active} setActive={setActive}>
@@ -35,10 +37,10 @@ export const ConfirmModal = ({
           {children}
         </Box>
         <Box display="flex" justifyContent="space-between">
-          <ButtonComponent variant="contained" color="primary">
+          <ButtonComponent variant="contained" color="primary" onClick={confirmAction}>
             {confirmText || 'Yes'}
           </ButtonComponent>
-          <ButtonComponent variant="contained" color="error">
+          <ButtonComponent variant="contained" color="error" onClick={() => setActive(false)}>
             {cancelText || 'No'}
           </ButtonComponent>
         </Box>
