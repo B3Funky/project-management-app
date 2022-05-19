@@ -1,13 +1,15 @@
-import { AxiosInstance, AxiosError } from 'axios';
+import { AxiosInstance, AxiosPromise, AxiosError } from 'axios';
 import { axiosInstance } from './api';
 
 function errorHandler(e: unknown) {
   if (e instanceof AxiosError) {
     if (e.response?.status === 401) {
+      return e.response.data.message;
       // Unauthorized
       // e.response.data.message: "Unauthorized"
       // TODO Redirect to Welcome page
     } else if (e.response?.status === 400) {
+      return e.response.data.message;
       // Bad Request
       // e.response.data.message: [
       //   "name must be a string",
@@ -16,17 +18,36 @@ function errorHandler(e: unknown) {
       // ]
       //  e.response.data.error: "Bad Request"
     } else if (e.response?.status === 404) {
+      return e.response.data.message;
       // Not found
       // e.response.data.message: "<...> was not founded!"
       // or wrong url
       // e.response.data.message: "Cannot GET <url>",
       // e.response.data.error: "Not Found"
+    } else if (e.response?.status === 500) {
+      return e.response.data.message;
+      // Internal server error
+      // e.response.data.error: "Internal server error"
+      // For example: Comes when trying to set a login that already exists
     } else {
+      return e.response?.data.message;
       // others errors
     }
   } else {
+    return e;
     // unknown error
   }
+}
+
+function requestWrapper(request: AxiosPromise) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await request;
+      resolve(res.data);
+    } catch (e) {
+      reject(errorHandler(e));
+    }
+  });
 }
 
 interface IUserId {
@@ -46,13 +67,21 @@ class Users {
     this.axiosInstance = axiosInstance;
   }
 
-  async getAll() {}
+  async getAll() {
+    return await requestWrapper(this.axiosInstance.get('/users'));
+  }
 
-  getUser(params: IUserId) {}
+  async getUser(params: IUserId) {
+    return await requestWrapper(this.axiosInstance.get(`/users/${params.userId}`));
+  }
 
-  deleteUser(params: IUserId) {}
+  async deleteUser(params: IUserId) {
+    return await requestWrapper(this.axiosInstance.delete(`/users/${params.userId}`));
+  }
 
-  updateUser(params: IUserId, data: IUserData) {}
+  async updateUser(params: IUserId, data: IUserData) {
+    return await requestWrapper(this.axiosInstance.put(`/users/${params.userId}`, data));
+  }
 }
 
 interface IBoardId {
