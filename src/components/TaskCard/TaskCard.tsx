@@ -4,7 +4,7 @@ import { Box } from '@mui/system';
 import CancelIcon from '@mui/icons-material/Cancel';
 import EditIcon from '@mui/icons-material/Edit';
 
-interface ITaskCard {
+export interface ITaskCard {
   title: string;
 }
 
