@@ -21,10 +21,6 @@ export const TaskCard = ({ title, id, deleteTask }: ITaskCard) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isDeleteModalActive, setIsDeleteModalActive] = useState(false);
 
-  const handleDeleteModal = () => {
-    setIsDeleteModalActive(true);
-  };
-
   return (
     <Box
       width="100%"
@@ -65,11 +61,15 @@ export const TaskCard = ({ title, id, deleteTask }: ITaskCard) => {
           visibility: isHovered ? 'visible' : 'hidden',
           ...isHoveredStyle,
         }}
-        onClick={handleDeleteModal}
+        onClick={() => setIsDeleteModalActive(true)}
       >
         <CancelIcon fontSize="small" />
       </IconButton>
-      <ConfirmModal active={isDeleteModalActive} setActive={setIsDeleteModalActive}>
+      <ConfirmModal
+        active={isDeleteModalActive}
+        setActive={setIsDeleteModalActive}
+        confirmAction={() => (deleteTask ? deleteTask(id) : null)}
+      >
         <div>Do you agree to delete this task?</div>
       </ConfirmModal>
     </Box>
