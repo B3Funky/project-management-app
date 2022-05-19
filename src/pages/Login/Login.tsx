@@ -48,7 +48,7 @@ export function Login() {
           <InputComponent label="Login" onChange={handleChangeLogin} />
         </Grid>
         <Grid item>
-          <InputComponent label="Password" type={'password'} onChange={handleChangePassword} />
+          <InputComponent label="Password" type="password" onChange={handleChangePassword} />
         </Grid>
         <Grid item>
           <ButtonComponent
