@@ -4,6 +4,7 @@ import { Box } from '@mui/system';
 import CancelIcon from '@mui/icons-material/Cancel';
 import EditIcon from '@mui/icons-material/Edit';
 import { ConfirmModal } from '../ConfirmModal';
+import { TaskModal } from '../TaskModal';
 
 export interface ITaskCard {
   title: string;
@@ -41,13 +42,26 @@ export const TaskCard = ({
   const [isDeleteModalActive, setIsDeleteModalActive] = useState(false);
   const [isTaskModalActive, setIsTaskModalActive] = useState(false);
   const [taskDescription, setTaskDescription] = useState<string | undefined>('');
+  const [currentTaskDescriptionText, setCurrentTaskDescriptionText] = useState<string | undefined>(
+    ''
+  );
+  const [taskTitle, setTaskTitle] = useState<string | undefined>('');
 
   useEffect(() => {
     setTaskDescription(description);
+    setTaskTitle(title);
   }, []);
 
-  const setDescription = (descr: string) => {
-    console.log(descr);
+  const setCurrentDescription = (descr: string) => {
+    setCurrentTaskDescriptionText(descr);
+  };
+
+  const saveDescription = () => {
+    setTaskDescription(currentTaskDescriptionText);
+  };
+
+  const cancelDescription = () => {
+    setCurrentTaskDescriptionText(taskDescription);
   };
 
   return (
@@ -104,6 +118,17 @@ export const TaskCard = ({
       >
         <div>Do you agree to delete this task?</div>
       </ConfirmModal>
+      <TaskModal
+        card={{ id, title, done, files, order, userId }}
+        taskDescription={currentTaskDescriptionText}
+        isActive={isTaskModalActive}
+        setIsActive={setIsTaskModalActive}
+        setDescription={setCurrentDescription}
+        saveDescription={saveDescription}
+        cancelDescription={cancelDescription}
+        setTitle={setTaskTitle}
+        taskTitle={taskTitle}
+      />
     </Box>
   );
 };
