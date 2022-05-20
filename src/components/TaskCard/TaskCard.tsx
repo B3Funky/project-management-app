@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, IconButton, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -8,7 +8,17 @@ import { ConfirmModal } from '../ConfirmModal';
 export interface ITaskCard {
   title: string;
   id: number;
+  description?: string;
+  order?: number;
+  done?: boolean;
+  userId?: string;
+  files?: ITaskCardFiles[];
   deleteTask?: (id: number) => void;
+}
+
+interface ITaskCardFiles {
+  fileName?: string;
+  fileSize?: number;
 }
 
 const isHoveredStyle = {
@@ -17,9 +27,28 @@ const isHoveredStyle = {
   p: '0',
 };
 
-export const TaskCard = ({ title, id, deleteTask }: ITaskCard) => {
+export const TaskCard = ({
+  title,
+  id,
+  description,
+  done,
+  files,
+  order,
+  userId,
+  deleteTask,
+}: ITaskCard) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isDeleteModalActive, setIsDeleteModalActive] = useState(false);
+  const [isTaskModalActive, setIsTaskModalActive] = useState(false);
+  const [taskDescription, setTaskDescription] = useState<string | undefined>('');
+
+  useEffect(() => {
+    setTaskDescription(description);
+  }, []);
+
+  const setDescription = (descr: string) => {
+    console.log(descr);
+  };
 
   return (
     <Box
@@ -32,7 +61,10 @@ export const TaskCard = ({ title, id, deleteTask }: ITaskCard) => {
       onMouseLeave={() => setIsHovered(false)}
       sx={{ cursor: 'pointer' }}
     >
-      <Card sx={{ width: '90%', overflow: 'visible', m: '10px 0px' }}>
+      <Card
+        sx={{ width: '90%', overflow: 'visible', m: '10px 0px' }}
+        onClick={() => setIsTaskModalActive(true)}
+      >
         <CardContent
           sx={{
             p: 0,
