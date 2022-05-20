@@ -1,15 +1,23 @@
 import React, { ChangeEvent } from 'react';
-import './taskColumnTitle.css';
+import './text-area-component.css';
 
-interface ITaskColumnTitle {
-  title: string;
+interface ITextAreaComponent {
+  title?: string;
   value?: string;
+  className?: string;
   onFocus?: () => void;
   onBlur?: () => void;
   onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-export const TaskColumnTitle = ({ title, value, onFocus, onBlur, onChange }: ITaskColumnTitle) => {
+export const TextAreaComponent = ({
+  title,
+  value,
+  className,
+  onFocus,
+  onBlur,
+  onChange,
+}: ITextAreaComponent) => {
   const textAreaAdjust = (el: HTMLTextAreaElement) => {
     el.style.height = '1px';
     el.style.height = el.scrollHeight + 'px';
@@ -18,7 +26,7 @@ export const TaskColumnTitle = ({ title, value, onFocus, onBlur, onChange }: ITa
   return (
     <textarea
       defaultValue={title}
-      className="column__title"
+      className={className}
       onChange={(e) => {
         textAreaAdjust(e.target);
       }}
