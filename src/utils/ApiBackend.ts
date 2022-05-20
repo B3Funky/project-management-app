@@ -100,15 +100,25 @@ class Boards {
     this.axiosInstance = axiosInstance;
   }
 
-  getAll() {}
+  async getAll() {
+    return await requestWrapper(this.axiosInstance.get('/boards'));
+  }
 
-  create(data: IBoardData) {}
+  async create(data: IBoardData) {
+    return await requestWrapper(this.axiosInstance.post('/boards', data));
+  }
 
-  get(params: IBoardId) {}
+  async get(params: IBoardId) {
+    return await requestWrapper(this.axiosInstance.get(`/boards/${params.boardId}`));
+  }
 
-  delete(params: IBoardId) {}
+  async delete(params: IBoardId) {
+    return await requestWrapper(this.axiosInstance.delete(`/boards/${params.boardId}`));
+  }
 
-  update(params: IBoardId, data: IBoardData) {}
+  async update(params: IBoardId, data: IBoardData) {
+    return await requestWrapper(this.axiosInstance.put(`/boards/${params.boardId}`, data));
+  }
 }
 
 interface IColumnId extends IBoardId {
