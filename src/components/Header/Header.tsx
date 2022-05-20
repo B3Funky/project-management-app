@@ -21,6 +21,7 @@ import { ModalComponent } from '../Modal';
 import { paths } from '../../routes/paths';
 
 import './header.css';
+import { signout } from '../../utils/login';
 
 const theme = createTheme({
   palette: {
@@ -60,6 +61,7 @@ export function Header(props: IHeaderProps) {
   const handleAccountMenuClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorAccountMenu(event.currentTarget);
   };
+
   const handleAccountMenuClose = () => {
     setAnchorAccountMenu(null);
   };
@@ -67,6 +69,7 @@ export function Header(props: IHeaderProps) {
   const navigate = useNavigate();
   const handleLogout = useCallback(() => {
     handleAccountMenuClose();
+    signout();
     navigate(paths.welcome);
   }, [navigate]);
 

@@ -6,7 +6,6 @@ import { SignHeader } from '../../components/SignHeader';
 import { InputComponent } from '../../components/Input';
 import { ButtonComponent } from '../../components/Button';
 import { paths } from '../../routes/paths';
-import { signup } from '../../utils/login';
 import { useSignup } from '../../hooks/use-signup';
 
 export function SignUp() {
@@ -15,15 +14,6 @@ export function SignUp() {
   const [password, setPassword] = useState('');
   const isFormFilled = useMemo(() => Boolean(name && login && password), [name, login, password]);
   const [error, setError] = useState('');
-
-  // const handleSignUp = useCallback(() => {
-  //   if (isFormFilled) {
-  //     signup({ name, login, password });
-  //     setName('');
-  //     setLogin('');
-  //     setPassword('');
-  //   }
-  // }, [isFormFilled, name, login, password]);
 
   const handleSignUp = useSignup(isFormFilled, setError, name, login, password);
 

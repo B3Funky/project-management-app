@@ -13,9 +13,10 @@ export const signup = async (params: { name: string; login: string; password: st
   const response = await axiosInstance.post('/signup', params);
 };
 
-const signout = () => clearAuthTokens();
+export const signout = () => {
+  clearAuthTokens();
+  localStorage.setItem('login', '');
+  localStorage.setItem('password', '');
+};
 
-if (isLoggedIn()) {
-}
-
-const accessToken = getAccessToken();
+// const accessToken = getAccessToken();

@@ -8,6 +8,7 @@ const BASE_URL = `http://0.0.0.0:${PORT}`;
 axios.defaults.baseURL = BASE_URL;
 
 export const axiosInstance = axios.create();
+
 axiosInstance.interceptors.request.use((config) => {
   if (config?.headers) {
     config.headers['Content-type'] = 'application/json';

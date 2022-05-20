@@ -1,5 +1,5 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 
 import { Welcome } from '../pages/Welcome';
 import { Login } from '../pages/Login';
@@ -9,8 +9,15 @@ import { Board } from '../pages/Board';
 import { Profile } from '../pages/Profile';
 import { NotFound } from '../pages/NotFound';
 import { paths } from './paths';
+import { checkAuth } from '../utils/check-auth';
 
 export function AppRoutes() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    checkAuth(navigate);
+  }, []);
+
   return (
     <Routes>
       <Route path={paths.welcome} element={<Welcome />} />
