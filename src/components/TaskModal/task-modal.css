@@ -1,0 +1,16 @@
+.task-modal__textarea {
+  resize: none;
+  border: none;
+  overflow: hidden;
+}
+
+.task-modal__title {
+  font-size: 2rem;
+  min-height: 75px;
+}
+
+.task-modal__description {
+  min-height: 150px;
+  width: 75%;
+  padding: 10px;
+}
