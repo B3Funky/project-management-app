@@ -5,6 +5,7 @@ interface ITextAreaComponent {
   title?: string;
   value?: string;
   className?: string;
+  placeholder?: string;
   onFocus?: () => void;
   onBlur?: () => void;
   onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void;
@@ -14,6 +15,7 @@ export const TextAreaComponent = ({
   title,
   value,
   className,
+  placeholder,
   onFocus,
   onBlur,
   onChange,
@@ -34,6 +36,7 @@ export const TextAreaComponent = ({
       onFocus={onFocus}
       onBlur={onBlur}
       value={value}
+      placeholder={placeholder}
     />
   );
 };
