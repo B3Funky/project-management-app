@@ -6,7 +6,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import CheckIcon from '@mui/icons-material/Check';
 import './tasks-column.css';
 import { CardFooter } from '../TaskColumnFooter';
-import { TaskColumnTitle } from '../TaskColumnTitle';
+import { TextAreaComponent } from '../TextAreaComponent';
 import { TaskCard } from '../TaskCard';
 import { ModalComponent } from '../Modal';
 import { ITaskCard } from '../TaskCard/TaskCard';
@@ -96,9 +96,10 @@ export const TasksColumn = ({ title, onClick }: ITasksColumn) => {
           }
           title={
             <>
-              <TaskColumnTitle
+              <TextAreaComponent
                 title={currentTitle || ''}
                 value={changedText || ''}
+                className="column__title"
                 onFocus={() => setIsFocused(true)}
                 onChange={(e) => setChangedText(e.currentTarget.value)}
               />
