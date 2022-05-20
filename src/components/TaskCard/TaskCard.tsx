@@ -3,9 +3,12 @@ import { Card, CardContent, IconButton, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import CancelIcon from '@mui/icons-material/Cancel';
 import EditIcon from '@mui/icons-material/Edit';
+import { ConfirmModal } from '../ConfirmModal';
 
 export interface ITaskCard {
   title: string;
+  id: number;
+  deleteTask?: (id: number) => void;
 }
 
 const isHoveredStyle = {
@@ -14,8 +17,9 @@ const isHoveredStyle = {
   p: '0',
 };
 
-export const TaskCard = ({ title }: ITaskCard) => {
+export const TaskCard = ({ title, id, deleteTask }: ITaskCard) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isDeleteModalActive, setIsDeleteModalActive] = useState(false);
 
   return (
     <Box
@@ -57,9 +61,17 @@ export const TaskCard = ({ title }: ITaskCard) => {
           visibility: isHovered ? 'visible' : 'hidden',
           ...isHoveredStyle,
         }}
+        onClick={() => setIsDeleteModalActive(true)}
       >
         <CancelIcon fontSize="small" />
       </IconButton>
+      <ConfirmModal
+        active={isDeleteModalActive}
+        setActive={setIsDeleteModalActive}
+        confirmAction={() => (deleteTask ? deleteTask(id) : null)}
+      >
+        <div>Do you agree to delete this task?</div>
+      </ConfirmModal>
     </Box>
   );
 };

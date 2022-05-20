@@ -11,6 +11,7 @@ import { TaskCard } from '../TaskCard';
 import { ModalComponent } from '../Modal';
 import { ITaskCard } from '../TaskCard/TaskCard';
 import { InputComponent } from '../Input';
+import { ConfirmModal } from '../ConfirmModal';
 
 interface ITasksColumn {
   title: string;
@@ -21,13 +22,13 @@ export const TasksColumn = ({ title, onClick }: ITasksColumn) => {
   const [isFocused, setIsFocused] = useState(false);
   const [currentTitle, setCurrentTitle] = useState<string | null>('');
   const [changedText, setChangedText] = useState<string | null>('');
-  const [isActive, setIsActive] = useState(false);
+  const [isCreateModalActive, setIsCreateModalActive] = useState(false);
   const [taskTitle, setTaskTitle] = useState('');
   const [tasks, setTasks] = useState<ITaskCard[]>([
-    { title: 'Title 1' },
-    { title: 'Title 2' },
-    { title: 'Title 3' },
-    { title: 'Title 4' },
+    { title: 'Title 1', id: 0 },
+    { title: 'Title 2', id: 1 },
+    { title: 'Title 3', id: 2 },
+    { title: 'Title 4', id: 3 },
   ]);
 
   useEffect(() => {
@@ -45,13 +46,17 @@ export const TasksColumn = ({ title, onClick }: ITasksColumn) => {
   };
 
   const openModal = () => {
-    setIsActive(true);
+    setIsCreateModalActive(true);
     setTaskTitle('');
   };
 
   const addtask = () => {
-    setTasks([...tasks, { title: taskTitle }]);
-    setIsActive(false);
+    setTasks([...tasks, { title: taskTitle, id: Date.now() }]);
+    setIsCreateModalActive(false);
+  };
+
+  const deleteTask = (id: number) => {
+    setTasks(tasks.filter((task) => task.id !== id));
   };
 
   return (
@@ -109,8 +114,8 @@ export const TasksColumn = ({ title, onClick }: ITasksColumn) => {
             flexDirection="column"
             flexWrap="nowrap"
           >
-            {tasks.map(({ title }) => (
-              <TaskCard key={Date.now() + title} title={title} />
+            {tasks.map(({ title, id }) => (
+              <TaskCard key={Date.now() + title} title={title} deleteTask={deleteTask} id={id} />
             ))}
           </Grid>
         </CardContent>
@@ -127,7 +132,7 @@ export const TasksColumn = ({ title, onClick }: ITasksColumn) => {
           </ButtonComponent>
         </CardFooter>
       </Card>
-      <ModalComponent active={isActive} setActive={setIsActive}>
+      <ModalComponent active={isCreateModalActive} setActive={setIsCreateModalActive}>
         <Box>
           <Typography variant="h4">Create Task</Typography>
           <Grid container alignItems="stretch" justifyContent="space-between">
