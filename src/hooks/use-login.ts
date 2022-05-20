@@ -14,6 +14,9 @@ export const useLogin = (
     if (isFormFilled) {
       try {
         await signin({ login, password });
+        localStorage.setItem('login', login);
+        localStorage.setItem('password', password);
+
         navigate('/main');
       } catch (e) {
         if (e instanceof AxiosError) {
