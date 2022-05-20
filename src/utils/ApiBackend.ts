@@ -71,15 +71,15 @@ class Users {
     return await requestWrapper(this.axiosInstance.get('/users'));
   }
 
-  async getUser(params: IUserId) {
+  async get(params: IUserId) {
     return await requestWrapper(this.axiosInstance.get(`/users/${params.userId}`));
   }
 
-  async deleteUser(params: IUserId) {
+  async delete(params: IUserId) {
     return await requestWrapper(this.axiosInstance.delete(`/users/${params.userId}`));
   }
 
-  async updateUser(params: IUserId, data: IUserData) {
+  async update(params: IUserId, data: IUserData) {
     return await requestWrapper(this.axiosInstance.put(`/users/${params.userId}`, data));
   }
 }
@@ -102,13 +102,13 @@ class Boards {
 
   getAll() {}
 
-  createBoard(data: IBoardData) {}
+  create(data: IBoardData) {}
 
-  getBoard(params: IBoardId) {}
+  get(params: IBoardId) {}
 
-  deleteBoard(params: IBoardId) {}
+  delete(params: IBoardId) {}
 
-  updateBoard(params: IBoardId, data: IBoardData) {}
+  update(params: IBoardId, data: IBoardData) {}
 }
 
 interface IColumnId extends IBoardId {
@@ -132,13 +132,13 @@ class Columns {
 
   getAll(params: IBoardId) {}
 
-  createColumn(params: IBoardId, data: IColumnData) {}
+  create(params: IBoardId, data: IColumnData) {}
 
-  getColumn(params: IColumnId) {}
+  get(params: IColumnId) {}
 
-  deleteColumn(params: IColumnId) {}
+  delete(params: IColumnId) {}
 
-  updateColumn(params: IColumnId, data: IColumnDataUpdate) {}
+  update(params: IColumnId, data: IColumnDataUpdate) {}
 }
 
 interface ITaskId extends IColumnId {
@@ -166,13 +166,13 @@ class Tasks {
 
   getAll(params: IColumnId) {}
 
-  createColumn(params: IColumnId, data: ITaskData) {}
+  create(params: IColumnId, data: ITaskData) {}
 
-  getColumn(params: ITaskId) {}
+  get(params: ITaskId) {}
 
-  deleteColumn(params: ITaskId) {}
+  delete(params: ITaskId) {}
 
-  updateColumn(params: ITaskId, data: ITaskDataUpdate) {}
+  update(params: ITaskId, data: ITaskDataUpdate) {}
 }
 
 interface IFileData {
@@ -199,18 +199,18 @@ class File {
 
 export default class Api {
   private readonly axiosInstance: AxiosInstance;
-  public readonly users: Users;
-  public readonly boards: Boards;
-  public readonly columns: Columns;
-  public readonly tasks: Tasks;
+  public readonly user: Users;
+  public readonly board: Boards;
+  public readonly column: Columns;
+  public readonly task: Tasks;
   public readonly file: File;
 
   constructor() {
     this.axiosInstance = axiosInstance;
-    this.users = new Users(this.axiosInstance);
-    this.boards = new Boards(this.axiosInstance);
-    this.columns = new Columns(this.axiosInstance);
-    this.tasks = new Tasks(this.axiosInstance);
+    this.user = new Users(this.axiosInstance);
+    this.board = new Boards(this.axiosInstance);
+    this.column = new Columns(this.axiosInstance);
+    this.task = new Tasks(this.axiosInstance);
     this.file = new File(this.axiosInstance);
   }
 }
