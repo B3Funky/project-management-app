@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, IconButton, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import CancelIcon from '@mui/icons-material/Cancel';
 import EditIcon from '@mui/icons-material/Edit';
 import { ConfirmModal } from '../ConfirmModal';
 import { TaskModal } from '../TaskModal';
+import { TextAreaComponent } from '../TextAreaComponent';
+import './task-card.css';
 
 export interface ITaskCard {
   title: string;
@@ -46,6 +48,8 @@ export const TaskCard = ({
     ''
   );
   const [taskTitle, setTaskTitle] = useState<string | undefined>('');
+  const [isTitleFocused, setIsTitleFocused] = useState(false);
+  const taskTitleRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     setTaskDescription(description);
@@ -64,6 +68,20 @@ export const TaskCard = ({
     setCurrentTaskDescriptionText(taskDescription);
   };
 
+  const handleTitleFocus = () => {
+    setIsTitleFocused(true);
+    if (taskTitleRef.current) {
+      taskTitleRef.current.focus();
+    }
+  };
+
+  const handleTitleBlur = () => {
+    setIsTitleFocused(false);
+    if (taskTitleRef.current) {
+      taskTitleRef.current.blur();
+    }
+  };
+
   return (
     <Box
       width="100%"
@@ -73,11 +91,14 @@ export const TaskCard = ({
       flexDirection="column"
       onMouseMove={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onBlur={() => setIsHovered(false)}
       sx={{ cursor: 'pointer' }}
     >
       <Card
         sx={{ width: '90%', overflow: 'visible', m: '10px 0px' }}
-        onClick={() => setIsTaskModalActive(true)}
+        onClick={() => {
+          !isTitleFocused ? (setIsTaskModalActive(true), handleTitleBlur()) : null;
+        }}
       >
         <CardContent
           sx={{
@@ -87,9 +108,14 @@ export const TaskCard = ({
             wordBreak: 'break-word',
           }}
         >
-          <Typography p={1} textAlign="left">
-            {title}
-          </Typography>
+          <TextAreaComponent
+            className="task-card__title"
+            value={taskTitle}
+            title={taskTitle}
+            customRef={taskTitleRef}
+            onChange={(e) => setTaskTitle(e.currentTarget.value)}
+            onBlur={() => setIsTitleFocused(false)}
+          />
         </CardContent>
       </Card>
       <IconButton
@@ -98,6 +124,7 @@ export const TaskCard = ({
           visibility: isHovered ? 'visible' : 'hidden',
           ...isHoveredStyle,
         }}
+        onClick={() => handleTitleFocus()}
       >
         <EditIcon fontSize="small" />
       </IconButton>

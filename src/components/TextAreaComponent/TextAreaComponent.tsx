@@ -9,6 +9,7 @@ interface ITextAreaComponent {
   onFocus?: () => void;
   onBlur?: () => void;
   onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+  customRef?: React.RefObject<HTMLTextAreaElement>;
 }
 
 export const TextAreaComponent = ({
@@ -19,6 +20,7 @@ export const TextAreaComponent = ({
   onFocus,
   onBlur,
   onChange,
+  customRef,
 }: ITextAreaComponent) => {
   const textAreaAdjust = (el: HTMLTextAreaElement) => {
     el.style.height = '1px';
@@ -37,6 +39,7 @@ export const TextAreaComponent = ({
       onBlur={onBlur}
       value={value}
       placeholder={placeholder}
+      ref={customRef}
     />
   );
 };
