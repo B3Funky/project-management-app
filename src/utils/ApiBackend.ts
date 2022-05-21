@@ -140,15 +140,31 @@ class Columns {
     this.axiosInstance = axiosInstance;
   }
 
-  getAll(params: IBoardId) {}
+  async getAll(params: IBoardId) {
+    return await requestWrapper(this.axiosInstance.get(`/boards/${params.boardId}/columns`));
+  }
 
-  create(params: IBoardId, data: IColumnData) {}
+  async create(params: IBoardId, data: IColumnData) {
+    return await requestWrapper(this.axiosInstance.post(`/boards/${params.boardId}/columns`, data));
+  }
 
-  get(params: IColumnId) {}
+  async get(params: IColumnId) {
+    return await requestWrapper(
+      this.axiosInstance.get(`/boards/${params.boardId}/columns/${params.columnId}`)
+    );
+  }
 
-  delete(params: IColumnId) {}
+  async delete(params: IColumnId) {
+    return await requestWrapper(
+      this.axiosInstance.delete(`/boards/${params.boardId}/columns/${params.columnId}`)
+    );
+  }
 
-  update(params: IColumnId, data: IColumnDataUpdate) {}
+  async update(params: IColumnId, data: IColumnDataUpdate) {
+    return await requestWrapper(
+      this.axiosInstance.put(`/boards/${params.boardId}/columns/${params.columnId}`, data)
+    );
+  }
 }
 
 interface ITaskId extends IColumnId {
