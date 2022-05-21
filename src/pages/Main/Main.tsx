@@ -72,7 +72,10 @@ export function Main() {
             </Grid>
             <Grid>
               <Typography>Add Board Description</Typography>
-              <InputComponent onChange={(e) => setBoardDescription(e.target.value)} />
+              <InputComponent
+                isRequired={true}
+                onChange={(e) => setBoardDescription(e.target.value)}
+              />
             </Grid>
             <ButtonComponent type="submit" variant="contained">
               <Typography>Create Board</Typography>
