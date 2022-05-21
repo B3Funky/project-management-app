@@ -63,7 +63,7 @@ export function Main() {
               maxWidth: '350px',
               height: '100px',
               margin: '10px',
-              backgroundColor: 'rgba(196, 204, 204, 0.4) ',
+              backgroundColor: 'rgba(196, 204, 204, 0.4)',
               '&:hover': {
                 backgroundColor: 'rgba(175, 182, 182, 0.4)',
               },
