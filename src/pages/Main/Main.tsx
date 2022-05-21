@@ -31,6 +31,8 @@ export function Main() {
   const addNewBoard = () => {
     setBoards([...boards, { title: boardTitle, description: boardDescription, id: Date.now() }]);
     setIsCreateBoardModalActive(false);
+    setBoardTitle('');
+    setBoardDescription('');
   };
 
   return (
@@ -56,37 +58,27 @@ export function Main() {
               onClick={() => navigate(`/board/${id}`)}
             />
           ))}
-          <ButtonComponent
-            onClick={() => setIsCreateBoardModalActive(true)}
-            sx={{
-              minWidth: '275px',
-              maxWidth: '350px',
-              height: '100px',
-              margin: '10px',
-              backgroundColor: 'rgba(196, 204, 204, 0.4)',
-              '&:hover': {
-                backgroundColor: 'rgba(175, 182, 182, 0.4)',
-              },
-            }}
-          >
+          <ButtonComponent onClick={() => setIsCreateBoardModalActive(true)}>
             <Typography>Add new Board</Typography>
           </ButtonComponent>
         </Grid>
       </Grid>
       <ModalComponent active={isCreateBoardModalActive} setActive={setIsCreateBoardModalActive}>
-        <Grid container flexDirection="column" alignItems="center">
-          <Grid>
-            <Typography>Add Board Title</Typography>
-            <InputComponent onChange={(e) => setBoardTitle(e.target.value)} />
+        <form onSubmit={addNewBoard}>
+          <Grid container flexDirection="column" alignItems="center">
+            <Grid>
+              <Typography>Add Board Title</Typography>
+              <InputComponent isRequired={true} onChange={(e) => setBoardTitle(e.target.value)} />
+            </Grid>
+            <Grid>
+              <Typography>Add Board Description</Typography>
+              <InputComponent onChange={(e) => setBoardDescription(e.target.value)} />
+            </Grid>
+            <ButtonComponent type="submit" variant="contained">
+              <Typography>Create Board</Typography>
+            </ButtonComponent>
           </Grid>
-          <Grid>
-            <Typography>Add Board Description</Typography>
-            <InputComponent onChange={(e) => setBoardDescription(e.target.value)} />
-          </Grid>
-          <ButtonComponent variant="contained" onClick={addNewBoard}>
-            <Typography>Create Board</Typography>
-          </ButtonComponent>
-        </Grid>
+        </form>
       </ModalComponent>
     </>
   );
