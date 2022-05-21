@@ -3,7 +3,7 @@ export const paths = {
   login: '/login',
   signUp: '/signup',
   main: '/main',
-  board: '/board',
+  board: '/board/:id',
   profile: '/profile',
   notFound: '/*',
 };

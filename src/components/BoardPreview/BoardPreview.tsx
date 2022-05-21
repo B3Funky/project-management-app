@@ -4,13 +4,15 @@ import CloseIcon from '@mui/icons-material/Close';
 import { getRandomColor } from '../../utils/getRandomColor';
 import './boardPreview.css';
 
-interface IBoardPreview {
-  title: string;
-  description?: string;
-  handleDelete: () => void;
+export interface IBoardPreview {
+  title?: string | null;
+  id: number;
+  description?: string | null;
+  handleDelete?: () => void;
+  onClick?: () => void;
 }
 
-export const BoardPreview = ({ title, description, handleDelete }: IBoardPreview) => {
+export const BoardPreview = ({ title, description, handleDelete, onClick }: IBoardPreview) => {
   const [isHovered, setIsHovered] = useState(false);
   const [background, setBackground] = useState('');
 
@@ -27,9 +29,11 @@ export const BoardPreview = ({ title, description, handleDelete }: IBoardPreview
         cursor: 'pointer',
         position: 'relative',
         background: background,
+        m: '10px',
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={onClick}
     >
       <CardHeader
         title={title}
