@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+import { SxProps } from '@mui/system';
 import Button from '@mui/material/Button';
 
 interface IButton {
@@ -10,6 +11,7 @@ interface IButton {
   isDisabled?: boolean;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   type?: 'button' | 'submit' | 'reset';
+  sx?: SxProps;
 }
 
 export const ButtonComponent = ({
@@ -21,6 +23,7 @@ export const ButtonComponent = ({
   isDisabled,
   onClick,
   type,
+  sx,
 }: IButton) => {
   return (
     <Button
@@ -31,6 +34,7 @@ export const ButtonComponent = ({
       disabled={isDisabled}
       onClick={onClick}
       type={type}
+      sx={sx}
     >
       {children}
     </Button>
