@@ -24,6 +24,10 @@ function errorHandler(e: unknown) {
       // or wrong url
       // e.response.data.message: "Cannot GET <url>",
       // e.response.data.error: "Not Found"
+    } else if (e.response?.status === 409) {
+      return e.response.data.message;
+      // Conflict
+      // e.response.data.error: "File already exists!"
     } else if (e.response?.status === 500) {
       return e.response.data.message;
       // Internal server error
@@ -230,7 +234,7 @@ class Tasks {
 
 interface IFileData {
   taskId: string;
-  file: string;
+  file: Blob;
 }
 
 interface IFileParams {
@@ -245,9 +249,24 @@ class File {
     this.axiosInstance = axiosInstance;
   }
 
-  upload(data: IFileData) {}
+  async upload(data: IFileData) {
+    const formData = new FormData();
+    formData.append('taskId', data.taskId);
+    formData.append('file', data.file);
+    return await requestWrapper(
+      this.axiosInstance.post('/file', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+    );
+  }
 
-  get(params: IFileParams) {}
+  async get(params: IFileParams) {
+    return await requestWrapper(
+      this.axiosInstance.get(`/file/${params.taskId}/${params.filename}`)
+    );
+  }
 }
 
 export default class Api {
