@@ -58,7 +58,19 @@ export function Main() {
               onClick={() => navigate(`/board/${id}`)}
             />
           ))}
-          <ButtonComponent onClick={() => setIsCreateBoardModalActive(true)}>
+          <ButtonComponent
+            onClick={() => setIsCreateBoardModalActive(true)}
+            sx={{
+              minWidth: '275px',
+              maxWidth: '350px',
+              height: '100px',
+              margin: '10px',
+              backgroundColor: 'rgba(196, 204, 204, 0.4)',
+              '&:hover': {
+                backgroundColor: 'rgba(175, 182, 182, 0.4)',
+              },
+            }}
+          >
             <Typography>Add new Board</Typography>
           </ButtonComponent>
         </Grid>
