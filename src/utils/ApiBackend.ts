@@ -190,15 +190,42 @@ class Tasks {
     this.axiosInstance = axiosInstance;
   }
 
-  getAll(params: IColumnId) {}
+  async getAll(params: IColumnId) {
+    return await requestWrapper(
+      this.axiosInstance.get(`/boards/${params.boardId}/columns/${params.columnId}/tasks`)
+    );
+  }
 
-  create(params: IColumnId, data: ITaskData) {}
+  async create(params: IColumnId, data: ITaskData) {
+    return await requestWrapper(
+      this.axiosInstance.post(`/boards/${params.boardId}/columns/${params.columnId}/tasks`, data)
+    );
+  }
 
-  get(params: ITaskId) {}
+  async get(params: ITaskId) {
+    return await requestWrapper(
+      this.axiosInstance.get(
+        `/boards/${params.boardId}/columns/${params.columnId}/tasks/${params.taskId}`
+      )
+    );
+  }
 
-  delete(params: ITaskId) {}
+  async delete(params: ITaskId) {
+    return await requestWrapper(
+      this.axiosInstance.delete(
+        `/boards/${params.boardId}/columns/${params.columnId}/tasks/${params.taskId}`
+      )
+    );
+  }
 
-  update(params: ITaskId, data: ITaskDataUpdate) {}
+  async update(params: ITaskId, data: ITaskDataUpdate) {
+    return await requestWrapper(
+      this.axiosInstance.put(
+        `/boards/${params.boardId}/columns/${params.columnId}/tasks/${params.taskId}`,
+        data
+      )
+    );
+  }
 }
 
 interface IFileData {
