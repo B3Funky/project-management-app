@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Grid, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
@@ -12,6 +12,14 @@ import { IBoardPreview } from '../../components/BoardPreview/BoardPreview';
 import { ButtonComponent } from '../../components/Button';
 import { ModalComponent } from '../../components/Modal';
 import { InputComponent } from '../../components/Input';
+import { IS_EMPTY_REGEXP } from '../../constants';
+
+interface IFieldValidMethod {
+  value: string;
+  regexp: RegExp;
+  method: React.Dispatch<React.SetStateAction<string>>;
+  errorText: string;
+}
 
 export function Main() {
   const { t } = useTranslation();
@@ -19,7 +27,9 @@ export function Main() {
   const [isCreateBoardModalActive, setIsCreateBoardModalActive] = useState(false);
   const [boardTitle, setBoardTitle] = useState('');
   const [boardDescription, setBoardDescription] = useState('');
-
+  const [titleError, setTitleError] = useState('');
+  const [descriptionError, setDescriptionError] = useState('');
+  const [isFormDisabled, setIsFormDisabled] = useState(true);
   const [boards, setBoards] = useState<IBoardPreview[]>([
     { title: 'Title 1', description: 'Description1! HelloWorld1', id: 1 },
     { title: 'Title 2', description: 'Description1! HelloWorld2', id: 2 },
@@ -27,6 +37,16 @@ export function Main() {
     { title: 'Title 3', description: 'Description1! HelloWorld3', id: 4 },
     { title: 'Title 3', description: 'Description1! HelloWorld3', id: 5 },
   ]);
+
+  useEffect(() => {
+    boardTitle && boardDescription && !titleError && !descriptionError
+      ? setIsFormDisabled(false)
+      : setIsFormDisabled(true);
+  }, [boardTitle, boardDescription]);
+
+  const isFieldValid = ({ errorText, method, regexp, value }: IFieldValidMethod) => {
+    regexp?.test(value) ? method(errorText) : method('');
+  };
 
   const addNewBoard = () => {
     setBoards([...boards, { title: boardTitle, description: boardDescription, id: Date.now() }]);
@@ -58,19 +78,7 @@ export function Main() {
               onClick={() => navigate(`/board/${id}`)}
             />
           ))}
-          <ButtonComponent
-            onClick={() => setIsCreateBoardModalActive(true)}
-            sx={{
-              minWidth: '275px',
-              maxWidth: '350px',
-              height: '100px',
-              margin: '10px',
-              backgroundColor: 'rgba(196, 204, 204, 0.4)',
-              '&:hover': {
-                backgroundColor: 'rgba(175, 182, 182, 0.4)',
-              },
-            }}
-          >
+          <ButtonComponent onClick={() => setIsCreateBoardModalActive(true)}>
             <Typography>Add new Board</Typography>
           </ButtonComponent>
         </Grid>
@@ -80,16 +88,35 @@ export function Main() {
           <Grid container flexDirection="column" alignItems="center">
             <Grid>
               <Typography>Add Board Title</Typography>
-              <InputComponent isRequired={true} onChange={(e) => setBoardTitle(e.target.value)} />
+              <InputComponent
+                errorText={titleError}
+                onChange={(e) => {
+                  setBoardTitle(e.target.value);
+                  isFieldValid({
+                    value: e.target.value,
+                    errorText: 'Field should be fill',
+                    method: setTitleError,
+                    regexp: IS_EMPTY_REGEXP,
+                  });
+                }}
+              />
             </Grid>
             <Grid>
               <Typography>Add Board Description</Typography>
               <InputComponent
-                isRequired={true}
-                onChange={(e) => setBoardDescription(e.target.value)}
+                errorText={descriptionError}
+                onChange={(e) => {
+                  setBoardDescription(e.target.value);
+                  isFieldValid({
+                    value: e.target.value,
+                    errorText: 'Field should be fill',
+                    method: setDescriptionError,
+                    regexp: IS_EMPTY_REGEXP,
+                  });
+                }}
               />
             </Grid>
-            <ButtonComponent type="submit" variant="contained">
+            <ButtonComponent isDisabled={isFormDisabled} type="submit" variant="contained">
               <Typography>Create Board</Typography>
             </ButtonComponent>
           </Grid>
