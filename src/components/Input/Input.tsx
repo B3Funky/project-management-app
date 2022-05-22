@@ -12,7 +12,7 @@ interface ITextField {
   isDisabled?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   type?: string;
-  isRequired?: boolean;
+  errorText?: string;
 }
 
 export const InputComponent = ({
@@ -25,8 +25,8 @@ export const InputComponent = ({
   label,
   isDisabled,
   type,
+  errorText,
   onChange,
-  isRequired,
 }: ITextField) => {
   return (
     <TextField
@@ -40,7 +40,8 @@ export const InputComponent = ({
       disabled={isDisabled}
       type={type}
       onChange={onChange}
-      required={isRequired}
+      error={!!errorText}
+      helperText={errorText}
     />
   );
 };
