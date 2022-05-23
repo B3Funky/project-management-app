@@ -3,8 +3,8 @@
 import { getAccessToken } from 'axios-jwt';
 import axios from 'axios';
 
-const PORT = '4000';
-const BASE_URL = `http://0.0.0.0:${PORT}`;
+const PORT = '';
+const BASE_URL = `https://b3funky-pma-backend.herokuapp.com:${PORT}`;
 axios.defaults.baseURL = BASE_URL;
 
 export const axiosInstance = axios.create();
