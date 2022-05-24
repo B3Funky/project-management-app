@@ -11,11 +11,12 @@ import { TaskCard } from '../TaskCard';
 import { ModalComponent } from '../Modal';
 import { ITaskCard } from '../TaskCard/TaskCard';
 import { InputComponent } from '../Input';
-import { ConfirmModal } from '../ConfirmModal';
 
-interface ITasksColumn {
+export interface ITasksColumn {
   title: string;
   onClick?: () => void;
+  id: number;
+  description: string;
 }
 
 export const TasksColumn = ({ title, onClick }: ITasksColumn) => {
