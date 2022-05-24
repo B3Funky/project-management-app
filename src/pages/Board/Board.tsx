@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 
 import { paths } from '../../routes/paths';
 
@@ -8,6 +8,7 @@ import { Header } from '../../components/Header';
 import './board.css';
 
 export function Board() {
+  const { id } = useParams();
   return (
     <>
       <Header />
