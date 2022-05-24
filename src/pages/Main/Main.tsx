@@ -8,11 +8,12 @@ import { paths } from '../../routes/paths';
 
 import './main.css';
 import { BoardPreview } from '../../components/BoardPreview';
-import { IBoardPreview } from '../../components/BoardPreview/BoardPreview';
 import { ButtonComponent } from '../../components/Button';
 import { ModalComponent } from '../../components/Modal';
 import { InputComponent } from '../../components/Input';
 import { IS_EMPTY_REGEXP } from '../../constants';
+import { useAppDispatch, useAppSelector } from '../../redux-hooks';
+import { BoardSlice } from '../../store/reducers/BoardReducer';
 
 interface IFieldValidMethod {
   value: string;
@@ -30,13 +31,11 @@ export function Main() {
   const [titleError, setTitleError] = useState('');
   const [descriptionError, setDescriptionError] = useState('');
   const [isFormDisabled, setIsFormDisabled] = useState(true);
-  const [boards, setBoards] = useState<IBoardPreview[]>([
-    { title: 'Title 1', description: 'Description1! HelloWorld1', id: 1 },
-    { title: 'Title 2', description: 'Description1! HelloWorld2', id: 2 },
-    { title: 'Title 3', description: 'Description1! HelloWorld3', id: 3 },
-    { title: 'Title 3', description: 'Description1! HelloWorld3', id: 4 },
-    { title: 'Title 3', description: 'Description1! HelloWorld3', id: 5 },
-  ]);
+
+  const { taskBoards } = useAppSelector((state) => state.BoardReducer);
+
+  const dispatch = useAppDispatch();
+  const { addBoard } = BoardSlice.actions;
 
   useEffect(() => {
     boardTitle && boardDescription && !titleError && !descriptionError
@@ -49,7 +48,7 @@ export function Main() {
   };
 
   const addNewBoard = () => {
-    setBoards([...boards, { title: boardTitle, description: boardDescription, id: Date.now() }]);
+    dispatch(addBoard({ title: boardTitle, description: boardDescription, id: Date.now() }));
     setIsCreateBoardModalActive(false);
     setBoardTitle('');
     setBoardDescription('');
@@ -69,7 +68,7 @@ export function Main() {
         <h1>{t('welcome_to_react')}</h1>
         <NavLink to={paths.board}>{t('to_board_page')}</NavLink>
         <Grid container justifyContent="flex-start" flexWrap="wrap" p="0px 25px">
-          {boards.map(({ title, description, id }) => (
+          {taskBoards.map(({ title, description, id }) => (
             <BoardPreview
               key={id}
               id={id}
