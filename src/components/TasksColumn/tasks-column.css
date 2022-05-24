@@ -4,7 +4,8 @@
   flex-direction: column;
   justify-content: space-between;
   height: 75vh;
-  width: 20vw;
+  min-width: 20vw;
+  margin: 0px 10px;
 }
 
 .column__button {
