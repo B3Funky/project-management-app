@@ -1,5 +1,15 @@
 import { AxiosInstance, AxiosPromise, AxiosError } from 'axios';
 import { axiosInstance } from './api';
+import {
+  IUser,
+  IBoard,
+  IBoardById,
+  IColumn,
+  IColumnById,
+  ITask,
+  ITaskCreate,
+  ITaskUpdate,
+} from '../models/api';
 
 function errorHandler(e: unknown) {
   if (e instanceof AxiosError) {
@@ -72,19 +82,19 @@ class Users {
   }
 
   async getAll() {
-    return await requestWrapper(this.axiosInstance.get('/users'));
+    return (await requestWrapper(this.axiosInstance.get('/users'))) as [IUser];
   }
 
   async get(params: IUserId) {
-    return await requestWrapper(this.axiosInstance.get(`/users/${params.userId}`));
+    return (await requestWrapper(this.axiosInstance.get(`/users/${params.userId}`))) as IUser;
   }
 
   async delete(params: IUserId) {
-    return await requestWrapper(this.axiosInstance.delete(`/users/${params.userId}`));
+    return (await requestWrapper(this.axiosInstance.delete(`/users/${params.userId}`))) as '';
   }
 
   async update(params: IUserId, data: IUserData) {
-    return await requestWrapper(this.axiosInstance.put(`/users/${params.userId}`, data));
+    return (await requestWrapper(this.axiosInstance.put(`/users/${params.userId}`, data))) as IUser;
   }
 }
 
@@ -105,23 +115,27 @@ class Boards {
   }
 
   async getAll() {
-    return await requestWrapper(this.axiosInstance.get('/boards'));
+    return (await requestWrapper(this.axiosInstance.get('/boards'))) as [IBoard];
   }
 
   async create(data: IBoardData) {
-    return await requestWrapper(this.axiosInstance.post('/boards', data));
+    return (await requestWrapper(this.axiosInstance.post('/boards', data))) as IBoard;
   }
 
   async get(params: IBoardId) {
-    return await requestWrapper(this.axiosInstance.get(`/boards/${params.boardId}`));
+    return (await requestWrapper(
+      this.axiosInstance.get(`/boards/${params.boardId}`)
+    )) as IBoardById;
   }
 
   async delete(params: IBoardId) {
-    return await requestWrapper(this.axiosInstance.delete(`/boards/${params.boardId}`));
+    return (await requestWrapper(this.axiosInstance.delete(`/boards/${params.boardId}`))) as '';
   }
 
   async update(params: IBoardId, data: IBoardData) {
-    return await requestWrapper(this.axiosInstance.put(`/boards/${params.boardId}`, data));
+    return (await requestWrapper(
+      this.axiosInstance.put(`/boards/${params.boardId}`, data)
+    )) as IBoard;
   }
 }
 
@@ -145,29 +159,33 @@ class Columns {
   }
 
   async getAll(params: IBoardId) {
-    return await requestWrapper(this.axiosInstance.get(`/boards/${params.boardId}/columns`));
+    return (await requestWrapper(this.axiosInstance.get(`/boards/${params.boardId}/columns`))) as [
+      IColumn
+    ];
   }
 
   async create(params: IBoardId, data: IColumnData) {
-    return await requestWrapper(this.axiosInstance.post(`/boards/${params.boardId}/columns`, data));
+    return (await requestWrapper(
+      this.axiosInstance.post(`/boards/${params.boardId}/columns`, data)
+    )) as IColumn;
   }
 
   async get(params: IColumnId) {
-    return await requestWrapper(
+    return (await requestWrapper(
       this.axiosInstance.get(`/boards/${params.boardId}/columns/${params.columnId}`)
-    );
+    )) as IColumnById;
   }
 
   async delete(params: IColumnId) {
-    return await requestWrapper(
+    return (await requestWrapper(
       this.axiosInstance.delete(`/boards/${params.boardId}/columns/${params.columnId}`)
-    );
+    )) as '';
   }
 
   async update(params: IColumnId, data: IColumnDataUpdate) {
-    return await requestWrapper(
+    return (await requestWrapper(
       this.axiosInstance.put(`/boards/${params.boardId}/columns/${params.columnId}`, data)
-    );
+    )) as IColumn;
   }
 }
 
@@ -195,40 +213,40 @@ class Tasks {
   }
 
   async getAll(params: IColumnId) {
-    return await requestWrapper(
+    return (await requestWrapper(
       this.axiosInstance.get(`/boards/${params.boardId}/columns/${params.columnId}/tasks`)
-    );
+    )) as [ITask];
   }
 
   async create(params: IColumnId, data: ITaskData) {
-    return await requestWrapper(
+    return (await requestWrapper(
       this.axiosInstance.post(`/boards/${params.boardId}/columns/${params.columnId}/tasks`, data)
-    );
+    )) as ITaskCreate;
   }
 
   async get(params: ITaskId) {
-    return await requestWrapper(
+    return (await requestWrapper(
       this.axiosInstance.get(
         `/boards/${params.boardId}/columns/${params.columnId}/tasks/${params.taskId}`
       )
-    );
+    )) as ITask;
   }
 
   async delete(params: ITaskId) {
-    return await requestWrapper(
+    return (await requestWrapper(
       this.axiosInstance.delete(
         `/boards/${params.boardId}/columns/${params.columnId}/tasks/${params.taskId}`
       )
-    );
+    )) as '';
   }
 
   async update(params: ITaskId, data: ITaskDataUpdate) {
-    return await requestWrapper(
+    return (await requestWrapper(
       this.axiosInstance.put(
         `/boards/${params.boardId}/columns/${params.columnId}/tasks/${params.taskId}`,
         data
       )
-    );
+    )) as ITaskUpdate;
   }
 }
 
