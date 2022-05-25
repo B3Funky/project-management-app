@@ -8,9 +8,9 @@ import './tasks-column.css';
 import { CardFooter } from '../TaskColumnFooter';
 import { TextAreaComponent } from '../TextAreaComponent';
 import { TaskCard } from '../TaskCard';
-import { ModalComponent } from '../Modal';
-import { ITaskCard } from '../TaskCard/TaskCard';
-import { InputComponent } from '../Input';
+import { useAppDispatch, useAppSelector } from '../../redux-hooks';
+import { TaskSlice } from '../../store/reducers/TaskReducer';
+import { CreateModal } from '../CreateModal';
 
 export interface ITasksColumn {
   title: string;
@@ -23,14 +23,11 @@ export const TasksColumn = ({ title, onClick }: ITasksColumn) => {
   const [isFocused, setIsFocused] = useState(false);
   const [currentTitle, setCurrentTitle] = useState<string | null>('');
   const [changedText, setChangedText] = useState<string | null>('');
-  const [isCreateModalActive, setIsCreateModalActive] = useState(false);
-  const [taskTitle, setTaskTitle] = useState('');
-  const [tasks, setTasks] = useState<ITaskCard[]>([
-    { title: 'Title 1', id: 0 },
-    { title: 'Title 2', id: 1 },
-    { title: 'Title 3', id: 2 },
-    { title: 'Title 4', id: 3 },
-  ]);
+  const [isModalActive, setIsModalActive] = useState(false);
+
+  const dispatch = useAppDispatch();
+  const { deleteTask } = TaskSlice.actions;
+  const { tasks } = useAppSelector((state) => state.TaskReducer);
 
   useEffect(() => {
     setCurrentTitle(title);
@@ -46,18 +43,8 @@ export const TasksColumn = ({ title, onClick }: ITasksColumn) => {
     setIsFocused(false);
   };
 
-  const openModal = () => {
-    setIsCreateModalActive(true);
-    setTaskTitle('');
-  };
-
-  const addtask = () => {
-    setTasks([...tasks, { title: taskTitle, id: Date.now() }]);
-    setIsCreateModalActive(false);
-  };
-
-  const deleteTask = (id: number) => {
-    setTasks(tasks.filter((task) => task.id !== id));
+  const deleteCurentTask = (id: number) => {
+    dispatch(deleteTask(id));
   };
 
   return (
@@ -117,12 +104,17 @@ export const TasksColumn = ({ title, onClick }: ITasksColumn) => {
             flexWrap="nowrap"
           >
             {tasks.map(({ title, id }) => (
-              <TaskCard key={Date.now() + title} title={title} deleteTask={deleteTask} id={id} />
+              <TaskCard
+                key={Date.now() + title}
+                title={title}
+                deleteTask={() => deleteCurentTask(id)}
+                id={id}
+              />
             ))}
           </Grid>
         </CardContent>
         <CardFooter>
-          <ButtonComponent type="button" onClick={openModal}>
+          <ButtonComponent type="button" onClick={() => setIsModalActive(true)}>
             <Box display="flex" alignItems="center" justifyContent="space-between">
               <IconButton>
                 <AddIcon fontSize="small" />
@@ -134,20 +126,7 @@ export const TasksColumn = ({ title, onClick }: ITasksColumn) => {
           </ButtonComponent>
         </CardFooter>
       </Card>
-      <ModalComponent active={isCreateModalActive} setActive={setIsCreateModalActive}>
-        <Box>
-          <Typography variant="h4">Create Task</Typography>
-          <Grid container alignItems="stretch" justifyContent="space-between">
-            <InputComponent
-              placeholder="Select Task Title"
-              onChange={(e) => setTaskTitle(e.target.value)}
-            />
-            <ButtonComponent variant="contained" onClick={addtask}>
-              <Typography variant="body2">Submit</Typography>
-            </ButtonComponent>
-          </Grid>
-        </Box>
-      </ModalComponent>
+      <CreateModal isActive={isModalActive} setActive={setIsModalActive} thing="Task" />
     </>
   );
 };
