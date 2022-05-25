@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Grid, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
@@ -9,50 +9,15 @@ import { paths } from '../../routes/paths';
 import './main.css';
 import { BoardPreview } from '../../components/BoardPreview';
 import { ButtonComponent } from '../../components/Button';
-import { ModalComponent } from '../../components/Modal';
-import { InputComponent } from '../../components/Input';
-import { IS_EMPTY_REGEXP } from '../../constants';
-import { useAppDispatch, useAppSelector } from '../../redux-hooks';
-import { BoardSlice } from '../../store/reducers/BoardReducer';
-
-interface IFieldValidMethod {
-  value: string;
-  regexp: RegExp;
-  method: React.Dispatch<React.SetStateAction<string>>;
-  errorText: string;
-}
+import { CreateModal } from '../../components/CreateModal';
+import { useAppSelector } from '../../redux-hooks';
 
 export function Main() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [isCreateBoardModalActive, setIsCreateBoardModalActive] = useState(false);
-  const [boardTitle, setBoardTitle] = useState('');
-  const [boardDescription, setBoardDescription] = useState('');
-  const [titleError, setTitleError] = useState('');
-  const [descriptionError, setDescriptionError] = useState('');
-  const [isFormDisabled, setIsFormDisabled] = useState(true);
+  const [isModalActive, setIsModalActive] = useState(false);
 
   const { taskBoards } = useAppSelector((state) => state.BoardReducer);
-
-  const dispatch = useAppDispatch();
-  const { addBoard } = BoardSlice.actions;
-
-  useEffect(() => {
-    boardTitle && boardDescription && !titleError && !descriptionError
-      ? setIsFormDisabled(false)
-      : setIsFormDisabled(true);
-  }, [boardTitle, boardDescription]);
-
-  const isFieldValid = ({ errorText, method, regexp, value }: IFieldValidMethod) => {
-    regexp?.test(value) ? method(errorText) : method('');
-  };
-
-  const addNewBoard = () => {
-    dispatch(addBoard({ title: boardTitle, description: boardDescription, id: Date.now() }));
-    setIsCreateBoardModalActive(false);
-    setBoardTitle('');
-    setBoardDescription('');
-  };
 
   return (
     <>
@@ -78,7 +43,7 @@ export function Main() {
             />
           ))}
           <ButtonComponent
-            onClick={() => setIsCreateBoardModalActive(true)}
+            onClick={() => setIsModalActive(true)}
             sx={{
               minWidth: '275px',
               maxWidth: '350px',
@@ -94,45 +59,7 @@ export function Main() {
           </ButtonComponent>
         </Grid>
       </Grid>
-      <ModalComponent active={isCreateBoardModalActive} setActive={setIsCreateBoardModalActive}>
-        <form onSubmit={addNewBoard}>
-          <Grid container flexDirection="column" alignItems="center">
-            <Grid>
-              <Typography>Add Board Title</Typography>
-              <InputComponent
-                errorText={titleError}
-                onChange={(e) => {
-                  setBoardTitle(e.target.value);
-                  isFieldValid({
-                    value: e.target.value,
-                    errorText: 'Field should be fill',
-                    method: setTitleError,
-                    regexp: IS_EMPTY_REGEXP,
-                  });
-                }}
-              />
-            </Grid>
-            <Grid>
-              <Typography>Add Board Description</Typography>
-              <InputComponent
-                errorText={descriptionError}
-                onChange={(e) => {
-                  setBoardDescription(e.target.value);
-                  isFieldValid({
-                    value: e.target.value,
-                    errorText: 'Field should be fill',
-                    method: setDescriptionError,
-                    regexp: IS_EMPTY_REGEXP,
-                  });
-                }}
-              />
-            </Grid>
-            <ButtonComponent isDisabled={isFormDisabled} type="submit" variant="contained">
-              <Typography>Create Board</Typography>
-            </ButtonComponent>
-          </Grid>
-        </form>
-      </ModalComponent>
+      <CreateModal isActive={isModalActive} setActive={setIsModalActive} thing="Board" />
     </>
   );
 }
