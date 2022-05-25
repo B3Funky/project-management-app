@@ -269,7 +269,7 @@ class File {
   }
 }
 
-export default class Api {
+class Api {
   private readonly axiosInstance: AxiosInstance;
   public readonly user: Users;
   public readonly board: Boards;
@@ -286,3 +286,7 @@ export default class Api {
     this.file = new File(this.axiosInstance);
   }
 }
+
+const api = new Api();
+
+export default api;
