@@ -17,11 +17,11 @@ import { createTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 
 import { LanguageToggle } from '../LanguageToggle';
-import { ModalComponent } from '../Modal';
 import { paths } from '../../routes/paths';
 
 import './header.css';
 import { signout } from '../../utils/login';
+import { CreateModal } from '../CreateModal';
 
 const theme = createTheme({
   palette: {
@@ -159,14 +159,7 @@ export function Header(props: IHeaderProps) {
           </Toolbar>
         </AppBar>
       </ThemeProvider>
-      <ModalComponent
-        active={openModal}
-        setActive={() => {
-          setOpenModal(false);
-        }}
-      >
-        <p>Here you will create your board</p>
-      </ModalComponent>
+      <CreateModal isActive={openModal} setActive={setOpenModal} thing="Board" />
     </>
   );
 }
