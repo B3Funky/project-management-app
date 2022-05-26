@@ -58,7 +58,7 @@ export const CreateModal = ({ thing, isActive, setActive }: ICreateModal) => {
   };
 
   return (
-    <ModalComponent active={isActive} setActive={setActive}>
+    <ModalComponent active={isActive} setActive={setActive} isArrow>
       <form onSubmit={handleSubmit}>
         <Grid container flexDirection="column" alignItems="center">
           <Grid>

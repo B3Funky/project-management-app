@@ -11,6 +11,7 @@ import { TaskCard } from '../TaskCard';
 import { useAppDispatch, useAppSelector } from '../../redux-hooks';
 import { TaskSlice } from '../../store/reducers/TaskReducer';
 import { CreateModal } from '../CreateModal';
+import { ConfirmModal } from '../ConfirmModal';
 
 export interface ITasksColumn {
   title: string;
@@ -23,7 +24,8 @@ export const TasksColumn = ({ title, onClick }: ITasksColumn) => {
   const [isFocused, setIsFocused] = useState(false);
   const [currentTitle, setCurrentTitle] = useState<string | null>('');
   const [changedText, setChangedText] = useState<string | null>('');
-  const [isModalActive, setIsModalActive] = useState(false);
+  const [isCreateModalActive, setIsCreateModalActive] = useState(false);
+  const [isConfirmModalActive, setIsConfirmModalActive] = useState(false);
 
   const dispatch = useAppDispatch();
   const { deleteTask } = TaskSlice.actions;
@@ -51,7 +53,7 @@ export const TasksColumn = ({ title, onClick }: ITasksColumn) => {
     <>
       <Card className="column">
         <IconButton
-          onClick={onClick}
+          onClick={() => setIsConfirmModalActive(true)}
           sx={{ position: 'absolute', top: '0', right: '0', padding: '2px' }}
         >
           <CancelIcon fontSize="small" />
@@ -114,7 +116,7 @@ export const TasksColumn = ({ title, onClick }: ITasksColumn) => {
           </Grid>
         </CardContent>
         <CardFooter>
-          <ButtonComponent type="button" onClick={() => setIsModalActive(true)}>
+          <ButtonComponent type="button" onClick={() => setIsCreateModalActive(true)}>
             <Box display="flex" alignItems="center" justifyContent="space-between">
               <IconButton>
                 <AddIcon fontSize="small" />
@@ -126,7 +128,14 @@ export const TasksColumn = ({ title, onClick }: ITasksColumn) => {
           </ButtonComponent>
         </CardFooter>
       </Card>
-      <CreateModal isActive={isModalActive} setActive={setIsModalActive} thing="Task" />
+      <CreateModal isActive={isCreateModalActive} setActive={setIsCreateModalActive} thing="Task" />
+      <ConfirmModal
+        active={isConfirmModalActive}
+        setActive={setIsConfirmModalActive}
+        confirmAction={() => (onClick ? onClick() : null)}
+      >
+        <div>Do you agree to delete this column?</div>
+      </ConfirmModal>
     </>
   );
 };
