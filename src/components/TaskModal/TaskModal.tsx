@@ -32,14 +32,26 @@ export const TaskModal = ({
 }: ITaskModal) => {
   const { id, title, done, files, order, userId, description } = card;
   const [isFocused, setIsFocused] = useState(false);
-  const [taskFiles, setTaskFiles] = useState<ITaskCardFiles[] | undefined>([]);
+  const [taskFiles, setTaskFiles] = useState<ITaskCardFiles[]>([]);
 
   useEffect(() => {
-    setTaskFiles(files);
+    if (files) {
+      setTaskFiles(files);
+    }
   }, []);
 
   const handleAddFile = (e: ChangeEvent<HTMLInputElement>) => {
-    // setTaskFiles({ fileName: '', fileSize: '' });
+    const files = e.target.files;
+    if (files) {
+      for (let i = 0; i < files?.length; i++) {
+        console.log(files[i].name);
+        setTaskFiles((taskFiles) => [
+          ...taskFiles,
+          { fileName: files[i].name, fileSize: files[i].size },
+        ]);
+        console.log(taskFiles);
+      }
+    }
   };
 
   return (
@@ -80,6 +92,12 @@ export const TaskModal = ({
         </Grid>
         <Grid container flexDirection="column" alignItems="flex-start">
           Files:
+          {taskFiles.map(({ fileName, fileSize }, i) => (
+            <div key={`${fileName} - ${fileSize} - ${i}`}>
+              <div>Name: {fileName}</div>
+              <div>Size: {fileSize}</div>
+            </div>
+          ))}
           <UploadButton onChange={handleAddFile} />
           <Typography>Add new file</Typography>
         </Grid>

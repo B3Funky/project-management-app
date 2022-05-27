@@ -9,7 +9,7 @@ export const UploadButton = ({ onChange }: IUploadButton) => {
   return (
     <Button variant="contained" component="label">
       Upload File
-      <input type="file" hidden onChange={onChange} />
+      <input multiple type="file" hidden onChange={onChange} />
     </Button>
   );
 };
