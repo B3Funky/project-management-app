@@ -34,6 +34,8 @@ export const CreateModal = ({ thing, isActive, setActive }: ICreateModal) => {
   const { addColumn } = ColumnSlice.actions;
   const { addTask } = TaskSlice.actions;
   useEffect(() => {
+    thing === 'Column' ? setDescription('empty') : null;
+
     title && description && !titleError && !descriptionError
       ? setIsFormDisabled(false)
       : setIsFormDisabled(true);
@@ -45,11 +47,11 @@ export const CreateModal = ({ thing, isActive, setActive }: ICreateModal) => {
 
   const handleSubmit = () => {
     if (thing === 'Board') {
-      dispatch(addBoard({ title: title, description: description, id: Date.now() }));
+      dispatch(addBoard({ title: title, description: description, id: String(Date.now()) }));
     } else if (thing === 'Column') {
-      dispatch(addColumn({ title: title, description: description, id: Date.now() }));
+      dispatch(addColumn({ title: title, id: String(Date.now()) }));
     } else if (thing === 'Task') {
-      dispatch(addTask({ title: title, description: description, id: Date.now() }));
+      dispatch(addTask({ title: title, description: description, id: String(Date.now()) }));
     }
 
     setActive(false);
@@ -76,21 +78,24 @@ export const CreateModal = ({ thing, isActive, setActive }: ICreateModal) => {
               }}
             />
           </Grid>
-          <Grid>
-            <Typography>Add {thing} Description</Typography>
-            <InputComponent
-              errorText={descriptionError}
-              onChange={(e) => {
-                setDescription(e.target.value);
-                isFieldValid({
-                  value: e.target.value,
-                  errorText: 'Field should be fill',
-                  method: setDescriptionError,
-                  regexp: IS_EMPTY_REGEXP,
-                });
-              }}
-            />
-          </Grid>
+          {thing !== 'Column' ? (
+            <Grid>
+              <Typography>Add {thing} Description</Typography>
+              <InputComponent
+                errorText={descriptionError}
+                onChange={(e) => {
+                  setDescription(e.target.value);
+                  isFieldValid({
+                    value: e.target.value,
+                    errorText: 'Field should be fill',
+                    method: setDescriptionError,
+                    regexp: IS_EMPTY_REGEXP,
+                  });
+                }}
+              />
+            </Grid>
+          ) : null}
+
           <ButtonComponent isDisabled={isFormDisabled} type="submit" variant="contained">
             <Typography>Create {thing}</Typography>
           </ButtonComponent>

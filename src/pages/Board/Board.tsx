@@ -24,11 +24,14 @@ export function Board() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getCurrentBoard(Number(id)));
+    if (id) {
+      dispatch(getCurrentBoard(id));
+    }
   }, []);
+
   const [isModalActive, setIsModalActive] = useState(false);
 
-  const deleteCurrentColumn = (id: number) => {
+  const deleteCurrentColumn = (id: string) => {
     dispatch(deleteColumn(id));
   };
 
@@ -39,14 +42,8 @@ export function Board() {
         <h1>Board Page</h1>
         <NavLink to={paths.main}>back to Main page</NavLink>
         <Grid container overflow="auto" flexWrap="nowrap" alignItems="flex-start" height="75%">
-          {taskColumns.map(({ description, id, title }) => (
-            <TasksColumn
-              title={title}
-              description={description}
-              id={id}
-              key={id}
-              onClick={() => deleteCurrentColumn(id)}
-            />
+          {taskColumns.map(({ id, title }) => (
+            <TasksColumn title={title} id={id} key={id} onClick={() => deleteCurrentColumn(id)} />
           ))}
           <ButtonComponent onClick={() => setIsModalActive(true)} sx={{ minWidth: '20vw' }}>
             <Typography>Add new table</Typography>

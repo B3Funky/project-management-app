@@ -16,7 +16,7 @@ export const ColumnSlice = createSlice({
     addColumn(state, action: PayloadAction<ITasksColumn>) {
       state.taskColumns.push(action.payload);
     },
-    deleteColumn(state, action: PayloadAction<number>) {
+    deleteColumn(state, action: PayloadAction<string>) {
       state.taskColumns = state.taskColumns.filter((column) => column.id !== action.payload);
     },
   },

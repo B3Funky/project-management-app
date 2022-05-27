@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Card, CardContent, IconButton, Typography } from '@mui/material';
+import { Card, CardContent, IconButton } from '@mui/material';
 import { Box } from '@mui/system';
 import CancelIcon from '@mui/icons-material/Cancel';
 import EditIcon from '@mui/icons-material/Edit';
@@ -10,16 +10,18 @@ import './task-card.css';
 
 export interface ITaskCard {
   title: string;
-  id: number;
+  id: string;
   description?: string;
   order?: number;
   done?: boolean;
   userId?: string;
+  boardId?: string;
+  columnId?: string;
   files?: ITaskCardFiles[];
-  deleteTask?: (id: number) => void;
+  deleteTask?: (id: string) => void;
 }
 
-interface ITaskCardFiles {
+export interface ITaskCardFiles {
   fileName?: string;
   fileSize?: number;
 }
@@ -52,7 +54,7 @@ export const TaskCard = ({
   const taskTitleRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    setTaskDescription(description);
+    setCurrentTaskDescriptionText(description);
     setTaskTitle(title);
   }, []);
 
@@ -92,10 +94,18 @@ export const TaskCard = ({
       onMouseMove={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onBlur={() => setIsHovered(false)}
-      sx={{ cursor: 'pointer' }}
+      sx={{
+        cursor: 'pointer',
+      }}
     >
       <Card
-        sx={{ width: '90%', overflow: 'visible', m: '10px 0px' }}
+        sx={{
+          width: '90%',
+          overflow: 'visible',
+          m: '10px 0px',
+          border: `${done ? '3px solid #34eb6e' : ''}`,
+          boxShadow: '0',
+        }}
         onClick={() => {
           !isTitleFocused ? (setIsTaskModalActive(true), handleTitleBlur()) : null;
         }}
@@ -109,9 +119,8 @@ export const TaskCard = ({
           }}
         >
           <TextAreaComponent
-            className="task-card__title"
+            className={`task-card__title ${isTitleFocused ? 'isFocused' : ''}`}
             value={taskTitle}
-            title={taskTitle}
             customRef={taskTitleRef}
             onChange={(e) => setTaskTitle(e.currentTarget.value)}
             onBlur={() => setIsTitleFocused(false)}
@@ -146,7 +155,7 @@ export const TaskCard = ({
         <div>Do you agree to delete this task?</div>
       </ConfirmModal>
       <TaskModal
-        card={{ id, title, done, files, order, userId }}
+        card={{ id, title, done, files, order, userId, description }}
         taskDescription={currentTaskDescriptionText}
         isActive={isTaskModalActive}
         setIsActive={setIsTaskModalActive}
