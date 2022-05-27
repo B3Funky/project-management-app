@@ -22,8 +22,8 @@ export interface ITasksColumn {
 
 export const TasksColumn = ({ title, onClick }: ITasksColumn) => {
   const [isFocused, setIsFocused] = useState(false);
-  const [currentTitle, setCurrentTitle] = useState<string | null>('');
-  const [changedText, setChangedText] = useState<string | null>('');
+  const [currentTitle, setCurrentTitle] = useState<string>('');
+  const [changedText, setChangedText] = useState<string>('');
   const [isCreateModalActive, setIsCreateModalActive] = useState(false);
   const [isConfirmModalActive, setIsConfirmModalActive] = useState(false);
 
@@ -32,6 +32,7 @@ export const TasksColumn = ({ title, onClick }: ITasksColumn) => {
   const { tasks } = useAppSelector((state) => state.TaskReducer);
 
   useEffect(() => {
+    setChangedText(title);
     setCurrentTitle(title);
   }, []);
 
@@ -87,8 +88,7 @@ export const TasksColumn = ({ title, onClick }: ITasksColumn) => {
           title={
             <>
               <TextAreaComponent
-                title={currentTitle || ''}
-                value={changedText || ''}
+                value={changedText}
                 className="column__title"
                 onFocus={() => setIsFocused(true)}
                 onChange={(e) => setChangedText(e.currentTarget.value)}
@@ -106,21 +106,14 @@ export const TasksColumn = ({ title, onClick }: ITasksColumn) => {
             flexWrap="nowrap"
           >
             {tasks.map(({ title, id }) => (
-              <TaskCard
-                key={Date.now() + title}
-                title={title}
-                deleteTask={() => deleteCurentTask(id)}
-                id={id}
-              />
+              <TaskCard key={id} title={title} deleteTask={() => deleteCurentTask(id)} id={id} />
             ))}
           </Grid>
         </CardContent>
         <CardFooter>
           <ButtonComponent type="button" onClick={() => setIsCreateModalActive(true)}>
             <Box display="flex" alignItems="center" justifyContent="space-between">
-              <IconButton>
-                <AddIcon fontSize="small" />
-              </IconButton>
+              <AddIcon fontSize="small" />
               <Typography fontSize="0.7rem" variant="body1">
                 Create task
               </Typography>

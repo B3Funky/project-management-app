@@ -109,9 +109,8 @@ export const TaskCard = ({
           }}
         >
           <TextAreaComponent
-            className="task-card__title"
+            className={`task-card__title ${isTitleFocused ? 'isFocused' : ''}`}
             value={taskTitle}
-            title={taskTitle}
             customRef={taskTitleRef}
             onChange={(e) => setTaskTitle(e.currentTarget.value)}
             onBlur={() => setIsTitleFocused(false)}

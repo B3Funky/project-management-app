@@ -5,4 +5,9 @@
   padding: 3px;
   cursor: pointer;
   min-height: 35px;
+  outline: none;
+}
+
+.isFocused {
+  outline: 2px solid black;
 }

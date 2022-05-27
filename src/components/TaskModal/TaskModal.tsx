@@ -36,7 +36,6 @@ export const TaskModal = ({
       <Card sx={{ height: '75vh', width: '50vw', p: '15px' }}>
         <TextAreaComponent
           className="task-modal__textarea task-modal__title"
-          title={taskTitle}
           value={taskTitle}
           onChange={(e) => setTitle(e.currentTarget.value)}
         />

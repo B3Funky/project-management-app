@@ -2,7 +2,6 @@ import React, { ChangeEvent } from 'react';
 import './text-area-component.css';
 
 interface ITextAreaComponent {
-  title?: string;
   value?: string;
   className?: string;
   placeholder?: string;
@@ -13,7 +12,6 @@ interface ITextAreaComponent {
 }
 
 export const TextAreaComponent = ({
-  title,
   value,
   className,
   placeholder,
@@ -29,7 +27,6 @@ export const TextAreaComponent = ({
 
   return (
     <textarea
-      defaultValue={title}
       className={className}
       onChange={(e) => {
         textAreaAdjust(e.target);
