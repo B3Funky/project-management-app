@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, IconButton, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+
 import { getRandomColor } from '../../utils/getRandomColor';
+import { IBoard } from '../../models/api';
+
 import './boardPreview.css';
 
-export interface IBoardPreview {
-  title?: string | null;
-  id: string;
-  description?: string | null;
+export interface IBoardPreview extends IBoard {
   handleDelete?: () => void;
   onClick?: () => void;
 }
