@@ -22,6 +22,7 @@ export function Main() {
   const [boards, setBoards] = useState<IBoard[]>([]);
   const [isBoardsLoad, setIsBoardsLoad] = useState<boolean>(false);
   const [isModalActive, setIsModalActive] = useState<boolean>(false);
+  const [refresh, setRefresh] = useState<string>('');
 
   const { taskBoards } = useAppSelector((state) => state.BoardReducer);
 
@@ -38,7 +39,7 @@ export function Main() {
 
   useEffect(() => {
     getBoards().then();
-  }, []);
+  }, [refresh]);
 
   return (
     <>
@@ -64,6 +65,7 @@ export function Main() {
                 title={title}
                 description={description}
                 onClick={() => navigate(`/board/${id}`)}
+                onDelete={setRefresh}
               />
             ))}
             <ButtonComponent
