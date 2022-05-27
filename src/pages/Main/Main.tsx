@@ -18,16 +18,22 @@ import './main.css';
 export function Main() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [isModalActive, setIsModalActive] = useState(false);
+
   const [boards, setBoards] = useState<IBoard[]>([]);
   const [isBoardsLoad, setIsBoardsLoad] = useState<boolean>(false);
+  const [isModalActive, setIsModalActive] = useState<boolean>(false);
 
   const { taskBoards } = useAppSelector((state) => state.BoardReducer);
 
   const getBoards = async () => {
-    const res: IBoard[] = await api.board.getAll();
-    setBoards(res);
-    setIsBoardsLoad(true);
+    let res: IBoard[];
+    try {
+      res = await api.board.getAll();
+      setBoards(res);
+      setIsBoardsLoad(true);
+    } catch (e) {
+      // TODO Error Modal
+    }
   };
 
   useEffect(() => {
