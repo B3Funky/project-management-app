@@ -34,6 +34,8 @@ export const CreateModal = ({ thing, isActive, setActive }: ICreateModal) => {
   const { addColumn } = ColumnSlice.actions;
   const { addTask } = TaskSlice.actions;
   useEffect(() => {
+    thing === 'Column' ? setDescription('empty') : null;
+
     title && description && !titleError && !descriptionError
       ? setIsFormDisabled(false)
       : setIsFormDisabled(true);
@@ -76,21 +78,24 @@ export const CreateModal = ({ thing, isActive, setActive }: ICreateModal) => {
               }}
             />
           </Grid>
-          <Grid>
-            <Typography>Add {thing} Description</Typography>
-            <InputComponent
-              errorText={descriptionError}
-              onChange={(e) => {
-                setDescription(e.target.value);
-                isFieldValid({
-                  value: e.target.value,
-                  errorText: 'Field should be fill',
-                  method: setDescriptionError,
-                  regexp: IS_EMPTY_REGEXP,
-                });
-              }}
-            />
-          </Grid>
+          {thing !== 'Column' ? (
+            <Grid>
+              <Typography>Add {thing} Description</Typography>
+              <InputComponent
+                errorText={descriptionError}
+                onChange={(e) => {
+                  setDescription(e.target.value);
+                  isFieldValid({
+                    value: e.target.value,
+                    errorText: 'Field should be fill',
+                    method: setDescriptionError,
+                    regexp: IS_EMPTY_REGEXP,
+                  });
+                }}
+              />
+            </Grid>
+          ) : null}
+
           <ButtonComponent isDisabled={isFormDisabled} type="submit" variant="contained">
             <Typography>Create {thing}</Typography>
           </ButtonComponent>
