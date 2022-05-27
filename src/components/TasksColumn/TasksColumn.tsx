@@ -16,11 +16,11 @@ import { ConfirmModal } from '../ConfirmModal';
 export interface ITasksColumn {
   title: string;
   onClick?: () => void;
-  id: number;
-  description: string;
+  id: string;
+  order?: number;
 }
 
-export const TasksColumn = ({ title, onClick }: ITasksColumn) => {
+export const TasksColumn = ({ title, onClick, order, id }: ITasksColumn) => {
   const [isFocused, setIsFocused] = useState(false);
   const [currentTitle, setCurrentTitle] = useState<string>('');
   const [changedText, setChangedText] = useState<string>('');
@@ -46,7 +46,7 @@ export const TasksColumn = ({ title, onClick }: ITasksColumn) => {
     setIsFocused(false);
   };
 
-  const deleteCurentTask = (id: number) => {
+  const deleteCurentTask = (id: string) => {
     dispatch(deleteTask(id));
   };
 
@@ -105,8 +105,14 @@ export const TasksColumn = ({ title, onClick }: ITasksColumn) => {
             flexDirection="column"
             flexWrap="nowrap"
           >
-            {tasks.map(({ title, id }) => (
-              <TaskCard key={id} title={title} deleteTask={() => deleteCurentTask(id)} id={id} />
+            {tasks.map(({ title, id, description }) => (
+              <TaskCard
+                key={id}
+                title={title}
+                deleteTask={() => deleteCurentTask(id)}
+                id={id}
+                description={description}
+              />
             ))}
           </Grid>
         </CardContent>

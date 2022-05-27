@@ -47,11 +47,11 @@ export const CreateModal = ({ thing, isActive, setActive }: ICreateModal) => {
 
   const handleSubmit = () => {
     if (thing === 'Board') {
-      dispatch(addBoard({ title: title, description: description, id: Date.now() }));
+      dispatch(addBoard({ title: title, description: description, id: String(Date.now()) }));
     } else if (thing === 'Column') {
-      dispatch(addColumn({ title: title, description: description, id: Date.now() }));
+      dispatch(addColumn({ title: title, id: String(Date.now()) }));
     } else if (thing === 'Task') {
-      dispatch(addTask({ title: title, description: description, id: Date.now() }));
+      dispatch(addTask({ title: title, description: description, id: String(Date.now()) }));
     }
 
     setActive(false);

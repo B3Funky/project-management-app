@@ -29,7 +29,7 @@ export const TaskModal = ({
   setTitle,
   taskTitle,
 }: ITaskModal) => {
-  const { id, title, done, files, order, userId } = card;
+  const { id, title, done, files, order, userId, description } = card;
   const [isFocused, setIsFocused] = useState(false);
   return (
     <ModalComponent active={isActive} setActive={setIsActive}>

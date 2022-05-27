@@ -7,7 +7,7 @@ import { ConfirmModal } from '../ConfirmModal';
 
 export interface IBoardPreview {
   title?: string;
-  id: number;
+  id: string;
   description?: string;
   handleDelete?: () => void;
   onClick?: () => void;

@@ -10,13 +10,13 @@ import './task-card.css';
 
 export interface ITaskCard {
   title: string;
-  id: number;
+  id: string;
   description?: string;
   order?: number;
   done?: boolean;
   userId?: string;
   files?: ITaskCardFiles[];
-  deleteTask?: (id: number) => void;
+  deleteTask?: (id: string) => void;
 }
 
 interface ITaskCardFiles {
@@ -52,7 +52,7 @@ export const TaskCard = ({
   const taskTitleRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    setTaskDescription(description);
+    setCurrentTaskDescriptionText(description);
     setTaskTitle(title);
   }, []);
 
@@ -145,7 +145,7 @@ export const TaskCard = ({
         <div>Do you agree to delete this task?</div>
       </ConfirmModal>
       <TaskModal
-        card={{ id, title, done, files, order, userId }}
+        card={{ id, title, done, files, order, userId, description }}
         taskDescription={currentTaskDescriptionText}
         isActive={isTaskModalActive}
         setIsActive={setIsTaskModalActive}
