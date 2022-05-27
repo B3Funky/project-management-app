@@ -82,7 +82,7 @@ class Users {
   }
 
   async getAll() {
-    return (await requestWrapper(this.axiosInstance.get('/users'))) as [IUser];
+    return (await requestWrapper(this.axiosInstance.get('/users'))) as IUser[];
   }
 
   async get(params: IUserId) {
@@ -115,7 +115,7 @@ class Boards {
   }
 
   async getAll() {
-    return (await requestWrapper(this.axiosInstance.get('/boards'))) as [IBoard];
+    return (await requestWrapper(this.axiosInstance.get('/boards'))) as IBoard[];
   }
 
   async create(data: IBoardData) {
@@ -159,9 +159,9 @@ class Columns {
   }
 
   async getAll(params: IBoardId) {
-    return (await requestWrapper(this.axiosInstance.get(`/boards/${params.boardId}/columns`))) as [
-      IColumn
-    ];
+    return (await requestWrapper(
+      this.axiosInstance.get(`/boards/${params.boardId}/columns`)
+    )) as IColumn[];
   }
 
   async create(params: IBoardId, data: IColumnData) {
@@ -215,7 +215,7 @@ class Tasks {
   async getAll(params: IColumnId) {
     return (await requestWrapper(
       this.axiosInstance.get(`/boards/${params.boardId}/columns/${params.columnId}/tasks`)
-    )) as [ITask];
+    )) as ITask[];
   }
 
   async create(params: IColumnId, data: ITaskData) {
@@ -271,13 +271,13 @@ class File {
     const formData = new FormData();
     formData.append('taskId', data.taskId);
     formData.append('file', data.file);
-    return await requestWrapper(
+    return (await requestWrapper(
       this.axiosInstance.post('/file', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       })
-    );
+    )) as 'File uploaded!';
   }
 
   async get(params: IFileParams) {
