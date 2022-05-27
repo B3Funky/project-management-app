@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Card, CardContent, IconButton, Typography } from '@mui/material';
+import { Card, CardContent, IconButton } from '@mui/material';
 import { Box } from '@mui/system';
 import CancelIcon from '@mui/icons-material/Cancel';
 import EditIcon from '@mui/icons-material/Edit';
@@ -15,6 +15,8 @@ export interface ITaskCard {
   order?: number;
   done?: boolean;
   userId?: string;
+  boardId?: string;
+  columnId?: string;
   files?: ITaskCardFiles[];
   deleteTask?: (id: string) => void;
 }
@@ -92,10 +94,18 @@ export const TaskCard = ({
       onMouseMove={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onBlur={() => setIsHovered(false)}
-      sx={{ cursor: 'pointer' }}
+      sx={{
+        cursor: 'pointer',
+      }}
     >
       <Card
-        sx={{ width: '90%', overflow: 'visible', m: '10px 0px' }}
+        sx={{
+          width: '90%',
+          overflow: 'visible',
+          m: '10px 0px',
+          border: `${done ? '3px solid #34eb6e' : ''}`,
+          boxShadow: '0',
+        }}
         onClick={() => {
           !isTitleFocused ? (setIsTaskModalActive(true), handleTitleBlur()) : null;
         }}

@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Grid, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 import { Header } from '../../components/Header';
-import { paths } from '../../routes/paths';
 
 import './main.css';
 import { BoardPreview } from '../../components/BoardPreview';
@@ -34,7 +33,6 @@ export function Main() {
         alignItems="center"
       >
         <h1>{t('welcome_to_react')}</h1>
-        <NavLink to={paths.board}>{t('to_board_page')}</NavLink>
         <Grid container justifyContent="flex-start" flexWrap="wrap" p="0px 25px">
           {taskBoards.map(({ title, description, id }) => (
             <BoardPreview
