@@ -11,7 +11,7 @@ export interface IBoard {
 }
 
 export interface IBoardById extends IBoard {
-  columns: [IColumnById];
+  columns: IColumnById[];
 }
 
 export interface IColumn {
@@ -25,7 +25,7 @@ export interface ITaskForColumnById extends Omit<ITask, 'columnId' | 'boardId'> 
 }
 
 export interface IColumnById extends IColumn {
-  tasks: [ITaskForColumnById];
+  tasks: ITaskForColumnById[];
 }
 
 export interface ITaskCreate {
@@ -42,7 +42,7 @@ export interface ITaskUpdate extends ITaskCreate {
 }
 
 export interface ITask extends ITaskUpdate {
-  files: [IFile];
+  files: IFile[];
 }
 
 export interface IFile {
