@@ -1,4 +1,4 @@
-import { isLoggedIn, setAuthTokens, clearAuthTokens, getAccessToken } from 'axios-jwt';
+import { setAuthTokens, clearAuthTokens } from 'axios-jwt';
 import { axiosInstance } from './api';
 
 export const signin = async (params: { login: string; password: string }) => {
@@ -19,4 +19,17 @@ export const signout = () => {
   localStorage.setItem('password', '');
 };
 
-// const accessToken = getAccessToken();
+const getUsers = async () => {
+  const response = await axiosInstance.get('/users');
+  return response?.data;
+};
+
+export const deleteUser = async () => {
+  const currentLogin = localStorage.getItem('login');
+  const users = await getUsers();
+  const currentUserId = users?.find((user: { login?: string }) => user?.login === currentLogin)?.id;
+  if (currentUserId) {
+    await axiosInstance.delete(`/users/${currentUserId}`);
+    signout();
+  }
+};

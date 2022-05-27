@@ -1,5 +1,3 @@
-// api.ts
-
 import { getAccessToken } from 'axios-jwt';
 import axios from 'axios';
 

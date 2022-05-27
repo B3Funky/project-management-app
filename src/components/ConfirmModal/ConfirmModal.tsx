@@ -6,11 +6,11 @@ import { ModalComponent } from '../Modal';
 interface IConfirmModal {
   active: boolean;
   setActive: (arg: boolean) => void;
-  title?: string;
   children: ReactElement | string;
+  confirmAction: () => void;
+  title?: string;
   confirmText?: string;
   cancelText?: string;
-  confirmAction: () => void;
 }
 
 const style = {
