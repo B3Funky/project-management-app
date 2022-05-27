@@ -63,7 +63,7 @@ export const CreateModal = ({ thing, isActive, setActive }: ICreateModal) => {
         // TODO Error Modal
       }
     } else if (thing === 'Column') {
-      dispatch(addColumn({ title: title, description: description, id: Date.now() }));
+      dispatch(addColumn({ order: 0, title: title, id: Date.now().toString() }));
     } else if (thing === 'Task') {
       dispatch(addTask({ title: title, description: description, id: Date.now() }));
     }

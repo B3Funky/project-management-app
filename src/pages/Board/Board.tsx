@@ -1,36 +1,52 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
-
-import { paths } from '../../routes/paths';
+import { Grid, Typography } from '@mui/material';
 
 import { Header } from '../../components/Header';
-
-import './board.css';
+import { Spinner } from '../../components/Spinner';
 import { TasksColumn } from '../../components/TasksColumn';
-import { Grid, Typography } from '@mui/material';
 import { ButtonComponent } from '../../components/Button';
-
+import { CreateModal } from '../../components/CreateModal';
+import api from '../../utils/ApiBackend';
 import { useAppDispatch, useAppSelector } from '../../redux-hooks';
 import { BoardSlice } from '../../store/reducers/BoardReducer';
-import { CreateModal } from '../../components/CreateModal';
 import { ColumnSlice } from '../../store/reducers/ColumnReducer';
+import { paths } from '../../routes/paths';
+import { IColumn } from '../../models/api';
+
+import './board.css';
 
 export function Board() {
-  const { id } = useParams();
-  const { taskColumns } = useAppSelector((state) => state.ColumnReducer);
-  const { getCurrentBoard } = BoardSlice.actions;
-  const { deleteColumn } = ColumnSlice.actions;
-
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(getCurrentBoard(String(id)));
-  }, []);
+  const [columns, setColumns] = useState<IColumn[]>([]);
+  const [isColumnsLoad, setIsColumnsLoad] = useState<boolean>(false);
   const [isModalActive, setIsModalActive] = useState(false);
 
-  const deleteCurrentColumn = (id: number) => {
+  const { id } = useParams();
+
+  const dispatch = useAppDispatch();
+  const { getCurrentBoard } = BoardSlice.actions;
+  const { deleteColumn } = ColumnSlice.actions;
+  const { taskColumns } = useAppSelector((state) => state.ColumnReducer);
+
+  const getColumns = async () => {
+    let res: IColumn[];
+    try {
+      res = await api.column.getAll({ boardId: id as string });
+      setColumns(res);
+      setIsColumnsLoad(true);
+    } catch (e) {
+      // TODO Error Modal
+    }
+  };
+
+  const deleteCurrentColumn = (id: string) => {
     dispatch(deleteColumn(id));
   };
+
+  useEffect(() => {
+    getColumns().then();
+    dispatch(getCurrentBoard(String(id)));
+  }, []);
 
   return (
     <>
@@ -38,20 +54,24 @@ export function Board() {
       <main className={'board-main'}>
         <h1>Board Page</h1>
         <NavLink to={paths.main}>back to Main page</NavLink>
-        <Grid container overflow="auto" flexWrap="nowrap" alignItems="flex-start" height="75%">
-          {taskColumns.map(({ description, id, title }) => (
-            <TasksColumn
-              title={title}
-              description={description}
-              id={id}
-              key={id}
-              onClick={() => deleteCurrentColumn(id)}
-            />
-          ))}
-          <ButtonComponent onClick={() => setIsModalActive(true)} sx={{ minWidth: '20vw' }}>
-            <Typography>Add new table</Typography>
-          </ButtonComponent>
-        </Grid>
+        {!isColumnsLoad ? (
+          <Spinner />
+        ) : (
+          <Grid container overflow="auto" flexWrap="nowrap" alignItems="flex-start" height="75%">
+            {columns.map(({ id, title, order }) => (
+              <TasksColumn
+                id={id}
+                key={id}
+                title={title}
+                order={order}
+                onClick={() => deleteCurrentColumn(id)}
+              />
+            ))}
+            <ButtonComponent onClick={() => setIsModalActive(true)} sx={{ minWidth: '20vw' }}>
+              <Typography>Add new table</Typography>
+            </ButtonComponent>
+          </Grid>
+        )}
       </main>
       <CreateModal isActive={isModalActive} setActive={setIsModalActive} thing="Column" />
     </>

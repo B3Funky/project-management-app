@@ -12,12 +12,10 @@ import { useAppDispatch, useAppSelector } from '../../redux-hooks';
 import { TaskSlice } from '../../store/reducers/TaskReducer';
 import { CreateModal } from '../CreateModal';
 import { ConfirmModal } from '../ConfirmModal';
+import { IColumn } from '../../models/api';
 
-export interface ITasksColumn {
-  title: string;
+export interface ITasksColumn extends IColumn {
   onClick?: () => void;
-  id: number;
-  description: string;
 }
 
 export const TasksColumn = ({ title, onClick }: ITasksColumn) => {
