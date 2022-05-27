@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Grid, Typography } from '@mui/material';
+
 import { ModalComponent } from '../Modal';
 import { InputComponent } from '../Input';
-import { IS_EMPTY_REGEXP } from '../../constants';
 import { ButtonComponent } from '../Button';
-import { Grid, Typography } from '@mui/material';
 import { useAppDispatch } from '../../redux-hooks';
+import api from '../../utils/ApiBackend';
 import { BoardSlice } from '../../store/reducers/BoardReducer';
 import { ColumnSlice } from '../../store/reducers/ColumnReducer';
 import { TaskSlice } from '../../store/reducers/TaskReducer';
+import { IS_EMPTY_REGEXP } from '../../constants';
+import { IBoard } from '../../models/api';
 
 interface IFieldValidMethod {
   value: string;
@@ -29,10 +33,12 @@ export const CreateModal = ({ thing, isActive, setActive }: ICreateModal) => {
   const [descriptionError, setDescriptionError] = useState('');
   const [isFormDisabled, setIsFormDisabled] = useState(true);
 
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { addBoard } = BoardSlice.actions;
   const { addColumn } = ColumnSlice.actions;
   const { addTask } = TaskSlice.actions;
+
   useEffect(() => {
     title && description && !titleError && !descriptionError
       ? setIsFormDisabled(false)
@@ -43,9 +49,19 @@ export const CreateModal = ({ thing, isActive, setActive }: ICreateModal) => {
     regexp?.test(value) ? method(errorText) : method('');
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
     if (thing === 'Board') {
-      dispatch(addBoard({ title: title, description: description, id: Date.now().toString() }));
+      let board: IBoard;
+      try {
+        board = await api.board.create({ title: title, description: description });
+        dispatch(addBoard({ ...board }));
+        // TODO Maybe not good decision
+        navigate(`/board/${board.id}`);
+      } catch (e) {
+        // TODO Error Modal
+      }
     } else if (thing === 'Column') {
       dispatch(addColumn({ title: title, description: description, id: Date.now() }));
     } else if (thing === 'Task') {
