@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { Card, Grid, Typography } from '@mui/material';
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import { Button, Card, Grid, Typography } from '@mui/material';
 import { ModalComponent } from '../Modal';
-import { ITaskCard } from '../TaskCard/TaskCard';
+import { ITaskCard, ITaskCardFiles } from '../TaskCard/TaskCard';
 import { TextAreaComponent } from '../TextAreaComponent';
 import './task-modal.css';
 import { ButtonComponent } from '../Button';
+import { UploadButton } from '../UploadButton';
 
 interface ITaskModal {
   card: ITaskCard;
@@ -31,6 +32,16 @@ export const TaskModal = ({
 }: ITaskModal) => {
   const { id, title, done, files, order, userId, description } = card;
   const [isFocused, setIsFocused] = useState(false);
+  const [taskFiles, setTaskFiles] = useState<ITaskCardFiles[] | undefined>([]);
+
+  useEffect(() => {
+    setTaskFiles(files);
+  }, []);
+
+  const handleAddFile = (e: ChangeEvent<HTMLInputElement>) => {
+    // setTaskFiles({ fileName: '', fileSize: '' });
+  };
+
   return (
     <ModalComponent active={isActive} setActive={setIsActive}>
       <Card sx={{ height: '75vh', width: '50vw', p: '15px' }}>
@@ -66,6 +77,11 @@ export const TaskModal = ({
               <Typography>Cancel</Typography>
             </ButtonComponent>
           </Grid>
+        </Grid>
+        <Grid container flexDirection="column" alignItems="flex-start">
+          Files:
+          <UploadButton onChange={handleAddFile} />
+          <Typography>Add new file</Typography>
         </Grid>
       </Card>
     </ModalComponent>

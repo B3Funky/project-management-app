@@ -21,7 +21,7 @@ export interface ITaskCard {
   deleteTask?: (id: string) => void;
 }
 
-interface ITaskCardFiles {
+export interface ITaskCardFiles {
   fileName?: string;
   fileSize?: number;
 }
