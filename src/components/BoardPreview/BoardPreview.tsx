@@ -6,7 +6,7 @@ import './boardPreview.css';
 
 export interface IBoardPreview {
   title?: string | null;
-  id: number;
+  id: string;
   description?: string | null;
   handleDelete?: () => void;
   onClick?: () => void;

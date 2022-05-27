@@ -8,14 +8,14 @@ interface IBoardData {
 
 const initialState: IBoardData = {
   taskBoards: [],
-  currentBoard: { id: 0, description: '', title: '' },
+  currentBoard: { id: '0', description: '', title: '' },
 };
 
 export const BoardSlice = createSlice({
   name: 'board',
   initialState,
   reducers: {
-    getCurrentBoard(state, action: PayloadAction<number>) {
+    getCurrentBoard(state, action: PayloadAction<string>) {
       state.currentBoard = state.taskBoards.filter((board) => board.id === action.payload)[0];
     },
     addBoard(state, action: PayloadAction<IBoardPreview>) {

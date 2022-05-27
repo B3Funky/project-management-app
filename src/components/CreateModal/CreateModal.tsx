@@ -45,7 +45,7 @@ export const CreateModal = ({ thing, isActive, setActive }: ICreateModal) => {
 
   const handleSubmit = () => {
     if (thing === 'Board') {
-      dispatch(addBoard({ title: title, description: description, id: Date.now() }));
+      dispatch(addBoard({ title: title, description: description, id: Date.now().toString() }));
     } else if (thing === 'Column') {
       dispatch(addColumn({ title: title, description: description, id: Date.now() }));
     } else if (thing === 'Task') {

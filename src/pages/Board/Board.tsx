@@ -24,7 +24,7 @@ export function Board() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getCurrentBoard(Number(id)));
+    dispatch(getCurrentBoard(String(id)));
   }, []);
   const [isModalActive, setIsModalActive] = useState(false);
 
