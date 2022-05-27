@@ -10,7 +10,8 @@ import './main.css';
 import { BoardPreview } from '../../components/BoardPreview';
 import { ButtonComponent } from '../../components/Button';
 import { CreateModal } from '../../components/CreateModal';
-import { useAppSelector } from '../../redux-hooks';
+import { useAppDispatch, useAppSelector } from '../../redux-hooks';
+import { BoardSlice } from '../../store/reducers/BoardReducer';
 
 export function Main() {
   const { t } = useTranslation();
@@ -18,6 +19,8 @@ export function Main() {
   const [isModalActive, setIsModalActive] = useState(false);
 
   const { taskBoards } = useAppSelector((state) => state.BoardReducer);
+  const { deleteBoard } = BoardSlice.actions;
+  const dispatch = useAppDispatch();
 
   return (
     <>
@@ -40,6 +43,7 @@ export function Main() {
               title={title}
               description={description}
               onClick={() => navigate(`/board/${id}`)}
+              handleDelete={() => dispatch(deleteBoard(id))}
             />
           ))}
           <ButtonComponent

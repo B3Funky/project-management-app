@@ -21,6 +21,9 @@ export const BoardSlice = createSlice({
     addBoard(state, action: PayloadAction<IBoardPreview>) {
       state.taskBoards.push(action.payload);
     },
+    deleteBoard(state, action: PayloadAction<number>) {
+      state.taskBoards = state.taskBoards.filter((board) => board.id !== action.payload);
+    },
   },
 });
 

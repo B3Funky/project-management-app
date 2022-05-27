@@ -5,9 +5,9 @@ import { getRandomColor } from '../../utils/getRandomColor';
 import './boardPreview.css';
 
 export interface IBoardPreview {
-  title?: string | null;
+  title?: string;
   id: number;
-  description?: string | null;
+  description?: string;
   handleDelete?: () => void;
   onClick?: () => void;
 }
@@ -15,6 +15,7 @@ export interface IBoardPreview {
 export const BoardPreview = ({ title, description, handleDelete, onClick }: IBoardPreview) => {
   const [isHovered, setIsHovered] = useState(false);
   const [background, setBackground] = useState('');
+  const [isCancelHovered, setIsCancelHovered] = useState(false);
 
   useEffect(() => {
     setBackground(getRandomColor());
@@ -33,7 +34,7 @@ export const BoardPreview = ({ title, description, handleDelete, onClick }: IBoa
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={onClick}
+      onClick={() => (!isCancelHovered && onClick ? onClick() : null)}
     >
       <CardHeader
         title={title}
@@ -50,6 +51,8 @@ export const BoardPreview = ({ title, description, handleDelete, onClick }: IBoa
       </CardContent>
       <IconButton
         onClick={handleDelete}
+        onMouseEnter={() => setIsCancelHovered(true)}
+        onMouseLeave={() => setIsCancelHovered(false)}
         style={{
           position: 'absolute',
           top: 0,
