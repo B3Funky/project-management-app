@@ -31,8 +31,8 @@ export function Main() {
 
   const getBoards = async () => {
     try {
-      const res: IBoard[] = await api.board.getAll();
-      setBoards(res);
+      const boards: IBoard[] = await api.board.getAll();
+      setBoards(boards);
       setIsBoardsLoad(true);
     } catch (e) {
       // TODO Error Modal

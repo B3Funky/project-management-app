@@ -30,8 +30,8 @@ export function Board() {
 
   const getColumns = async () => {
     try {
-      const res: IColumn[] = await api.column.getAll({ boardId: id as string });
-      setColumns(res);
+      const columns: IColumn[] = await api.column.getAll({ boardId: id as string });
+      setColumns(columns);
       setIsColumnsLoad(true);
     } catch (e) {
       // TODO Error Modal

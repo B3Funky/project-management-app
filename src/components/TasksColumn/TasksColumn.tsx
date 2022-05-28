@@ -54,11 +54,11 @@ export const TasksColumn = ({ id, title, order, onClick }: ITasksColumn) => {
 
   const updateColumn = async (title: string, order: number) => {
     try {
-      const res: IColumn = await api.column.update(
+      const updatedColumn: IColumn = await api.column.update(
         { boardId: boardId as string, columnId: id },
         { title: title, order: order }
       );
-      setColumnOrder(res.order);
+      setColumnOrder(updatedColumn.order);
     } catch (e) {
       // TODO Error Modal
     }
