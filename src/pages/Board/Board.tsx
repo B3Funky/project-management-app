@@ -76,15 +76,17 @@ export function Board() {
           <Spinner />
         ) : (
           <Grid container overflow="auto" flexWrap="nowrap" alignItems="flex-start" height="75%">
-            {columns.map(({ id, title, order }) => (
-              <TasksColumn
-                id={id}
-                key={id}
-                title={title}
-                order={order}
-                onClick={() => deleteCurrentColumn(id)}
-              />
-            ))}
+            {columns
+              .sort((a, b) => a.order - b.order)
+              .map(({ id, title, order }) => (
+                <TasksColumn
+                  id={id}
+                  key={id}
+                  title={title}
+                  order={order}
+                  onClick={() => deleteCurrentColumn(id)}
+                />
+              ))}
             <ButtonComponent onClick={() => setIsModalActive(true)} sx={{ minWidth: '20vw' }}>
               <Typography>Add new table</Typography>
             </ButtonComponent>
