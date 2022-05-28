@@ -12,7 +12,7 @@ import { ColumnSlice } from '../../store/reducers/ColumnReducer';
 import { TaskSlice } from '../../store/reducers/TaskReducer';
 import { IS_EMPTY_REGEXP } from '../../constants';
 import { paths } from '../../routes/paths';
-import { IBoard, IColumn } from '../../models/api';
+import { IBoard, IColumn, ITaskCreate } from '../../models/api';
 
 interface IFieldValidMethod {
   value: string;
@@ -25,7 +25,8 @@ interface ICreateModal {
   thing: string;
   isActive: boolean;
   setActive: React.Dispatch<React.SetStateAction<boolean>>;
-  onUpdateParentComponent?(data: IColumn): void;
+  onUpdateParentComponent?(data: IColumn | ITaskCreate): void;
+  columnId?: string;
 }
 
 export const CreateModal = ({
@@ -33,6 +34,7 @@ export const CreateModal = ({
   isActive,
   setActive,
   onUpdateParentComponent,
+  columnId,
 }: ICreateModal) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -91,7 +93,21 @@ export const CreateModal = ({
         // TODO Error Modal
       }
     } else if (thing === 'Task') {
-      dispatch(addTask({ title: title, description: description, id: String(Date.now()) }));
+      try {
+        const userId = localStorage.getItem('userId'); // TODO if null?
+        const task: ITaskCreate = await api.task.create(
+          { boardId: id as string, columnId: columnId as string },
+          { title: title, description: description, userId: userId as string }
+        );
+
+        dispatch(addTask({ ...task }));
+
+        if (onUpdateParentComponent) {
+          onUpdateParentComponent(task);
+        }
+      } catch (e) {
+        // TODO Error Modal
+      }
     }
 
     setActive(false);

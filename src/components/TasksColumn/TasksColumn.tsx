@@ -15,7 +15,7 @@ import { ConfirmModal } from '../ConfirmModal';
 import api from '../../utils/ApiBackend';
 import { useAppDispatch, useAppSelector } from '../../redux-hooks';
 import { TaskSlice } from '../../store/reducers/TaskReducer';
-import { IColumn, ITask } from '../../models/api';
+import { IColumn, ITask, ITaskCreate } from '../../models/api';
 
 import './tasks-column.css';
 
@@ -73,6 +73,22 @@ export const TasksColumn = ({ id, title, order, onClick }: ITasksColumn) => {
       const tasks: ITask[] = await api.task.getAll({ boardId: boardId as string, columnId: id });
       setTasks(tasks);
       setIsTasksLoad(true);
+    } catch (e) {
+      // TODO Error Modal
+    }
+  };
+
+  const handleCreateTask = async (data: ITaskCreate) => {
+    try {
+      const newTask: ITask = await api.task.get({
+        boardId: boardId as string,
+        columnId: id,
+        taskId: data.id,
+      });
+
+      const updatedTasks = tasks.slice();
+      updatedTasks.push(newTask);
+      setTasks(updatedTasks);
     } catch (e) {
       // TODO Error Modal
     }
@@ -165,7 +181,13 @@ export const TasksColumn = ({ id, title, order, onClick }: ITasksColumn) => {
           </ButtonComponent>
         </CardFooter>
       </Card>
-      <CreateModal isActive={isCreateModalActive} setActive={setIsCreateModalActive} thing="Task" />
+      <CreateModal
+        isActive={isCreateModalActive}
+        setActive={setIsCreateModalActive}
+        thing="Task"
+        columnId={id}
+        onUpdateParentComponent={handleCreateTask}
+      />
       <ConfirmModal
         active={isConfirmModalActive}
         setActive={setIsConfirmModalActive}
