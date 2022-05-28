@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Card, CardContent, CardHeader, Grid, IconButton, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { ButtonComponent } from '../Button';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckIcon from '@mui/icons-material/Check';
-import './tasks-column.css';
-import { CardFooter } from '../TaskColumnFooter';
+
+import { ButtonComponent } from '../Button';
 import { TextAreaComponent } from '../TextAreaComponent';
 import { TaskCard } from '../TaskCard';
-import { useAppDispatch, useAppSelector } from '../../redux-hooks';
-import { TaskSlice } from '../../store/reducers/TaskReducer';
+import { CardFooter } from '../TaskColumnFooter';
 import { CreateModal } from '../CreateModal';
 import { ConfirmModal } from '../ConfirmModal';
+import { useAppDispatch, useAppSelector } from '../../redux-hooks';
+import { TaskSlice } from '../../store/reducers/TaskReducer';
+import { IColumn } from '../../models/api';
 
-export interface ITasksColumn {
-  title: string;
+import './tasks-column.css';
+
+export interface ITasksColumn extends IColumn {
   onClick?: () => void;
-  id: string;
-  order?: number;
 }
 
-export const TasksColumn = ({ title, onClick, order, id }: ITasksColumn) => {
+export const TasksColumn = ({ id, title, order, onClick }: ITasksColumn) => {
   const [isFocused, setIsFocused] = useState(false);
   const [currentTitle, setCurrentTitle] = useState<string>('');
   const [changedText, setChangedText] = useState<string>('');

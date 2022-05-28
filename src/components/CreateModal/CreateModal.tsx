@@ -30,6 +30,7 @@ interface ICreateModal {
 export const CreateModal = ({ thing, isActive, setActive }: ICreateModal) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [order] = useState(0);
   const [titleError, setTitleError] = useState('');
   const [descriptionError, setDescriptionError] = useState('');
   const [isFormDisabled, setIsFormDisabled] = useState(true);
@@ -65,7 +66,7 @@ export const CreateModal = ({ thing, isActive, setActive }: ICreateModal) => {
         // TODO Error Modal
       }
     } else if (thing === 'Column') {
-      dispatch(addColumn({ title: title, id: String(Date.now()) }));
+      dispatch(addColumn({ title: title, order: order, id: String(Date.now()) }));
     } else if (thing === 'Task') {
       dispatch(addTask({ title: title, description: description, id: String(Date.now()) }));
     }
