@@ -13,10 +13,10 @@ interface ITaskModal {
   taskTitle?: string;
   isActive: boolean;
   setIsActive: (arg: boolean) => void;
-  setDescription: (descr: string) => void;
+  setDescription: (description: string) => void;
   saveDescription: () => void;
   cancelDescription: () => void;
-  setTitle: (descr: string) => void;
+  setTitle: (description: string) => void;
 }
 
 export const TaskModal = ({
@@ -30,7 +30,7 @@ export const TaskModal = ({
   setTitle,
   taskTitle,
 }: ITaskModal) => {
-  const { id, title, done, files, order, userId, description } = card;
+  const { id, title, files, order, userId, description } = card;
   const [isFocused, setIsFocused] = useState(false);
   const [taskFiles, setTaskFiles] = useState<ITaskCardFiles[]>([]);
 
