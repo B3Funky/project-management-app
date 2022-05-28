@@ -10,22 +10,27 @@ import { TaskCard } from '../TaskCard';
 import { CardFooter } from '../TaskColumnFooter';
 import { CreateModal } from '../CreateModal';
 import { ConfirmModal } from '../ConfirmModal';
+import api from '../../utils/ApiBackend';
 import { useAppDispatch, useAppSelector } from '../../redux-hooks';
 import { TaskSlice } from '../../store/reducers/TaskReducer';
 import { IColumn } from '../../models/api';
 
 import './tasks-column.css';
+import { useParams } from 'react-router-dom';
 
 export interface ITasksColumn extends IColumn {
   onClick?: () => void;
 }
 
 export const TasksColumn = ({ id, title, order, onClick }: ITasksColumn) => {
+  const [columnOrder, setColumnOrder] = useState<number>(order);
   const [isFocused, setIsFocused] = useState(false);
   const [currentTitle, setCurrentTitle] = useState<string>('');
   const [changedText, setChangedText] = useState<string>('');
   const [isCreateModalActive, setIsCreateModalActive] = useState(false);
   const [isConfirmModalActive, setIsConfirmModalActive] = useState(false);
+
+  const { id: boardId } = useParams();
 
   const dispatch = useAppDispatch();
   const { deleteTask } = TaskSlice.actions;
@@ -38,6 +43,7 @@ export const TasksColumn = ({ id, title, order, onClick }: ITasksColumn) => {
 
   const submitTitle = () => {
     setCurrentTitle(changedText);
+    updateColumn(changedText, columnOrder).then();
     setIsFocused(false);
   };
 
@@ -46,7 +52,19 @@ export const TasksColumn = ({ id, title, order, onClick }: ITasksColumn) => {
     setIsFocused(false);
   };
 
-  const deleteCurentTask = (id: string) => {
+  const updateColumn = async (title: string, order: number) => {
+    try {
+      const res: IColumn = await api.column.update(
+        { boardId: boardId as string, columnId: id },
+        { title: title, order: order }
+      );
+      setColumnOrder(res.order);
+    } catch (e) {
+      // TODO Error Modal
+    }
+  };
+
+  const deleteCurrentTask = (id: string) => {
     dispatch(deleteTask(id));
   };
 
@@ -109,7 +127,7 @@ export const TasksColumn = ({ id, title, order, onClick }: ITasksColumn) => {
               <TaskCard
                 key={id}
                 title={title}
-                deleteTask={() => deleteCurentTask(id)}
+                deleteTask={() => deleteCurrentTask(id)}
                 id={id}
                 description={description}
               />
