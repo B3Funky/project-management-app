@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { Box, Card, CardContent, CardHeader, Grid, IconButton, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -6,6 +7,7 @@ import CheckIcon from '@mui/icons-material/Check';
 
 import { ButtonComponent } from '../Button';
 import { TextAreaComponent } from '../TextAreaComponent';
+import { Spinner } from '../Spinner';
 import { TaskCard } from '../TaskCard';
 import { CardFooter } from '../TaskColumnFooter';
 import { CreateModal } from '../CreateModal';
@@ -13,10 +15,9 @@ import { ConfirmModal } from '../ConfirmModal';
 import api from '../../utils/ApiBackend';
 import { useAppDispatch, useAppSelector } from '../../redux-hooks';
 import { TaskSlice } from '../../store/reducers/TaskReducer';
-import { IColumn } from '../../models/api';
+import { IColumn, ITask } from '../../models/api';
 
 import './tasks-column.css';
-import { useParams } from 'react-router-dom';
 
 export interface ITasksColumn extends IColumn {
   onClick?: () => void;
@@ -24,6 +25,8 @@ export interface ITasksColumn extends IColumn {
 
 export const TasksColumn = ({ id, title, order, onClick }: ITasksColumn) => {
   const [columnOrder, setColumnOrder] = useState<number>(order);
+  const [tasks, setTasks] = useState<ITask[]>([]);
+  const [isTasksLoad, setIsTasksLoad] = useState<boolean>(false);
   const [isFocused, setIsFocused] = useState(false);
   const [currentTitle, setCurrentTitle] = useState<string>('');
   const [changedText, setChangedText] = useState<string>('');
@@ -34,11 +37,12 @@ export const TasksColumn = ({ id, title, order, onClick }: ITasksColumn) => {
 
   const dispatch = useAppDispatch();
   const { deleteTask } = TaskSlice.actions;
-  const { tasks } = useAppSelector((state) => state.TaskReducer);
+  const { tasks: taskTasks } = useAppSelector((state) => state.TaskReducer);
 
   useEffect(() => {
     setChangedText(title);
     setCurrentTitle(title);
+    getTasks().then();
   }, []);
 
   const submitTitle = () => {
@@ -59,6 +63,16 @@ export const TasksColumn = ({ id, title, order, onClick }: ITasksColumn) => {
         { title: title, order: order }
       );
       setColumnOrder(updatedColumn.order);
+    } catch (e) {
+      // TODO Error Modal
+    }
+  };
+
+  const getTasks = async () => {
+    try {
+      const tasks: ITask[] = await api.task.getAll({ boardId: boardId as string, columnId: id });
+      setTasks(tasks);
+      setIsTasksLoad(true);
     } catch (e) {
       // TODO Error Modal
     }
@@ -115,24 +129,30 @@ export const TasksColumn = ({ id, title, order, onClick }: ITasksColumn) => {
           }
         />
         <CardContent sx={{ p: 0, '&:last-child': { pb: 0 }, height: '84%' }}>
-          <Grid
-            container
-            height="100%"
-            overflow="auto"
-            alignItems="center"
-            flexDirection="column"
-            flexWrap="nowrap"
-          >
-            {tasks.map(({ title, id, description }) => (
-              <TaskCard
-                key={id}
-                title={title}
-                deleteTask={() => deleteCurrentTask(id)}
-                id={id}
-                description={description}
-              />
-            ))}
-          </Grid>
+          {!isTasksLoad ? (
+            <Spinner />
+          ) : (
+            <Grid
+              container
+              height="100%"
+              overflow="auto"
+              alignItems="center"
+              flexDirection="column"
+              flexWrap="nowrap"
+            >
+              {tasks
+                .sort((a, b) => a.order - b.order)
+                .map(({ title, id, description }) => (
+                  <TaskCard
+                    key={id}
+                    title={title}
+                    deleteTask={() => deleteCurrentTask(id)}
+                    id={id}
+                    description={description}
+                  />
+                ))}
+            </Grid>
+          )}
         </CardContent>
         <CardFooter>
           <ButtonComponent type="button" onClick={() => setIsCreateModalActive(true)}>
