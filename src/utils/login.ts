@@ -17,6 +17,7 @@ export const signout = () => {
   clearAuthTokens();
   localStorage.setItem('login', '');
   localStorage.setItem('password', '');
+  localStorage.removeItem('userId');
 };
 
 const getUsers = async () => {

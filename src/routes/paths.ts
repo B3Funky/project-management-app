@@ -4,6 +4,7 @@ export const paths = {
   signUp: '/signup',
   main: '/main',
   board: '/board/:id',
+  boardForId: '/board/',
   profile: '/profile',
   notFound: '/*',
 };

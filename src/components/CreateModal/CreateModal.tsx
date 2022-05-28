@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Grid, Typography } from '@mui/material';
+
 import { ModalComponent } from '../Modal';
 import { InputComponent } from '../Input';
-import { IS_EMPTY_REGEXP } from '../../constants';
 import { ButtonComponent } from '../Button';
-import { Grid, Typography } from '@mui/material';
 import { useAppDispatch } from '../../redux-hooks';
+import api from '../../utils/ApiBackend';
 import { BoardSlice } from '../../store/reducers/BoardReducer';
 import { ColumnSlice } from '../../store/reducers/ColumnReducer';
 import { TaskSlice } from '../../store/reducers/TaskReducer';
+import { IS_EMPTY_REGEXP } from '../../constants';
+import { paths } from '../../routes/paths';
+import { IBoard, IColumn, ITaskCreate } from '../../models/api';
 
 interface IFieldValidMethod {
   value: string;
@@ -20,19 +25,32 @@ interface ICreateModal {
   thing: string;
   isActive: boolean;
   setActive: React.Dispatch<React.SetStateAction<boolean>>;
+  onCreateCallback?(data: IColumn | ITaskCreate): void;
+  columnId?: string;
 }
 
-export const CreateModal = ({ thing, isActive, setActive }: ICreateModal) => {
+export const CreateModal = ({
+  thing,
+  isActive,
+  setActive,
+  onCreateCallback,
+  columnId,
+}: ICreateModal) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [order] = useState(0);
   const [titleError, setTitleError] = useState('');
   const [descriptionError, setDescriptionError] = useState('');
   const [isFormDisabled, setIsFormDisabled] = useState(true);
+
+  const { id } = useParams();
+  const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
   const { addBoard } = BoardSlice.actions;
   const { addColumn } = ColumnSlice.actions;
   const { addTask } = TaskSlice.actions;
+
   useEffect(() => {
     thing === 'Column' ? setDescription('empty') : null;
 
@@ -45,13 +63,51 @@ export const CreateModal = ({ thing, isActive, setActive }: ICreateModal) => {
     regexp?.test(value) ? method(errorText) : method('');
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
     if (thing === 'Board') {
-      dispatch(addBoard({ title: title, description: description, id: String(Date.now()) }));
+      try {
+        const board: IBoard = await api.board.create({ title: title, description: description });
+
+        dispatch(addBoard({ ...board }));
+
+        // TODO Maybe not good solution
+        navigate(`${paths.boardForId}${board.id}`);
+      } catch (e) {
+        // TODO Error Modal
+      }
     } else if (thing === 'Column') {
-      dispatch(addColumn({ title: title, id: String(Date.now()) }));
+      try {
+        const column: IColumn = await api.column.create(
+          { boardId: id as string },
+          { title: title }
+        );
+
+        dispatch(addColumn({ ...column }));
+
+        if (onCreateCallback) {
+          onCreateCallback(column);
+        }
+      } catch (e) {
+        // TODO Error Modal
+      }
     } else if (thing === 'Task') {
-      dispatch(addTask({ title: title, description: description, id: String(Date.now()) }));
+      try {
+        const userId = localStorage.getItem('userId'); // TODO if null?
+        const task: ITaskCreate = await api.task.create(
+          { boardId: id as string, columnId: columnId as string },
+          { title: title, description: description, userId: userId as string }
+        );
+
+        dispatch(addTask({ ...task }));
+
+        if (onCreateCallback) {
+          onCreateCallback(task);
+        }
+      } catch (e) {
+        // TODO Error Modal
+      }
     }
 
     setActive(false);
