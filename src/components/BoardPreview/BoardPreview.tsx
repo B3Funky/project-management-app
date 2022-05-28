@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, IconButton, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { getRandomColor } from '../../utils/getRandomColor';
-import './boardPreview.css';
-import { ConfirmModal } from '../ConfirmModal';
 
-export interface IBoardPreview {
-  title?: string;
-  id: string;
-  description?: string;
-  handleDelete?: () => void;
+import { ConfirmModal } from '../ConfirmModal';
+import api from '../../utils/ApiBackend';
+import { getRandomColor } from '../../utils/getRandomColor';
+import { IBoard } from '../../models/api';
+
+import './boardPreview.css';
+
+export interface IBoardPreview extends IBoard {
+  onDelete?: () => void;
   onClick?: () => void;
 }
 
-export const BoardPreview = ({ title, description, handleDelete, onClick }: IBoardPreview) => {
+export const BoardPreview = ({ id, title, description, onDelete, onClick }: IBoardPreview) => {
   const [isHovered, setIsHovered] = useState(false);
   const [background, setBackground] = useState('');
   const [isCancelHovered, setIsCancelHovered] = useState(false);
@@ -22,6 +23,18 @@ export const BoardPreview = ({ title, description, handleDelete, onClick }: IBoa
   useEffect(() => {
     setBackground(getRandomColor());
   }, []);
+
+  const deleteBoard = async () => {
+    try {
+      await api.board.delete({ boardId: id });
+      // TODO Maybe not good solution
+      if (onDelete) {
+        onDelete();
+      }
+    } catch (e) {
+      // TODO Error Modal
+    }
+  };
 
   return (
     <>
@@ -70,7 +83,7 @@ export const BoardPreview = ({ title, description, handleDelete, onClick }: IBoa
       <ConfirmModal
         active={isConfirmModalActive}
         setActive={setIsConfirmModalActive}
-        confirmAction={() => (handleDelete ? handleDelete() : null)}
+        confirmAction={() => (onDelete ? deleteBoard() : null)}
       >
         <div>Do you agree to delete this board?</div>
       </ConfirmModal>

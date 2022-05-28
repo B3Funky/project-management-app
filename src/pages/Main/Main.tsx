@@ -20,6 +20,7 @@ export function Main() {
   const [boards, setBoards] = useState<IBoard[]>([]);
   const [isBoardsLoad, setIsBoardsLoad] = useState<boolean>(false);
   const [isModalActive, setIsModalActive] = useState<boolean>(false);
+  const [refresh, setRefresh] = useState<string>('');
 
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -38,9 +39,14 @@ export function Main() {
     }
   };
 
+  const handleDeleteBoardPreview = (id: string) => {
+    setRefresh(id);
+    dispatch(deleteBoard(id));
+  };
+
   useEffect(() => {
     getBoards().then();
-  }, []);
+  }, [refresh]);
 
   return (
     <>
@@ -65,7 +71,7 @@ export function Main() {
                 title={title}
                 description={description}
                 onClick={() => navigate(`${paths.boardForId}${id}`)}
-                handleDelete={() => dispatch(deleteBoard(id))}
+                onDelete={() => handleDeleteBoardPreview(id)}
               />
             ))}
             <ButtonComponent
