@@ -38,13 +38,24 @@ export function Board() {
     }
   };
 
+  const deleteColumnOnBackend = async (columnId: string) => {
+    try {
+      await api.column.delete({ boardId: id as string, columnId: columnId });
+      const updatedColumns = columns.filter((column) => column.id !== columnId);
+      setColumns(updatedColumns);
+    } catch (e) {
+      // TODO Error Modal
+    }
+  };
+
   const handleUpdateColumn = (data: IColumn) => {
-    const newColumns = columns.slice();
-    newColumns.push(data);
-    setColumns(newColumns);
+    const updatedColumns = columns.slice();
+    updatedColumns.push(data);
+    setColumns(updatedColumns);
   };
 
   const deleteCurrentColumn = (id: string) => {
+    deleteColumnOnBackend(id).then();
     dispatch(deleteColumn(id));
   };
 
