@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Grid, Typography } from '@mui/material';
 
 import { ModalComponent } from '../Modal';
@@ -12,7 +12,7 @@ import { ColumnSlice } from '../../store/reducers/ColumnReducer';
 import { TaskSlice } from '../../store/reducers/TaskReducer';
 import { IS_EMPTY_REGEXP } from '../../constants';
 import { paths } from '../../routes/paths';
-import { IBoard } from '../../models/api';
+import { IBoard, IColumn } from '../../models/api';
 
 interface IFieldValidMethod {
   value: string;
@@ -25,9 +25,15 @@ interface ICreateModal {
   thing: string;
   isActive: boolean;
   setActive: React.Dispatch<React.SetStateAction<boolean>>;
+  onUpdateParentComponent?(data: IColumn): void;
 }
 
-export const CreateModal = ({ thing, isActive, setActive }: ICreateModal) => {
+export const CreateModal = ({
+  thing,
+  isActive,
+  setActive,
+  onUpdateParentComponent,
+}: ICreateModal) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [order] = useState(0);
@@ -35,7 +41,9 @@ export const CreateModal = ({ thing, isActive, setActive }: ICreateModal) => {
   const [descriptionError, setDescriptionError] = useState('');
   const [isFormDisabled, setIsFormDisabled] = useState(true);
 
+  const { id } = useParams();
   const navigate = useNavigate();
+
   const dispatch = useAppDispatch();
   const { addBoard } = BoardSlice.actions;
   const { addColumn } = ColumnSlice.actions;
@@ -59,14 +67,29 @@ export const CreateModal = ({ thing, isActive, setActive }: ICreateModal) => {
     if (thing === 'Board') {
       try {
         const board: IBoard = await api.board.create({ title: title, description: description });
+
         dispatch(addBoard({ ...board }));
+
         // TODO Maybe not good solution
         navigate(`${paths.boardForId}${board.id}`);
       } catch (e) {
         // TODO Error Modal
       }
     } else if (thing === 'Column') {
-      dispatch(addColumn({ title: title, order: order, id: String(Date.now()) }));
+      try {
+        const column: IColumn = await api.column.create(
+          { boardId: id as string },
+          { title: title }
+        );
+
+        dispatch(addColumn({ ...column }));
+
+        if (onUpdateParentComponent) {
+          onUpdateParentComponent(column);
+        }
+      } catch (e) {
+        // TODO Error Modal
+      }
     } else if (thing === 'Task') {
       dispatch(addTask({ title: title, description: description, id: String(Date.now()) }));
     }

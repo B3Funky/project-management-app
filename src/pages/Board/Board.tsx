@@ -38,6 +38,12 @@ export function Board() {
     }
   };
 
+  const handleUpdateColumn = (data: IColumn) => {
+    const newColumns = columns.slice();
+    newColumns.push(data);
+    setColumns(newColumns);
+  };
+
   const deleteCurrentColumn = (id: string) => {
     dispatch(deleteColumn(id));
   };
@@ -74,7 +80,12 @@ export function Board() {
           </Grid>
         )}
       </main>
-      <CreateModal isActive={isModalActive} setActive={setIsModalActive} thing="Column" />
+      <CreateModal
+        isActive={isModalActive}
+        setActive={setIsModalActive}
+        thing="Column"
+        onUpdateParentComponent={handleUpdateColumn}
+      />
     </>
   );
 }
