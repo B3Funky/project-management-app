@@ -36,7 +36,7 @@ export const TasksColumn = ({ id, title, order, onClick }: ITasksColumn) => {
   const { id: boardId } = useParams();
 
   const dispatch = useAppDispatch();
-  const { deleteTask } = TaskSlice.actions;
+  const { deleteTask: deleteTaskTasks } = TaskSlice.actions;
   const { tasks: taskTasks } = useAppSelector((state) => state.TaskReducer);
 
   useEffect(() => {
@@ -94,8 +94,23 @@ export const TasksColumn = ({ id, title, order, onClick }: ITasksColumn) => {
     }
   };
 
-  const deleteCurrentTask = (id: string) => {
-    dispatch(deleteTask(id));
+  const deleteTask = async (taskId: string) => {
+    try {
+      await api.task.delete({
+        boardId: boardId as string,
+        columnId: id,
+        taskId: taskId,
+      });
+      const updatedTasks = tasks.filter((task) => task.id !== taskId);
+      setTasks(updatedTasks);
+    } catch (e) {
+      // TODO Error Modal
+    }
+  };
+
+  const deleteCurrentTask = (taskId: string) => {
+    deleteTask(taskId).then();
+    dispatch(deleteTaskTasks(taskId));
   };
 
   return (
