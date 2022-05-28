@@ -48,7 +48,7 @@ export function Board() {
     }
   };
 
-  const handleUpdateColumn = (data: IColumn) => {
+  const handleCreateColumn = (data: IColumn) => {
     const updatedColumns = columns.slice();
     updatedColumns.push(data);
     setColumns(updatedColumns);
@@ -97,7 +97,7 @@ export function Board() {
         isActive={isModalActive}
         setActive={setIsModalActive}
         thing="Column"
-        onUpdateParentComponent={handleUpdateColumn}
+        onCreateCallback={handleCreateColumn}
       />
     </>
   );

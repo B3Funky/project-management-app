@@ -186,7 +186,7 @@ export const TasksColumn = ({ id, title, order, onClick }: ITasksColumn) => {
         setActive={setIsCreateModalActive}
         thing="Task"
         columnId={id}
-        onUpdateParentComponent={handleCreateTask}
+        onCreateCallback={handleCreateTask}
       />
       <ConfirmModal
         active={isConfirmModalActive}

@@ -25,7 +25,7 @@ interface ICreateModal {
   thing: string;
   isActive: boolean;
   setActive: React.Dispatch<React.SetStateAction<boolean>>;
-  onUpdateParentComponent?(data: IColumn | ITaskCreate): void;
+  onCreateCallback?(data: IColumn | ITaskCreate): void;
   columnId?: string;
 }
 
@@ -33,7 +33,7 @@ export const CreateModal = ({
   thing,
   isActive,
   setActive,
-  onUpdateParentComponent,
+  onCreateCallback,
   columnId,
 }: ICreateModal) => {
   const [title, setTitle] = useState('');
@@ -86,8 +86,8 @@ export const CreateModal = ({
 
         dispatch(addColumn({ ...column }));
 
-        if (onUpdateParentComponent) {
-          onUpdateParentComponent(column);
+        if (onCreateCallback) {
+          onCreateCallback(column);
         }
       } catch (e) {
         // TODO Error Modal
@@ -102,8 +102,8 @@ export const CreateModal = ({
 
         dispatch(addTask({ ...task }));
 
-        if (onUpdateParentComponent) {
-          onUpdateParentComponent(task);
+        if (onCreateCallback) {
+          onCreateCallback(task);
         }
       } catch (e) {
         // TODO Error Modal
