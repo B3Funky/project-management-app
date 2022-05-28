@@ -31,10 +31,8 @@ export const TaskCard = (props: ITaskCard) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isDeleteModalActive, setIsDeleteModalActive] = useState(false);
   const [isTaskModalActive, setIsTaskModalActive] = useState(false);
-  const [taskDescription, setTaskDescription] = useState<string | undefined>('');
-  const [currentTaskDescriptionText, setCurrentTaskDescriptionText] = useState<string | undefined>(
-    ''
-  );
+  const [taskDescription, setTaskDescription] = useState<string>('');
+  const [currentTaskDescriptionText, setCurrentTaskDescriptionText] = useState<string>('');
   const [taskTitle, setTaskTitle] = useState<string>('');
   const [isTitleFocused, setIsTitleFocused] = useState(false);
   const taskTitleRef = useRef<HTMLTextAreaElement>(null);
