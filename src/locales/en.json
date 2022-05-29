@@ -19,7 +19,8 @@
     "welcome": {
       "buttons": {
         "signIn": "Sign In",
-        "signUp": "Sign up"
+        "signUp": "Sign up",
+        "toMainPage": "Go to Main Page"
       },
       "h1": "Project Management App",
       "h2": "by Team 50",

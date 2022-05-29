@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
@@ -9,18 +9,20 @@ import { LanguageToggle } from '../../components/LanguageToggle';
 import { ButtonComponent } from '../../components/Button';
 import { Background } from '../../components/Background';
 import { TeamMemberCard } from '../../components/TeamMemberCard';
+import checkAuth from '../../utils/checkAuth';
 import { paths } from '../../routes/paths';
 import { MEMBERS_LIST } from '../../constants';
 
 import './welcome.css';
 
 export function Welcome() {
-  const [showTeam, setShowTeam] = useState(false);
+  const [isAuth, setIsAuth] = useState<boolean | undefined>(undefined);
+  const [showTeam, setShowTeam] = useState<boolean>(false);
   const scrollTrigger = useScrollTrigger({ disableHysteresis: true, threshold: 0 });
 
   const { t } = useTranslation();
-
   const navigate = useNavigate();
+
   const handleSignIn = useCallback(() => {
     navigate(paths.login);
   }, [navigate]);
@@ -29,25 +31,45 @@ export function Welcome() {
     navigate(paths.signUp);
   }, [navigate]);
 
+  const handleToMainPage = useCallback(() => {
+    navigate(paths.main);
+  }, [navigate]);
+
+  useEffect(() => {
+    checkAuth().then((isAuth) => setIsAuth(isAuth));
+  }, []);
+
   return (
     <>
       <header className={classNames('welcome-header', { 'welcome-header-mini': scrollTrigger })}>
         <LanguageToggle size={scrollTrigger ? 'small' : 'medium'} />
         <div className={'welcome-header-sign-buttons-wrapper'}>
-          <ButtonComponent
-            variant="contained"
-            size={scrollTrigger ? 'small' : 'large'}
-            onClick={handleSignIn}
-          >
-            {t('welcome.buttons.signIn')}
-          </ButtonComponent>
-          <ButtonComponent
-            variant="contained"
-            size={scrollTrigger ? 'small' : 'large'}
-            onClick={handleSignUp}
-          >
-            {t('welcome.buttons.signUp')}
-          </ButtonComponent>
+          {isAuth === undefined ? null : isAuth ? (
+            <ButtonComponent
+              variant="contained"
+              size={scrollTrigger ? 'small' : 'large'}
+              onClick={handleToMainPage}
+            >
+              {t('welcome.buttons.toMainPage')}
+            </ButtonComponent>
+          ) : (
+            <>
+              <ButtonComponent
+                variant="contained"
+                size={scrollTrigger ? 'small' : 'large'}
+                onClick={handleSignIn}
+              >
+                {t('welcome.buttons.signIn')}
+              </ButtonComponent>
+              <ButtonComponent
+                variant="contained"
+                size={scrollTrigger ? 'small' : 'large'}
+                onClick={handleSignUp}
+              >
+                {t('welcome.buttons.signUp')}
+              </ButtonComponent>
+            </>
+          )}
         </div>
       </header>
 

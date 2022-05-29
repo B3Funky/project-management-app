@@ -23,9 +23,6 @@ export const useLogin = (
           }
         });
 
-        localStorage.setItem('login', login);
-        localStorage.setItem('password', password);
-
         navigate('/main');
       } catch (e) {
         if (e instanceof AxiosError) {
