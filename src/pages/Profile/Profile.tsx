@@ -1,33 +1,28 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Navigate, NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { Alert, Grid, Snackbar } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+
 import { ConfirmModal } from '../../components/ConfirmModal';
 import { Header } from '../../components/Header';
-import { paths } from '../../routes/paths';
-import { ButtonComponent } from '../../components/Button';
-import { deleteUser } from '../../utils/login';
 import { InputComponent } from '../../components/Input';
+import { ButtonComponent } from '../../components/Button';
 import api from '../../utils/ApiBackend';
+import { deleteUser } from '../../utils/login';
+import { paths } from '../../routes/paths';
 import { IUser } from '../../models/api';
+
+const SUCCESS_MODAL_TIMEOUT = 3000;
 
 export function Profile() {
   const [user, setUser] = useState<IUser>({ id: '', name: '', login: '' });
-  const [isSnackbarOpened, setSnackbarOpened] = useState(false);
   const [password, setPassword] = useState('');
-  useEffect(() => {
-    const fetchUser = async () => {
-      const userId = localStorage.getItem('userId');
-      if (userId) {
-        const user = await api.user.get({ userId });
-        setUser(user);
-      }
-    };
-    fetchUser();
-  }, []);
+  const [isDeleteModalActive, setIsDeleteModalActive] = useState(false);
+  const [isSnackbarOpened, setSnackbarOpened] = useState(false);
+
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [isDeleteModalActive, setIsDeleteModalActive] = useState(false);
+
   const handleOpenDeleteModal = useCallback(() => {
     setIsDeleteModalActive(true);
   }, []);
@@ -35,22 +30,25 @@ export function Profile() {
   const handleChangePassword = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e?.target?.value);
   }, []);
+
   const handleChangeUserName = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setUser({ ...user, name: e?.target?.value });
     },
     [user]
   );
+
   const handleChangeUserLogin = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setUser({ ...user, login: e?.target?.value });
     },
     [user]
   );
+
   const handleConfirm = useCallback(async () => {
     await deleteUser();
     setIsDeleteModalActive(false);
-    navigate('/');
+    navigate(paths.welcome);
   }, [navigate]);
 
   const isSubmitButtonEnabled = useMemo(
@@ -60,18 +58,43 @@ export function Profile() {
   );
 
   const handleSubmitChangeUser = useCallback(async () => {
-    await api.user.update(
-      { userId: user.id },
-      { name: user.name, login: user.login, password: password }
-    );
-    setSnackbarOpened(true);
-    const id = setTimeout(() => setSnackbarOpened(false), 3000);
-    return () => clearTimeout(id);
+    let timeoutId: NodeJS.Timeout;
+
+    try {
+      await api.user.update(
+        { userId: user.id },
+        { name: user.name, login: user.login, password: password }
+      );
+      setSnackbarOpened(true);
+      timeoutId = setTimeout(() => setSnackbarOpened(false), SUCCESS_MODAL_TIMEOUT);
+    } catch (e) {
+      // TODO Error Modal, code 500 when login already exist
+    }
+
+    return () => clearTimeout(timeoutId);
   }, [password, user.id, user.login, user.name]);
+
+  const fetchUser = async () => {
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      try {
+        const user = await api.user.get({ userId });
+        setUser(user);
+      } catch (e) {
+        // TODO Error Modal
+      }
+    } else {
+      // TODO Error Modal Try to relogin
+    }
+  };
+
+  useEffect(() => {
+    fetchUser().then();
+  }, []);
 
   return (
     <>
-      <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'right' }} open={isSnackbarOpened}>
+      <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center' }} open={isSnackbarOpened}>
         <Alert severity="success" sx={{ width: '100%' }}>
           {t('changed_user')}
         </Alert>
@@ -94,8 +117,8 @@ export function Profile() {
         rowGap={4}
       >
         <h2>{t('profile_page')}</h2>
-        <InputComponent value={user?.name} onChange={handleChangeUserName} />
-        <InputComponent value={user?.login} onChange={handleChangeUserLogin} />
+        <InputComponent label="Name" value={user?.name} onChange={handleChangeUserName} />
+        <InputComponent label="Login" value={user?.login} onChange={handleChangeUserLogin} />
         <InputComponent
           label="Password"
           type="password"
@@ -110,7 +133,12 @@ export function Profile() {
         >
           {t('change_user_data')}
         </ButtonComponent>
-        <ButtonComponent size="large" variant="contained" onClick={handleOpenDeleteModal}>
+        <ButtonComponent
+          size="large"
+          variant="contained"
+          color="error"
+          onClick={handleOpenDeleteModal}
+        >
           {t('delete_user')}
         </ButtonComponent>
         <NavLink to={paths.main}>back to Main page</NavLink>
