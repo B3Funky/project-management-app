@@ -12,7 +12,7 @@ import { useAppDispatch, useAppSelector } from '../../redux-hooks';
 import { BoardSlice } from '../../store/reducers/BoardReducer';
 import { ColumnSlice } from '../../store/reducers/ColumnReducer';
 import { paths } from '../../routes/paths';
-import { IColumn } from '../../models/api';
+import { IColumn, ITask } from '../../models/api';
 
 import './board.css';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
@@ -67,41 +67,52 @@ export function Board() {
     }
   }, []);
 
-  const onDragEnd = (result: DropResult) => {
+  const [currentTasks, setCurrentTasks] = useState<ITask[]>([]);
+
+  const getTasks = async (boardId: string, columnId: string) => {
+    try {
+      const tasks: ITask[] = await api.task.getAll({
+        boardId: boardId as string,
+        columnId: columnId,
+      });
+      return tasks;
+      // setCurrentTasks(tasks);
+    } catch (e) {
+      // TODO Error Modal
+    }
+  };
+
+  const onDragEnd = async (result: DropResult) => {
     if (!result.destination) return;
     const { source, destination } = result;
 
-    // if (source.droppableId !== destination.droppableId) {
-    //   const sourceColumn = columns[Number(source.droppableId)];
-    //   const destColumn = columns[Number(destination.droppableId)];
-    //   const sourceItems = [...sourceColumn];
-    //   const destItems = [...destColumn];
-    //   const [removed] = sourceItems.splice(source.index, 1);
-    //   destItems.splice(destination.index, 0, removed);
-    //   setColumns({
-    //     ...columns,
-    //     [source.droppableId]: {
-    //       ...sourceColumn,
-    //       items: sourceItems,
-    //     },
-    //     [destination.droppableId]: {
-    //       ...destColumn,
-    //       items: destItems,
-    //     },
-    //   });
-    // } else {
-    //   const column = columns[Number(source.droppableId)];
-    //   const copiedItems = [column];
-    //   const [removed] = copiedItems.splice(source.index, 1);
-    //   copiedItems.splice(destination.index, 0, removed);
-    //   setColumns({
-    //     ...columns,
-    //     [source.droppableId]: {
-    //       ...column,
-    //       items: copiedItems,
-    //     },
-    //   });
-    // }
+    if (source.droppableId !== destination.droppableId) {
+      const sourceColumn = columns.filter((column) => column.id === source.droppableId)[0];
+      const destColumn = columns.filter((column) => column.id === destination.droppableId)[0];
+      let sourceItems: ITask[] | undefined;
+      if (id) {
+        await getTasks(id, sourceColumn.id).then((res) => (sourceItems = res));
+      }
+      let destItems: ITask[] | undefined;
+      if (id) {
+        await getTasks(id, destColumn.id).then((res) => (destItems = res));
+      }
+      const [removed] = sourceItems!.splice(source.index, 1);
+      destItems!.splice(destination.index, 0, removed);
+      destItems?.map((item, i) => (item.order = i + 1));
+      console.log(destItems);
+    } else {
+      const column = columns.filter((column) => column.id === source.droppableId)[0];
+      let copiedItems: ITask[] | undefined;
+      if (id) {
+        await getTasks(id, column.id).then((res) => (copiedItems = res));
+      }
+      const [removed] = copiedItems!.splice(source.index, 1);
+      copiedItems!.splice(destination.index, 0, removed);
+      copiedItems?.map((item, i) => (item.order = i + 1));
+
+      console.log(copiedItems);
+    }
   };
 
   return (
@@ -114,35 +125,27 @@ export function Board() {
           <Spinner />
         ) : (
           <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="column1" key={id}>
-              {(provided) => (
-                <Grid
-                  container
-                  overflow="auto"
-                  flexWrap="nowrap"
-                  alignItems="flex-start"
-                  height="75%"
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                  className="column1"
-                >
-                  {columns
-                    .sort((a, b) => a.order - b.order)
-                    .map(({ id, title, order }) => (
+            <Grid container overflow="auto" flexWrap="nowrap" alignItems="flex-start" height="75%">
+              {columns
+                .sort((a, b) => a.order - b.order)
+                .map(({ id, title, order }) => (
+                  <Droppable droppableId={id} key={id}>
+                    {(provided) => (
                       <TasksColumn
                         id={id}
                         key={id}
                         title={title}
                         order={order}
                         onClick={() => deleteCurrentColumn(id)}
+                        dragProvider={provided}
                       />
-                    ))}
-                  <ButtonComponent onClick={() => setIsModalActive(true)} sx={{ minWidth: '20vw' }}>
-                    <Typography>Add new table</Typography>
-                  </ButtonComponent>
-                </Grid>
-              )}
-            </Droppable>
+                    )}
+                  </Droppable>
+                ))}
+              <ButtonComponent onClick={() => setIsModalActive(true)} sx={{ minWidth: '20vw' }}>
+                <Typography>Add new table</Typography>
+              </ButtonComponent>
+            </Grid>
           </DragDropContext>
         )}
       </main>

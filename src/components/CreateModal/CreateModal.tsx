@@ -48,7 +48,7 @@ export const CreateModal = ({
 
   const dispatch = useAppDispatch();
   const { addBoard } = BoardSlice.actions;
-  const { addColumn } = ColumnSlice.actions;
+  // const { addColumn } = ColumnSlice.actions;
   const { addTask } = TaskSlice.actions;
 
   useEffect(() => {
@@ -84,7 +84,7 @@ export const CreateModal = ({
           { title: title }
         );
 
-        dispatch(addColumn({ ...column }));
+        // dispatch(addColumn({ ...column }));
 
         if (onCreateCallback) {
           onCreateCallback(column);

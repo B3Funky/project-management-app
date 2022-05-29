@@ -4,7 +4,14 @@ import { Box, Card, CardContent, CardHeader, Grid, IconButton, Typography } from
 import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckIcon from '@mui/icons-material/Check';
-import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+  DraggableProvided,
+  DroppableProvided,
+} from 'react-beautiful-dnd';
 
 import { ButtonComponent } from '../Button';
 import { TextAreaComponent } from '../TextAreaComponent';
@@ -22,9 +29,10 @@ import './tasks-column.css';
 
 export interface ITasksColumn extends IColumn {
   onClick?: () => void;
+  dragProvider?: DroppableProvided;
 }
 
-export const TasksColumn = ({ id, title, order, onClick }: ITasksColumn) => {
+export const TasksColumn = ({ id, title, order, onClick, dragProvider }: ITasksColumn) => {
   const [columnOrder, setColumnOrder] = useState<number>(order);
   const [tasks, setTasks] = useState<ITask[]>([]);
   const [isTasksLoad, setIsTasksLoad] = useState<boolean>(false);
@@ -116,7 +124,7 @@ export const TasksColumn = ({ id, title, order, onClick }: ITasksColumn) => {
 
   return (
     <>
-      <Card className="column">
+      <Card className="column" {...dragProvider?.droppableProps} ref={dragProvider?.innerRef}>
         <IconButton
           onClick={() => setIsConfirmModalActive(true)}
           sx={{ position: 'absolute', top: '0', right: '0', padding: '2px' }}
