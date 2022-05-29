@@ -16,10 +16,25 @@
     "profile_page": "Profile page",
     "delete_user": "Delete user",
     "changed_user": "Changes saved successfully",
+    "name_input_label": "Name",
+    "login_input_label": "Login",
+    "password_input_label": "Password",
+    "submit_button": "Submit",
+    "error": "Error",
+    "signIn_page": {
+      "header": "Sign In",
+      "no_account": "Don't have an account?",
+      "link_to_signUp_page": "Sign Up"
+    },
+    "signUp_page": {
+      "header": "Sign Up",
+      "have_an_account": "Already have an account?",
+      "link_to_signIn_page": "Sign In"
+    },
     "welcome": {
       "buttons": {
         "signIn": "Sign In",
-        "signUp": "Sign up",
+        "signUp": "Sign Up",
         "toMainPage": "Go to Main Page"
       },
       "h1": "Project Management App",

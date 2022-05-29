@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { Alert, AlertTitle, Grid } from '@mui/material';
 import { NavLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { SignHeader } from '../../components/SignHeader';
 import { InputComponent } from '../../components/Input';
@@ -12,9 +13,10 @@ export function SignUp() {
   const [name, setName] = useState('');
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
-  const isFormFilled = useMemo(() => Boolean(name && login && password), [name, login, password]);
   const [error, setError] = useState('');
 
+  const { t } = useTranslation();
+  const isFormFilled = useMemo(() => Boolean(name && login && password), [name, login, password]);
   const handleSignUp = useSignup(isFormFilled, setError, name, login, password);
 
   const handleChangeName = useCallback(
@@ -31,6 +33,7 @@ export function SignUp() {
     (event: React.ChangeEvent<HTMLInputElement>) => setPassword(event.target.value),
     [setPassword]
   );
+
   return (
     <>
       <SignHeader />
@@ -42,15 +45,21 @@ export function SignUp() {
         justifyContent="center"
         alignItems="center"
       >
-        <h2>Sign Up</h2>
         <Grid item>
-          <InputComponent label="Name" onChange={handleChangeName} />
+          <h2>{t('signUp_page.header')}</h2>
         </Grid>
         <Grid item>
-          <InputComponent label="Login" onChange={handleChangeLogin} />
+          <InputComponent label={t('name_input_label')} onChange={handleChangeName} />
         </Grid>
         <Grid item>
-          <InputComponent label="Password" type="password" onChange={handleChangePassword} />
+          <InputComponent label={t('login_input_label')} onChange={handleChangeLogin} />
+        </Grid>
+        <Grid item>
+          <InputComponent
+            label={t('password_input_label')}
+            type="password"
+            onChange={handleChangePassword}
+          />
         </Grid>
         <Grid item>
           <ButtonComponent
@@ -59,24 +68,22 @@ export function SignUp() {
             variant="contained"
             type="submit"
           >
-            Submit
+            {t('submit_button')}
           </ButtonComponent>
         </Grid>
         {Boolean(error) && (
           <Grid item>
             <Alert severity="error">
-              <AlertTitle>Error</AlertTitle>
+              <AlertTitle>{t('error')}</AlertTitle>
               {error}
             </Alert>
           </Grid>
         )}
         <Grid item>
           <p>
-            Already have an account? <NavLink to={paths.login}>Sign In</NavLink>
+            {t('signUp_page.have_an_account')}{' '}
+            <NavLink to={paths.login}>{t('signUp_page.link_to_signIn_page')}</NavLink>
           </p>
-        </Grid>
-        <Grid item>
-          <NavLink to={paths.main}>to Main page</NavLink>
         </Grid>
       </Grid>
     </>

@@ -16,6 +16,21 @@
     "profile_page": "Страница пользователя",
     "delete_user": "Удалить пользователя",
     "changed_user": "Данные успешно сохранены",
+    "name_input_label": "Имя",
+    "login_input_label": "Логин",
+    "password_input_label": "Пароль",
+    "submit_button": "Отправить",
+    "error": "Ошибка",
+    "signIn_page": {
+      "header": "Вход",
+      "no_account": "Нет аккаунта?",
+      "link_to_signUp_page": "Регистрация"
+    },
+    "signUp_page": {
+      "header": "Регистрация",
+      "have_an_account": "Уже есть аккаунт?",
+      "link_to_signIn_page": "Вход"
+    },
     "welcome": {
       "buttons": {
         "signIn": "Вход",
