@@ -199,7 +199,7 @@ interface ITaskData {
   userId: string;
 }
 
-interface ITaskDataUpdate extends ITaskData {
+export interface ITaskDataUpdate extends ITaskData {
   order: number;
   boardId: string;
   columnId: string;

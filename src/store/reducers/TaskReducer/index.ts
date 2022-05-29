@@ -8,7 +8,16 @@ interface ITaskData {
 
 const initialState: ITaskData = {
   tasks: [],
-  currentTask: { id: '', title: '' },
+  currentTask: {
+    id: '',
+    title: '',
+    description: '',
+    userId: '',
+    order: 0,
+    boardId: '',
+    columnId: '',
+    files: [],
+  },
 };
 
 export const TaskSlice = createSlice({

@@ -3,21 +3,16 @@ import { Card, CardContent, IconButton } from '@mui/material';
 import { Box } from '@mui/system';
 import CancelIcon from '@mui/icons-material/Cancel';
 import EditIcon from '@mui/icons-material/Edit';
+
+import { TextAreaComponent } from '../TextAreaComponent';
 import { ConfirmModal } from '../ConfirmModal';
 import { TaskModal } from '../TaskModal';
-import { TextAreaComponent } from '../TextAreaComponent';
+import api, { ITaskDataUpdate } from '../../utils/ApiBackend';
+import { ITask } from '../../models/api';
+
 import './task-card.css';
 
-export interface ITaskCard {
-  title: string;
-  id: string;
-  description?: string;
-  order?: number;
-  done?: boolean;
-  userId?: string;
-  boardId?: string;
-  columnId?: string;
-  files?: ITaskCardFiles[];
+export interface ITaskCard extends ITask {
   deleteTask?: (id: string) => void;
 }
 
@@ -32,34 +27,23 @@ const isHoveredStyle = {
   p: '0',
 };
 
-export const TaskCard = ({
-  title,
-  id,
-  description,
-  done,
-  files,
-  order,
-  userId,
-  deleteTask,
-}: ITaskCard) => {
+export const TaskCard = (props: ITaskCard) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isDeleteModalActive, setIsDeleteModalActive] = useState(false);
   const [isTaskModalActive, setIsTaskModalActive] = useState(false);
-  const [taskDescription, setTaskDescription] = useState<string | undefined>('');
-  const [currentTaskDescriptionText, setCurrentTaskDescriptionText] = useState<string | undefined>(
-    ''
-  );
-  const [taskTitle, setTaskTitle] = useState<string | undefined>('');
+  const [taskDescription, setTaskDescription] = useState<string>('');
+  const [currentTaskDescriptionText, setCurrentTaskDescriptionText] = useState<string>('');
+  const [taskTitle, setTaskTitle] = useState<string>('');
   const [isTitleFocused, setIsTitleFocused] = useState(false);
   const taskTitleRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    setCurrentTaskDescriptionText(description);
-    setTaskTitle(title);
+    setCurrentTaskDescriptionText(props.description);
+    setTaskTitle(props.title);
   }, []);
 
-  const setCurrentDescription = (descr: string) => {
-    setCurrentTaskDescriptionText(descr);
+  const setCurrentDescription = (description: string) => {
+    setCurrentTaskDescriptionText(description);
   };
 
   const saveDescription = () => {
@@ -84,6 +68,17 @@ export const TaskCard = ({
     }
   };
 
+  const updateTaskTitle = async (data: ITaskDataUpdate) => {
+    try {
+      await api.task.update(
+        { boardId: props.boardId, columnId: props.columnId, taskId: props.id },
+        data
+      );
+    } catch (e) {
+      // TODO Error Modal
+    }
+  };
+
   return (
     <Box
       width="100%"
@@ -103,7 +98,7 @@ export const TaskCard = ({
           width: '90%',
           overflow: 'visible',
           m: '10px 0px',
-          border: `${done ? '3px solid #34eb6e' : ''}`,
+          // border: `${props.done ? '3px solid #34eb6e' : ''}`,
           boxShadow: '0',
         }}
         onClick={() => {
@@ -123,7 +118,17 @@ export const TaskCard = ({
             value={taskTitle}
             customRef={taskTitleRef}
             onChange={(e) => setTaskTitle(e.currentTarget.value)}
-            onBlur={() => setIsTitleFocused(false)}
+            onBlur={() => {
+              updateTaskTitle({
+                title: taskTitle,
+                description: props.description,
+                order: props.order,
+                userId: props.userId,
+                boardId: props.boardId,
+                columnId: props.columnId,
+              }).then();
+              setIsTitleFocused(false);
+            }}
           />
         </CardContent>
       </Card>
@@ -150,12 +155,12 @@ export const TaskCard = ({
       <ConfirmModal
         active={isDeleteModalActive}
         setActive={setIsDeleteModalActive}
-        confirmAction={() => (deleteTask ? deleteTask(id) : null)}
+        confirmAction={() => (props.deleteTask ? props.deleteTask(props.id) : null)}
       >
         <div>Do you agree to delete this task?</div>
       </ConfirmModal>
       <TaskModal
-        card={{ id, title, done, files, order, userId, description }}
+        card={props}
         taskDescription={currentTaskDescriptionText}
         isActive={isTaskModalActive}
         setIsActive={setIsTaskModalActive}

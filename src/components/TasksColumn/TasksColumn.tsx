@@ -173,14 +173,8 @@ export const TasksColumn = ({ id, title, order, onClick }: ITasksColumn) => {
             >
               {tasks
                 .sort((a, b) => a.order - b.order)
-                .map(({ title, id, description }) => (
-                  <TaskCard
-                    key={id}
-                    title={title}
-                    deleteTask={() => deleteCurrentTask(id)}
-                    id={id}
-                    description={description}
-                  />
+                .map((task) => (
+                  <TaskCard {...task} key={task.id} deleteTask={() => deleteCurrentTask(task.id)} />
                 ))}
             </Grid>
           )}
