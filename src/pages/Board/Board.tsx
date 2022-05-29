@@ -7,7 +7,7 @@ import { Spinner } from '../../components/Spinner';
 import { TasksColumn } from '../../components/TasksColumn';
 import { ButtonComponent } from '../../components/Button';
 import { CreateModal } from '../../components/CreateModal';
-import api from '../../utils/ApiBackend';
+import api, { ITaskDataUpdate } from '../../utils/ApiBackend';
 import { useAppDispatch, useAppSelector } from '../../redux-hooks';
 import { BoardSlice } from '../../store/reducers/BoardReducer';
 import { ColumnSlice } from '../../store/reducers/ColumnReducer';
@@ -82,6 +82,14 @@ export function Board() {
     }
   };
 
+  const updateTaskTitle = async (data: ITaskDataUpdate, id: string) => {
+    try {
+      await api.task.update({ boardId: data.boardId, columnId: data.columnId, taskId: id }, data);
+    } catch (e) {
+      // TODO Error Modal
+    }
+  };
+
   const onDragEnd = async (result: DropResult) => {
     if (!result.destination) return;
     const { source, destination } = result;
@@ -101,6 +109,9 @@ export function Board() {
       destItems!.splice(destination.index, 0, removed);
       destItems?.map((item, i) => (item.order = i + 1));
       console.log(destItems);
+      destItems?.map(({ boardId, columnId, order, id, description, title, userId }) =>
+        updateTaskTitle({ boardId, columnId, description, order, title, userId }, id)
+      );
     } else {
       const column = columns.filter((column) => column.id === source.droppableId)[0];
       let copiedItems: ITask[] | undefined;
@@ -110,8 +121,10 @@ export function Board() {
       const [removed] = copiedItems!.splice(source.index, 1);
       copiedItems!.splice(destination.index, 0, removed);
       copiedItems?.map((item, i) => (item.order = i + 1));
-
       console.log(copiedItems);
+      copiedItems?.map(({ boardId, columnId, order, id, description, title, userId }) =>
+        updateTaskTitle({ boardId, columnId, description, order, title, userId }, id)
+      );
     }
   };
 
