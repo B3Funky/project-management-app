@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import { useTranslation } from 'react-i18next';
+import { getAccessToken } from 'axios-jwt';
 
 import { LanguageToggle } from '../../components/LanguageToggle';
 import { ButtonComponent } from '../../components/Button';
@@ -22,6 +23,7 @@ export function Welcome() {
 
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const accessToken = getAccessToken();
 
   const handleSignIn = useCallback(() => {
     navigate(paths.login);
@@ -36,8 +38,12 @@ export function Welcome() {
   }, [navigate]);
 
   useEffect(() => {
-    checkAuth().then((isAuth) => setIsAuth(isAuth));
-  }, []);
+    if (!accessToken) {
+      setIsAuth(false);
+    } else {
+      checkAuth().then((isAuth) => setIsAuth(isAuth));
+    }
+  }, [accessToken]);
 
   return (
     <>
