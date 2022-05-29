@@ -11,9 +11,11 @@
     "footer": {
       "developed": "Разработано:"
     },
+    "change_user_data": "Сохранить изменения",
     "delete_user_confirm": "Вы действительно хотите удалить пользователя?",
     "profile_page": "Страница пользователя",
     "delete_user": "Удалить пользователя",
+    "changed_user": "Данные успешно сохранены",
     "welcome": {
       "buttons": {
         "signIn": "Вход",

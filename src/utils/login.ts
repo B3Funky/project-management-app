@@ -20,17 +20,10 @@ export const signout = () => {
   localStorage.removeItem('userId');
 };
 
-const getUsers = async () => {
-  const response = await axiosInstance.get('/users');
-  return response?.data;
-};
-
 export const deleteUser = async () => {
-  const currentLogin = localStorage.getItem('login');
-  const users = await getUsers();
-  const currentUserId = users?.find((user: { login?: string }) => user?.login === currentLogin)?.id;
-  if (currentUserId) {
-    await axiosInstance.delete(`/users/${currentUserId}`);
+  const userId = localStorage.getItem('userId');
+  if (userId) {
+    await axiosInstance.delete(`/users/${userId}`);
     signout();
   }
 };
