@@ -6,7 +6,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { ConfirmModal } from '../ConfirmModal';
 import { TaskModal } from '../TaskModal';
 import { TextAreaComponent } from '../TextAreaComponent';
-import { DraggableProvided } from 'react-beautiful-dnd';
+import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 import './task-card.css';
 
 export interface ITaskCard {
@@ -21,6 +21,7 @@ export interface ITaskCard {
   files?: ITaskCardFiles[];
   deleteTask?: (id: string) => void;
   dragProvider?: DraggableProvided;
+  dragSnapShot?: DraggableStateSnapshot;
 }
 
 export interface ITaskCardFiles {
@@ -44,6 +45,7 @@ export const TaskCard = ({
   userId,
   deleteTask,
   dragProvider,
+  dragSnapShot,
 }: ITaskCard) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isDeleteModalActive, setIsDeleteModalActive] = useState(false);
@@ -107,6 +109,7 @@ export const TaskCard = ({
           overflow: 'visible',
           m: '10px 0px',
           border: `${done ? '3px solid #34eb6e' : ''}`,
+          ...dragProvider?.draggableProps.style,
         }}
         onClick={() => {
           !isTitleFocused ? (setIsTaskModalActive(true), handleTitleBlur()) : null;

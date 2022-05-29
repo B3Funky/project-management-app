@@ -15,6 +15,7 @@ import { paths } from '../../routes/paths';
 import { IColumn } from '../../models/api';
 
 import './board.css';
+import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 
 export function Board() {
   const [columns, setColumns] = useState<IColumn[]>([]);
@@ -66,6 +67,43 @@ export function Board() {
     }
   }, []);
 
+  const onDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+    const { source, destination } = result;
+
+    // if (source.droppableId !== destination.droppableId) {
+    //   const sourceColumn = columns[Number(source.droppableId)];
+    //   const destColumn = columns[Number(destination.droppableId)];
+    //   const sourceItems = [...sourceColumn];
+    //   const destItems = [...destColumn];
+    //   const [removed] = sourceItems.splice(source.index, 1);
+    //   destItems.splice(destination.index, 0, removed);
+    //   setColumns({
+    //     ...columns,
+    //     [source.droppableId]: {
+    //       ...sourceColumn,
+    //       items: sourceItems,
+    //     },
+    //     [destination.droppableId]: {
+    //       ...destColumn,
+    //       items: destItems,
+    //     },
+    //   });
+    // } else {
+    //   const column = columns[Number(source.droppableId)];
+    //   const copiedItems = [column];
+    //   const [removed] = copiedItems.splice(source.index, 1);
+    //   copiedItems.splice(destination.index, 0, removed);
+    //   setColumns({
+    //     ...columns,
+    //     [source.droppableId]: {
+    //       ...column,
+    //       items: copiedItems,
+    //     },
+    //   });
+    // }
+  };
+
   return (
     <>
       <Header />
@@ -75,22 +113,37 @@ export function Board() {
         {!isColumnsLoad ? (
           <Spinner />
         ) : (
-          <Grid container overflow="auto" flexWrap="nowrap" alignItems="flex-start" height="75%">
-            {columns
-              .sort((a, b) => a.order - b.order)
-              .map(({ id, title, order }) => (
-                <TasksColumn
-                  id={id}
-                  key={id}
-                  title={title}
-                  order={order}
-                  onClick={() => deleteCurrentColumn(id)}
-                />
-              ))}
-            <ButtonComponent onClick={() => setIsModalActive(true)} sx={{ minWidth: '20vw' }}>
-              <Typography>Add new table</Typography>
-            </ButtonComponent>
-          </Grid>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="column1" key={id}>
+              {(provided) => (
+                <Grid
+                  container
+                  overflow="auto"
+                  flexWrap="nowrap"
+                  alignItems="flex-start"
+                  height="75%"
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  className="column1"
+                >
+                  {columns
+                    .sort((a, b) => a.order - b.order)
+                    .map(({ id, title, order }) => (
+                      <TasksColumn
+                        id={id}
+                        key={id}
+                        title={title}
+                        order={order}
+                        onClick={() => deleteCurrentColumn(id)}
+                      />
+                    ))}
+                  <ButtonComponent onClick={() => setIsModalActive(true)} sx={{ minWidth: '20vw' }}>
+                    <Typography>Add new table</Typography>
+                  </ButtonComponent>
+                </Grid>
+              )}
+            </Droppable>
+          </DragDropContext>
         )}
       </main>
       <CreateModal
