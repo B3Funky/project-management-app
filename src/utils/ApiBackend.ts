@@ -10,6 +10,7 @@ import {
   ITaskCreate,
   ITaskUpdate,
 } from '../models/api';
+import { paths } from '../routes/paths';
 
 export class ErrorResponse {
   readonly status: number;
@@ -24,6 +25,15 @@ export class ErrorResponse {
 function errorHandler(e: unknown) {
   if (e instanceof AxiosError) {
     if (e.response) {
+      if (e.response.status === 401) {
+        if (
+          window.location.pathname !== paths.welcome &&
+          window.location.pathname !== paths.login &&
+          window.location.pathname !== paths.signUp
+        ) {
+          window.location.replace(paths.welcome);
+        }
+      }
       return new ErrorResponse(e.response);
 
       // Unauthorized
