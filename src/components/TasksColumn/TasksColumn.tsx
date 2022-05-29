@@ -4,6 +4,7 @@ import { Box, Card, CardContent, CardHeader, Grid, IconButton, Typography } from
 import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckIcon from '@mui/icons-material/Check';
+import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 
 import { ButtonComponent } from '../Button';
 import { TextAreaComponent } from '../TextAreaComponent';
@@ -113,6 +114,16 @@ export const TasksColumn = ({ id, title, order, onClick }: ITasksColumn) => {
     dispatch(deleteTaskTasks(taskId));
   };
 
+  const handleOnDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+
+    const items = Array.from(tasks);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    setTasks(items);
+  };
+
   return (
     <>
       <Card className="column">
@@ -163,26 +174,41 @@ export const TasksColumn = ({ id, title, order, onClick }: ITasksColumn) => {
           {!isTasksLoad ? (
             <Spinner />
           ) : (
-            <Grid
-              container
-              height="100%"
-              overflow="auto"
-              alignItems="center"
-              flexDirection="column"
-              flexWrap="nowrap"
-            >
-              {tasks
-                .sort((a, b) => a.order - b.order)
-                .map(({ title, id, description }) => (
-                  <TaskCard
-                    key={id}
-                    title={title}
-                    deleteTask={() => deleteCurrentTask(id)}
-                    id={id}
-                    description={description}
-                  />
-                ))}
-            </Grid>
+            <DragDropContext onDragEnd={handleOnDragEnd}>
+              <Droppable droppableId="column1">
+                {(provided) => (
+                  <Grid
+                    container
+                    height="100%"
+                    overflow="auto"
+                    alignItems="center"
+                    flexDirection="column"
+                    flexWrap="nowrap"
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    className="column1"
+                  >
+                    {tasks
+                      .sort((a, b) => a.order - b.order)
+                      .map(({ title, id, description }, index) => (
+                        <Draggable key={id} draggableId={id} index={index}>
+                          {(provided) => (
+                            <TaskCard
+                              key={id}
+                              title={title}
+                              deleteTask={() => deleteCurrentTask(id)}
+                              id={id}
+                              description={description}
+                              dragProvider={provided}
+                            />
+                          )}
+                        </Draggable>
+                      ))}
+                    {provided.placeholder}
+                  </Grid>
+                )}
+              </Droppable>
+            </DragDropContext>
           )}
         </CardContent>
         <CardFooter>
@@ -196,6 +222,7 @@ export const TasksColumn = ({ id, title, order, onClick }: ITasksColumn) => {
           </ButtonComponent>
         </CardFooter>
       </Card>
+
       <CreateModal
         isActive={isCreateModalActive}
         setActive={setIsCreateModalActive}
