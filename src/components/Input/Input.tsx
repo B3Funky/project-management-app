@@ -13,6 +13,7 @@ interface ITextField {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   type?: string;
   errorText?: string;
+  value?: string;
 }
 
 export const InputComponent = ({
@@ -27,6 +28,7 @@ export const InputComponent = ({
   type,
   errorText,
   onChange,
+  value,
 }: ITextField) => {
   return (
     <TextField
@@ -42,6 +44,7 @@ export const InputComponent = ({
       onChange={onChange}
       error={!!errorText}
       helperText={errorText}
+      value={value}
     />
   );
 };

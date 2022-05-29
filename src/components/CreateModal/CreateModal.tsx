@@ -100,7 +100,7 @@ export const CreateModal = ({
           { title: title, description: description, userId: userId as string }
         );
 
-        dispatch(addTask({ ...task }));
+        dispatch(addTask({ ...task, files: [], order: 0, boardId: '', columnId: '' }));
 
         if (onCreateCallback) {
           onCreateCallback(task);

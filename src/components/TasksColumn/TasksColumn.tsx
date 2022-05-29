@@ -182,16 +182,15 @@ export const TasksColumn = ({ id, title, order, onClick, dragProvider }: ITasksC
             >
               {tasks
                 .sort((a, b) => a.order - b.order)
-                .map(({ title, id, description }, index) => (
-                  <Draggable key={id} draggableId={id} index={index}>
+                .map((task, index) => (
+                  <Draggable key={task.id} draggableId={task.id} index={index}>
                     {(provided, snapshot) => (
                       <>
                         <TaskCard
-                          key={id}
-                          title={title}
-                          deleteTask={() => deleteCurrentTask(id)}
-                          id={id}
-                          description={description}
+                          {...task}
+                          id={task.id}
+                          key={task.id}
+                          deleteTask={() => deleteCurrentTask(task.id)}
                           dragProvider={provided}
                           dragSnapShot={snapshot}
                         />

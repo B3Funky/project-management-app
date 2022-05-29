@@ -1,22 +1,25 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { Button, Card, Grid, Typography } from '@mui/material';
+import { Card, Grid, Typography } from '@mui/material';
+
 import { ModalComponent } from '../Modal';
-import { ITaskCard, ITaskCardFiles } from '../TaskCard/TaskCard';
 import { TextAreaComponent } from '../TextAreaComponent';
-import './task-modal.css';
 import { ButtonComponent } from '../Button';
 import { UploadButton } from '../UploadButton';
+import api, { ITaskDataUpdate } from '../../utils/ApiBackend';
+import { ITaskCard, ITaskCardFiles } from '../TaskCard/TaskCard';
+
+import './task-modal.css';
 
 interface ITaskModal {
   card: ITaskCard;
-  taskDescription?: string;
-  taskTitle?: string;
+  taskDescription: string;
+  taskTitle: string;
   isActive: boolean;
   setIsActive: (arg: boolean) => void;
-  setDescription: (descr: string) => void;
+  setDescription: (description: string) => void;
   saveDescription: () => void;
   cancelDescription: () => void;
-  setTitle: (descr: string) => void;
+  setTitle: (description: string) => void;
 }
 
 export const TaskModal = ({
@@ -30,13 +33,12 @@ export const TaskModal = ({
   setTitle,
   taskTitle,
 }: ITaskModal) => {
-  const { id, title, done, files, order, userId, description } = card;
   const [isFocused, setIsFocused] = useState(false);
   const [taskFiles, setTaskFiles] = useState<ITaskCardFiles[]>([]);
 
   useEffect(() => {
-    if (files) {
-      setTaskFiles(files);
+    if (card.files) {
+      setTaskFiles(card.files);
     }
   }, []);
 
@@ -54,6 +56,17 @@ export const TaskModal = ({
     }
   };
 
+  const updateTask = async (data: ITaskDataUpdate) => {
+    try {
+      await api.task.update(
+        { boardId: card.boardId, columnId: card.columnId, taskId: card.id },
+        data
+      );
+    } catch (e) {
+      // TODO Error Modal
+    }
+  };
+
   return (
     <ModalComponent active={isActive} setActive={setIsActive}>
       <Card sx={{ height: '75vh', width: '50vw', p: '15px' }}>
@@ -61,6 +74,16 @@ export const TaskModal = ({
           className="task-modal__textarea task-modal__title"
           value={taskTitle}
           onChange={(e) => setTitle(e.currentTarget.value)}
+          onBlur={() => {
+            updateTask({
+              title: taskTitle,
+              description: card.description,
+              order: card.order,
+              userId: card.userId,
+              boardId: card.boardId,
+              columnId: card.columnId,
+            }).then();
+          }}
         />
         <Grid>
           <Typography variant="h6">Description:</Typography>
@@ -75,6 +98,14 @@ export const TaskModal = ({
             <ButtonComponent
               onClick={() => {
                 saveDescription();
+                updateTask({
+                  title: card.title,
+                  description: taskDescription,
+                  order: card.order,
+                  userId: card.userId,
+                  boardId: card.boardId,
+                  columnId: card.columnId,
+                }).then();
                 setIsFocused(false);
               }}
             >
