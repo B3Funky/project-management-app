@@ -2,18 +2,18 @@
   "translation": {
     "en": "EN",
     "ru": "RU",
-    "welcome_to_react": "Welcome to React!",
-    "to_board_page": "to Board page",
+    "main_header": "Boards",
     "create_new_board": "Create new board",
     "account_of_current_user": "Account of current user",
     "edit_profile": "Edit Profile",
+    "back_to_main_page": "back to Main page",
     "sign_out": "Sign Out",
     "footer": {
       "developed": "Developed by:"
     },
     "change_user_data": "Save changes",
     "delete_user_confirm": "Are you sure you want to delete this user?",
-    "profile_page": "Profile page",
+    "profile_page": "Edit profile",
     "delete_user": "Delete user",
     "changed_user": "Changes saved successfully",
     "name_input_label": "Name",

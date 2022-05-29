@@ -59,7 +59,7 @@ export function Main() {
         justifyContent="center"
         alignItems="center"
       >
-        <h1>{t('welcome_to_react')}</h1>
+        <h1>{t('main_header')}</h1>
         {!isBoardsLoad ? (
           <Spinner />
         ) : (
@@ -87,7 +87,7 @@ export function Main() {
                 },
               }}
             >
-              <Typography>Add new Board</Typography>
+              <Typography>{t('create_new_board')}</Typography>
             </ButtonComponent>
           </Grid>
         )}
