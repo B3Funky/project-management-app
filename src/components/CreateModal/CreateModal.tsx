@@ -149,16 +149,16 @@ export const CreateModal = ({
       ></SnackBarComponent>
       <ModalComponent active={isActive} setActive={setActive} isArrow>
         <form onSubmit={handleSubmit}>
-          <Grid container flexDirection="column" alignItems="center">
+          <Grid container flexDirection="column" alignItems="center" rowGap={3}>
             <Grid>
-              <Typography>Add {thing} Title</Typography>
+              <Typography>{`${t('add')} ${t('title')}`}</Typography>
               <InputComponent
                 errorText={titleError}
                 onChange={(e) => {
                   setTitle(e.target.value);
                   isFieldValid({
                     value: e.target.value,
-                    errorText: 'Field should be fill',
+                    errorText: t('field_should_be_fill'),
                     method: setTitleError,
                     regexp: IS_EMPTY_REGEXP,
                   });
@@ -167,14 +167,14 @@ export const CreateModal = ({
             </Grid>
             {thing !== 'Column' ? (
               <Grid>
-                <Typography>Add {thing} Description</Typography>
+                <Typography>{`${t('add')} ${t('description')}`}</Typography>
                 <InputComponent
                   errorText={descriptionError}
                   onChange={(e) => {
                     setDescription(e.target.value);
                     isFieldValid({
                       value: e.target.value,
-                      errorText: 'Field should be fill',
+                      errorText: t('field_should_be_fill'),
                       method: setDescriptionError,
                       regexp: IS_EMPTY_REGEXP,
                     });
@@ -184,7 +184,7 @@ export const CreateModal = ({
             ) : null}
 
             <ButtonComponent isDisabled={isFormDisabled} type="submit" variant="contained">
-              <Typography>Create {thing}</Typography>
+              <Typography>{t('create')}</Typography>
             </ButtonComponent>
           </Grid>
         </form>

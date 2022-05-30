@@ -27,6 +27,11 @@
     "status_code": "Status code",
     "login_exist": "Login already exist!",
     "something_wrong": "Something went wrong!",
+    "add": "Add",
+    "title": "title",
+    "create": "Create",
+    "description": "description",
+    "field_should_be_fill": "Field should be fill",
     "signIn_page": {
       "header": "Sign In",
       "no_account": "Don't have an account?",
@@ -45,7 +50,7 @@
       },
       "h1": "Project Management App",
       "h2": "by Team 50",
-      "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "about": "This application was created as a graduation project of the RS School React 2022 Q1 course. With this application, you can create task boards, set tasks, edit them, and delete tasks.",
       "showTeam": "Show our team:",
       "showAbout": "About this project"
     },

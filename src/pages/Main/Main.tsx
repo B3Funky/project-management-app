@@ -74,7 +74,6 @@ export function Main() {
         justifyContent="center"
         alignItems="center"
       >
-        <h1>{t('main_header')}</h1>
         {!isBoardsLoad ? (
           <Spinner />
         ) : (

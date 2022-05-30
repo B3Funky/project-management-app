@@ -87,7 +87,7 @@ export const TaskModal = ({
         setIsOpen={setIsRequestError}
         message={errorMessage}
       ></SnackBarComponent>
-      <ModalComponent active={isActive} setActive={setIsActive}>
+      <ModalComponent active={isActive} setActive={setIsActive} isArrow>
         <Card sx={{ height: '75vh', width: '50vw', p: '15px' }}>
           <TextAreaComponent
             className="task-modal__textarea task-modal__title"

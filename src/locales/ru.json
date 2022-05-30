@@ -27,6 +27,11 @@
     "status_code": "Код ответа",
     "login_exist": "Логин уже существует!",
     "something_wrong": "Что-то пошло не так!",
+    "add": "Добавте",
+    "title": "заголовок",
+    "description": "описание",
+    "create": "Создать",
+    "field_should_be_fill": "Заполните это поле",
     "signIn_page": {
       "header": "Вход",
       "no_account": "Нет аккаунта?",
@@ -45,7 +50,7 @@
       },
       "h1": "Управление проектами",
       "h2": "от Team 50",
-      "about": "Лорем ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "about": "Приложение создано как выпускной проект курса RS School React 2022 Q1. С помощью этого приложения вы сможет создавать доски для задач, ставить задачи, редактировать их, а также удалять задачи.",
       "showTeam": "Наша команда:",
       "showAbout": "О проекте"
     },
