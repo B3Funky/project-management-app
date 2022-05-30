@@ -21,6 +21,9 @@
     "password_input_label": "Password",
     "submit_button": "Submit",
     "error": "Error",
+    "name_error_validation": "You must provide a name",
+    "login_error_validation": "You must provide a login",
+    "password_error_validation": "You must provide a password",
     "signIn_page": {
       "header": "Sign In",
       "no_account": "Don't have an account?",

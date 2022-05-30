@@ -11,6 +11,7 @@ import api from '../../utils/ApiBackend';
 import { deleteUser } from '../../utils/login';
 import { paths } from '../../routes/paths';
 import { IUser } from '../../models/api';
+import { IS_EMPTY_REGEXP } from '../../constants';
 
 const SUCCESS_MODAL_TIMEOUT = 3000;
 
@@ -19,6 +20,9 @@ export function Profile() {
   const [password, setPassword] = useState('');
   const [isDeleteModalActive, setIsDeleteModalActive] = useState(false);
   const [isSnackbarOpened, setSnackbarOpened] = useState(false);
+  const [isNameError, setIsNameError] = useState(false);
+  const [isLoginError, setIsLoginError] = useState(false);
+  const [isPasswordError, setIsPasswordError] = useState(false);
 
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -29,11 +33,13 @@ export function Profile() {
 
   const handleChangePassword = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e?.target?.value);
+    IS_EMPTY_REGEXP.test(e.target.value) ? setIsPasswordError(true) : setIsPasswordError(false);
   }, []);
 
   const handleChangeUserName = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setUser({ ...user, name: e?.target?.value });
+      IS_EMPTY_REGEXP.test(e.target.value) ? setIsNameError(true) : setIsNameError(false);
     },
     [user]
   );
@@ -41,6 +47,7 @@ export function Profile() {
   const handleChangeUserLogin = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setUser({ ...user, login: e?.target?.value });
+      IS_EMPTY_REGEXP.test(e.target.value) ? setIsLoginError(true) : setIsLoginError(false);
     },
     [user]
   );
@@ -118,16 +125,19 @@ export function Profile() {
       >
         <h2>{t('profile_page')}</h2>
         <InputComponent
+          errorText={`${isNameError ? t('name_error_validation') : ''}`}
           label={t('name_input_label')}
           value={user?.name}
           onChange={handleChangeUserName}
         />
         <InputComponent
+          errorText={`${isLoginError ? t('login_error_validation') : ''}`}
           label={t('login_input_label')}
           value={user?.login}
           onChange={handleChangeUserLogin}
         />
         <InputComponent
+          errorText={`${isPasswordError ? t('password_error_validation') : ''}`}
           label={t('password_input_label')}
           type="password"
           value={password}

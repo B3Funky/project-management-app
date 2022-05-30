@@ -8,29 +8,44 @@ import { InputComponent } from '../../components/Input';
 import { ButtonComponent } from '../../components/Button';
 import { paths } from '../../routes/paths';
 import { useSignup } from '../../hooks/use-signup';
+import { IS_EMPTY_REGEXP } from '../../constants';
 
 export function SignUp() {
   const [name, setName] = useState('');
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isNameError, setIsNameError] = useState(false);
+  const [isLoginError, setIsLoginError] = useState(false);
+  const [isPasswordError, setIsPasswordError] = useState(false);
 
   const { t } = useTranslation();
   const isFormFilled = useMemo(() => Boolean(name && login && password), [name, login, password]);
   const handleSignUp = useSignup(isFormFilled, setError, name, login, password);
 
   const handleChangeName = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => setName(event.target.value),
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setName(event.target.value);
+      IS_EMPTY_REGEXP.test(event.target.value) ? setIsNameError(true) : setIsNameError(false);
+    },
     [setName]
   );
 
   const handleChangeLogin = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => setLogin(event.target.value),
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setLogin(event.target.value);
+      IS_EMPTY_REGEXP.test(event.target.value) ? setIsLoginError(true) : setIsLoginError(false);
+    },
     [setLogin]
   );
 
   const handleChangePassword = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => setPassword(event.target.value),
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setPassword(event.target.value);
+      IS_EMPTY_REGEXP.test(event.target.value)
+        ? setIsPasswordError(true)
+        : setIsPasswordError(false);
+    },
     [setPassword]
   );
 
@@ -44,18 +59,28 @@ export function SignUp() {
         direction="column"
         justifyContent="center"
         alignItems="center"
+        rowGap={2}
       >
         <Grid item>
           <h2>{t('signUp_page.header')}</h2>
         </Grid>
         <Grid item>
-          <InputComponent label={t('name_input_label')} onChange={handleChangeName} />
-        </Grid>
-        <Grid item>
-          <InputComponent label={t('login_input_label')} onChange={handleChangeLogin} />
+          <InputComponent
+            errorText={`${isNameError ? t('name_error_validation') : ''}`}
+            label={t('name_input_label')}
+            onChange={handleChangeName}
+          />
         </Grid>
         <Grid item>
           <InputComponent
+            errorText={`${isLoginError ? t('login_error_validation') : ''}`}
+            label={t('login_input_label')}
+            onChange={handleChangeLogin}
+          />
+        </Grid>
+        <Grid item>
+          <InputComponent
+            errorText={`${isPasswordError ? t('password_error_validation') : ''}`}
             label={t('password_input_label')}
             type="password"
             onChange={handleChangePassword}

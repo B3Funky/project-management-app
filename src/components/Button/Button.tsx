@@ -2,6 +2,8 @@ import React, { ReactElement } from 'react';
 import { SxProps } from '@mui/system';
 import Button from '@mui/material/Button';
 
+import './button.css';
+
 interface IButton {
   size?: 'small' | 'medium' | 'large';
   variant?: 'text' | 'outlined' | 'contained';

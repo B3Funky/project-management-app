@@ -21,6 +21,9 @@
     "password_input_label": "Пароль",
     "submit_button": "Отправить",
     "error": "Ошибка",
+    "name_error_validation": "Вы должны указать имя",
+    "login_error_validation": "Вы должны указать логин",
+    "password_error_validation": "Вы должны указать пароль",
     "signIn_page": {
       "header": "Вход",
       "no_account": "Нет аккаунта?",
