@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { Grid, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
+import { SnackBarComponent, IErrorMessage } from '../../components/SnackBar';
 import { Header } from '../../components/Header';
 import { Spinner } from '../../components/Spinner';
 import { BoardPreview } from '../../components/BoardPreview';
 import { ButtonComponent } from '../../components/Button';
 import { CreateModal } from '../../components/CreateModal';
-import api from '../../utils/ApiBackend';
+import api, { ErrorResponse } from '../../utils/ApiBackend';
 import { useAppDispatch, useAppSelector } from '../../redux-hooks';
 import { BoardSlice } from '../../store/reducers/BoardReducer';
 import { paths } from '../../routes/paths';
@@ -21,6 +22,8 @@ export function Main() {
   const [isBoardsLoad, setIsBoardsLoad] = useState<boolean>(false);
   const [isModalActive, setIsModalActive] = useState<boolean>(false);
   const [refresh, setRefresh] = useState<string>('');
+  const [isRequestError, setIsRequestError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<IErrorMessage | undefined>();
 
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -35,7 +38,14 @@ export function Main() {
       setBoards(boards);
       setIsBoardsLoad(true);
     } catch (e) {
-      // TODO Error Modal
+      if (e instanceof ErrorResponse) {
+        const errorMessage: IErrorMessage = Object.assign(
+          { text: t('something_wrong'), severity: 'error' as const },
+          e
+        );
+        setErrorMessage(errorMessage);
+        setIsRequestError(true);
+      }
     }
   };
 
@@ -51,6 +61,11 @@ export function Main() {
   return (
     <>
       <Header />
+      <SnackBarComponent
+        isOpen={Boolean(isRequestError)}
+        setIsOpen={setIsRequestError}
+        message={errorMessage}
+      ></SnackBarComponent>
       <Grid
         height="100%"
         container

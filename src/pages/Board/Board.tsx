@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, useParams, useNavigate } from 'react-router-dom';
 import { Grid, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
+import { SnackBarComponent, IErrorMessage } from '../../components/SnackBar';
 import { Header } from '../../components/Header';
 import { Spinner } from '../../components/Spinner';
 import { TasksColumn } from '../../components/TasksColumn';
@@ -31,7 +33,10 @@ export function Board() {
   const [currentTasks, setCurrentTasks] = useState<ITask[]>([]);
   const [isColumnsLoad, setIsColumnsLoad] = useState<boolean>(false);
   const [isModalActive, setIsModalActive] = useState<boolean>(false);
+  const [isRequestError, setIsRequestError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<IErrorMessage | undefined>();
 
+  const { t } = useTranslation();
   const { id: boardId } = useParams();
   const navigate = useNavigate();
 
@@ -48,10 +53,15 @@ export function Board() {
       setIsColumnsLoad(true);
     } catch (e) {
       if (e instanceof ErrorResponse) {
-        // TODO Error Modal
         if (e.status === 400 || e.status === 404) {
           navigate(paths.pageNotFound);
         }
+        const errorMessage: IErrorMessage = Object.assign(
+          { text: t('something_wrong'), severity: 'error' as const },
+          e
+        );
+        setErrorMessage(errorMessage);
+        setIsRequestError(true);
       }
     }
   };
@@ -62,7 +72,14 @@ export function Board() {
   //     setColumns(columns);
   //     setIsColumnsLoad(true);
   //   } catch (e) {
-  //     // TODO Error Modal
+  //     if (e instanceof ErrorResponse) {
+  //       const errorMessage: IErrorMessage = Object.assign(
+  //         { text: t('something_wrong'), severity: 'error' as const },
+  //         e
+  //       );
+  //       setErrorMessage(errorMessage);
+  //       setIsRequestError(true);
+  //     }
   //   }
   // };
 
@@ -73,7 +90,14 @@ export function Board() {
       updatedBoard.columns = updatedBoard.columns.filter((column) => column.id !== columnId);
       setBoard(updatedBoard);
     } catch (e) {
-      // TODO Error Modal
+      if (e instanceof ErrorResponse) {
+        const errorMessage: IErrorMessage = Object.assign(
+          { text: t('something_wrong'), severity: 'error' as const },
+          e
+        );
+        setErrorMessage(errorMessage);
+        setIsRequestError(true);
+      }
     }
   };
 
@@ -104,7 +128,14 @@ export function Board() {
       setCurrentTasks(tasks);
       return tasks;
     } catch (e) {
-      // TODO Error Modal
+      if (e instanceof ErrorResponse) {
+        const errorMessage: IErrorMessage = Object.assign(
+          { text: t('something_wrong'), severity: 'error' as const },
+          e
+        );
+        setErrorMessage(errorMessage);
+        setIsRequestError(true);
+      }
     }
   };
 
@@ -119,7 +150,14 @@ export function Board() {
       // getTasks(boardId, columnId);
       setCurrentTasks([]);
     } catch (e) {
-      // TODO Error Modal
+      if (e instanceof ErrorResponse) {
+        const errorMessage: IErrorMessage = Object.assign(
+          { text: t('something_wrong'), severity: 'error' as const },
+          e
+        );
+        setErrorMessage(errorMessage);
+        setIsRequestError(true);
+      }
     }
   };
 
@@ -171,6 +209,11 @@ export function Board() {
   return (
     <>
       <Header />
+      <SnackBarComponent
+        isOpen={Boolean(isRequestError)}
+        setIsOpen={setIsRequestError}
+        message={errorMessage}
+      ></SnackBarComponent>
       <main className={'board-main'}>
         {!isColumnsLoad ? (
           <Spinner />

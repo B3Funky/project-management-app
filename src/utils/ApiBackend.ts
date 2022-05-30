@@ -12,6 +12,11 @@ import {
 } from '../models/api';
 import { paths } from '../routes/paths';
 
+export interface IErrorResponse {
+  status: number;
+  message: string | string[];
+}
+
 export class ErrorResponse {
   readonly status: number;
   readonly message: string | string[];

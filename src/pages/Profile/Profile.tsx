@@ -3,11 +3,12 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { Alert, Grid, Snackbar } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
+import { SnackBarComponent, IErrorMessage } from '../../components/SnackBar';
 import { ConfirmModal } from '../../components/ConfirmModal';
 import { Header } from '../../components/Header';
 import { InputComponent } from '../../components/Input';
 import { ButtonComponent } from '../../components/Button';
-import api from '../../utils/ApiBackend';
+import api, { ErrorResponse } from '../../utils/ApiBackend';
 import { deleteUser } from '../../utils/login';
 import { paths } from '../../routes/paths';
 import { IUser } from '../../models/api';
@@ -23,6 +24,8 @@ export function Profile() {
   const [isNameError, setIsNameError] = useState(false);
   const [isLoginError, setIsLoginError] = useState(false);
   const [isPasswordError, setIsPasswordError] = useState(false);
+  const [isRequestError, setIsRequestError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<IErrorMessage | undefined>();
 
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -75,7 +78,23 @@ export function Profile() {
       setSnackbarOpened(true);
       timeoutId = setTimeout(() => setSnackbarOpened(false), SUCCESS_MODAL_TIMEOUT);
     } catch (e) {
-      // TODO Error Modal, code 500 when login already exist
+      if (e instanceof ErrorResponse) {
+        if (e.status === 500) {
+          const errorMessage: IErrorMessage = Object.assign(
+            { text: t('login_exist'), severity: 'warning' as const },
+            e
+          );
+          setErrorMessage(errorMessage);
+          setIsRequestError(true);
+        } else {
+          const errorMessage: IErrorMessage = Object.assign(
+            { text: t('something_wrong'), severity: 'error' as const },
+            e
+          );
+          setErrorMessage(errorMessage);
+          setIsRequestError(true);
+        }
+      }
     }
 
     return () => clearTimeout(timeoutId);
@@ -88,10 +107,16 @@ export function Profile() {
         const user = await api.user.get({ userId });
         setUser(user);
       } catch (e) {
-        // TODO Error Modal
+        if (e instanceof ErrorResponse) {
+          const errorMessage: IErrorMessage = Object.assign(
+            { text: t('something_wrong'), severity: 'error' as const },
+            e
+          );
+          setErrorMessage(errorMessage);
+          setIsRequestError(true);
+        }
       }
     } else {
-      // TODO Error Modal Try to relogin
     }
   };
 
@@ -101,6 +126,11 @@ export function Profile() {
 
   return (
     <>
+      <SnackBarComponent
+        isOpen={Boolean(isRequestError)}
+        setIsOpen={setIsRequestError}
+        message={errorMessage}
+      ></SnackBarComponent>
       <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center' }} open={isSnackbarOpened}>
         <Alert severity="success" sx={{ width: '100%' }}>
           {t('changed_user')}

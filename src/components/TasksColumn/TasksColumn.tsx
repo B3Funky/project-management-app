@@ -11,7 +11,9 @@ import {
   DraggableProvided,
   DroppableProvided,
 } from 'react-beautiful-dnd';
+import { useTranslation } from 'react-i18next';
 
+import { SnackBarComponent, IErrorMessage } from '../SnackBar';
 import { ButtonComponent } from '../Button';
 import { TextAreaComponent } from '../TextAreaComponent';
 import { Spinner } from '../Spinner';
@@ -19,7 +21,7 @@ import { TaskCard } from '../TaskCard';
 import { CardFooter } from '../TaskColumnFooter';
 import { CreateModal } from '../CreateModal';
 import { ConfirmModal } from '../ConfirmModal';
-import api from '../../utils/ApiBackend';
+import api, { ErrorResponse } from '../../utils/ApiBackend';
 import { useAppDispatch, useAppSelector } from '../../redux-hooks';
 import { TaskSlice } from '../../store/reducers/TaskReducer';
 import { IBoardById, IColumn, ITask, ITaskCreate } from '../../models/api';
@@ -50,6 +52,10 @@ export const TasksColumn = ({
   const [changedText, setChangedText] = useState<string>('');
   const [isCreateModalActive, setIsCreateModalActive] = useState(false);
   const [isConfirmModalActive, setIsConfirmModalActive] = useState(false);
+  const [isRequestError, setIsRequestError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<IErrorMessage | undefined>();
+
+  const { t } = useTranslation();
 
   const dispatch = useAppDispatch();
   const { deleteTask: deleteTaskTasks } = TaskSlice.actions;
@@ -80,7 +86,14 @@ export const TasksColumn = ({
       );
       setColumnOrder(updatedColumn.order);
     } catch (e) {
-      // TODO Error Modal
+      if (e instanceof ErrorResponse) {
+        const errorMessage: IErrorMessage = Object.assign(
+          { text: t('something_wrong'), severity: 'error' as const },
+          e
+        );
+        setErrorMessage(errorMessage);
+        setIsRequestError(true);
+      }
     }
   };
 
@@ -90,7 +103,14 @@ export const TasksColumn = ({
       setTasks(tasks);
       setIsTasksLoad(true);
     } catch (e) {
-      // TODO Error Modal
+      if (e instanceof ErrorResponse) {
+        const errorMessage: IErrorMessage = Object.assign(
+          { text: t('something_wrong'), severity: 'error' as const },
+          e
+        );
+        setErrorMessage(errorMessage);
+        setIsRequestError(true);
+      }
     }
   };
 
@@ -106,7 +126,14 @@ export const TasksColumn = ({
       updatedTasks.push(newTask);
       setTasks(updatedTasks);
     } catch (e) {
-      // TODO Error Modal
+      if (e instanceof ErrorResponse) {
+        const errorMessage: IErrorMessage = Object.assign(
+          { text: t('something_wrong'), severity: 'error' as const },
+          e
+        );
+        setErrorMessage(errorMessage);
+        setIsRequestError(true);
+      }
     }
   };
 
@@ -120,7 +147,14 @@ export const TasksColumn = ({
       const updatedTasks = tasks.filter((task) => task.id !== taskId);
       setTasks(updatedTasks);
     } catch (e) {
-      // TODO Error Modal
+      if (e instanceof ErrorResponse) {
+        const errorMessage: IErrorMessage = Object.assign(
+          { text: t('something_wrong'), severity: 'error' as const },
+          e
+        );
+        setErrorMessage(errorMessage);
+        setIsRequestError(true);
+      }
     }
   };
 
@@ -131,6 +165,11 @@ export const TasksColumn = ({
 
   return (
     <>
+      <SnackBarComponent
+        isOpen={Boolean(isRequestError)}
+        setIsOpen={setIsRequestError}
+        message={errorMessage}
+      ></SnackBarComponent>
       <Card className="column">
         <IconButton
           onClick={() => setIsConfirmModalActive(true)}

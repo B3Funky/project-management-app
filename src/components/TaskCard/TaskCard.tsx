@@ -3,12 +3,14 @@ import { Card, CardContent, IconButton } from '@mui/material';
 import { Box } from '@mui/system';
 import CancelIcon from '@mui/icons-material/Cancel';
 import EditIcon from '@mui/icons-material/Edit';
+import { useTranslation } from 'react-i18next';
 
+import { SnackBarComponent, IErrorMessage } from '../SnackBar';
 import { TextAreaComponent } from '../TextAreaComponent';
 import { ConfirmModal } from '../ConfirmModal';
 import { TaskModal } from '../TaskModal';
 import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
-import api, { ITaskDataUpdate } from '../../utils/ApiBackend';
+import api, { ITaskDataUpdate, ErrorResponse } from '../../utils/ApiBackend';
 import { ITask } from '../../models/api';
 
 import './task-card.css';
@@ -39,6 +41,10 @@ export const TaskCard = (props: ITaskCard) => {
   const [taskTitle, setTaskTitle] = useState<string>('');
   const [isTitleFocused, setIsTitleFocused] = useState(false);
   const taskTitleRef = useRef<HTMLTextAreaElement>(null);
+  const [isRequestError, setIsRequestError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<IErrorMessage | undefined>();
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     setCurrentTaskDescriptionText(props.description);
@@ -78,7 +84,14 @@ export const TaskCard = (props: ITaskCard) => {
         data
       );
     } catch (e) {
-      // TODO Error Modal
+      if (e instanceof ErrorResponse) {
+        const errorMessage: IErrorMessage = Object.assign(
+          { text: t('something_wrong'), severity: 'error' as const },
+          e
+        );
+        setErrorMessage(errorMessage);
+        setIsRequestError(true);
+      }
     }
   };
 
@@ -96,6 +109,11 @@ export const TaskCard = (props: ITaskCard) => {
         cursor: 'pointer',
       }}
     >
+      <SnackBarComponent
+        isOpen={Boolean(isRequestError)}
+        setIsOpen={setIsRequestError}
+        message={errorMessage}
+      ></SnackBarComponent>
       <Card
         sx={{
           width: '90%',

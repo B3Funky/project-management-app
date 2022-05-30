@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, IconButton, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { useTranslation } from 'react-i18next';
 
+import { SnackBarComponent, IErrorMessage } from '../SnackBar';
 import { ConfirmModal } from '../ConfirmModal';
-import api from '../../utils/ApiBackend';
+import api, { ErrorResponse } from '../../utils/ApiBackend';
 import { getRandomColor } from '../../utils/getRandomColor';
 import { IBoard } from '../../models/api';
 
@@ -19,6 +21,10 @@ export const BoardPreview = ({ id, title, description, onDelete, onClick }: IBoa
   const [background, setBackground] = useState('');
   const [isCancelHovered, setIsCancelHovered] = useState(false);
   const [isConfirmModalActive, setIsConfirmModalActive] = useState(false);
+  const [isRequestError, setIsRequestError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<IErrorMessage | undefined>();
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     setBackground(getRandomColor());
@@ -27,17 +33,28 @@ export const BoardPreview = ({ id, title, description, onDelete, onClick }: IBoa
   const deleteBoard = async () => {
     try {
       await api.board.delete({ boardId: id });
-      // TODO Maybe not good solution
       if (onDelete) {
         onDelete();
       }
     } catch (e) {
-      // TODO Error Modal
+      if (e instanceof ErrorResponse) {
+        const errorMessage: IErrorMessage = Object.assign(
+          { text: t('something_wrong'), severity: 'error' as const },
+          e
+        );
+        setErrorMessage(errorMessage);
+        setIsRequestError(true);
+      }
     }
   };
 
   return (
     <>
+      <SnackBarComponent
+        isOpen={Boolean(isRequestError)}
+        setIsOpen={setIsRequestError}
+        message={errorMessage}
+      ></SnackBarComponent>
       <Card
         sx={{
           minWidth: 275,

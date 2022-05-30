@@ -24,6 +24,9 @@
     "name_error_validation": "You must provide a name",
     "login_error_validation": "You must provide a login",
     "password_error_validation": "You must provide a password",
+    "status_code": "Status code",
+    "login_exist": "Login already exist!",
+    "something_wrong": "Something went wrong!",
     "signIn_page": {
       "header": "Sign In",
       "no_account": "Don't have an account?",

@@ -19,7 +19,7 @@ export const useLogin = (
         const users = await api.user.getAll();
         users.map((user) => {
           if (user.login === login) {
-            localStorage.setItem('userId', user.id); // TODO if no match?
+            localStorage.setItem('userId', user.id);
           }
         });
 
