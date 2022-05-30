@@ -132,7 +132,7 @@ export const TasksColumn = ({
 
   return (
     <>
-      <Card className="column" {...dragProvider?.droppableProps} ref={dragProvider?.innerRef}>
+      <Card className="column">
         <IconButton
           onClick={() => setIsConfirmModalActive(true)}
           sx={{ position: 'absolute', top: '0', right: '0', padding: '2px' }}
@@ -180,33 +180,39 @@ export const TasksColumn = ({
           {!isTasksLoad ? (
             <Spinner />
           ) : (
-            <Grid
-              container
-              height="100%"
-              overflow="auto"
-              alignItems="center"
-              flexDirection="column"
-              flexWrap="nowrap"
-            >
-              {tasks
-                .sort((a, b) => a.order - b.order)
-                .map((task, index) => (
-                  <Draggable key={task.id} draggableId={task.id} index={index}>
-                    {(provided, snapshot) => (
-                      <>
-                        <TaskCard
-                          {...task}
-                          id={task.id}
-                          key={task.id}
-                          deleteTask={() => deleteCurrentTask(task.id)}
-                          dragProvider={provided}
-                          dragSnapShot={snapshot}
-                        />
-                      </>
-                    )}
-                  </Draggable>
-                ))}
-            </Grid>
+            <Droppable droppableId={id} key={id}>
+              {(provided) => (
+                <Grid
+                  container
+                  height="100%"
+                  overflow="auto"
+                  alignItems="center"
+                  flexDirection="column"
+                  flexWrap="nowrap"
+                  {...provided?.droppableProps}
+                  ref={provided?.innerRef}
+                >
+                  {tasks
+                    .sort((a, b) => a.order - b.order)
+                    .map((task, index) => (
+                      <Draggable key={task.id} draggableId={task.id} index={index}>
+                        {(provided, snapshot) => (
+                          <>
+                            <TaskCard
+                              {...task}
+                              id={task.id}
+                              key={task.id}
+                              deleteTask={() => deleteCurrentTask(task.id)}
+                              dragProvider={provided}
+                              dragSnapShot={snapshot}
+                            />
+                          </>
+                        )}
+                      </Draggable>
+                    ))}
+                </Grid>
+              )}
+            </Droppable>
           )}
         </CardContent>
         <CardFooter>
@@ -220,6 +226,7 @@ export const TasksColumn = ({
           </ButtonComponent>
         </CardFooter>
       </Card>
+
       <CreateModal
         isActive={isCreateModalActive}
         setActive={setIsCreateModalActive}

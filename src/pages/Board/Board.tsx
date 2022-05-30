@@ -16,6 +16,7 @@ import { IColumn, ITask } from '../../models/api';
 
 import './board.css';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
+import { TaskSlice } from '../../store/reducers/TaskReducer';
 
 export function Board() {
   const [columns, setColumns] = useState<IColumn[]>([]);
@@ -75,7 +76,6 @@ export function Board() {
       });
       setCurrentTasks(tasks);
       return tasks;
-      // setCurrentTasks(tasks);
     } catch (e) {
       // TODO Error Modal
     }
@@ -92,7 +92,8 @@ export function Board() {
     let res;
     try {
       res = await api.task.update({ boardId: boardId, columnId: columnId, taskId: id }, data);
-      getTasks(boardId, columnId);
+      // getTasks(boardId, columnId);
+      setCurrentTasks([]);
     } catch (e) {
       // TODO Error Modal
     }
@@ -142,6 +143,7 @@ export function Board() {
       // copiedItems!.splice(destination.index, 0, removed);
       // copiedItems?.map((item, i) => (item.order = i + 1));
       removed.order = destination.index + 1;
+
       [removed].map(({ boardId, columnId, order, id, description, title, userId }) =>
         updateTask({ boardId, columnId, description, order, title, userId }, id, columnId, boardId)
       );
@@ -162,19 +164,14 @@ export function Board() {
               {columns
                 .sort((a, b) => a.order - b.order)
                 .map(({ id, title, order }) => (
-                  <Droppable droppableId={id} key={id}>
-                    {(provided) => (
-                      <TasksColumn
-                        id={id}
-                        key={id}
-                        title={title}
-                        order={order}
-                        onClick={() => deleteCurrentColumn(id)}
-                        dragProvider={provided}
-                        currentTasks={currentTasks}
-                      />
-                    )}
-                  </Droppable>
+                  <TasksColumn
+                    id={id}
+                    key={id}
+                    title={title}
+                    order={order}
+                    onClick={() => deleteCurrentColumn(id)}
+                    currentTasks={currentTasks}
+                  />
                 ))}
               <ButtonComponent onClick={() => setIsModalActive(true)} sx={{ minWidth: '20vw' }}>
                 <Typography>Add new table</Typography>
