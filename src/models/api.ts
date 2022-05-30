@@ -20,9 +20,7 @@ export interface IColumn {
   order: number;
 }
 
-export interface ITaskForColumnById extends Omit<ITask, 'columnId' | 'boardId'> {
-  done: boolean;
-}
+export type ITaskForColumnById = Omit<ITask, 'columnId' | 'boardId'>;
 
 export interface IColumnById extends IColumn {
   tasks: ITaskForColumnById[];

@@ -12,60 +12,82 @@ import { useAppDispatch, useAppSelector } from '../../redux-hooks';
 import { BoardSlice } from '../../store/reducers/BoardReducer';
 import { ColumnSlice } from '../../store/reducers/ColumnReducer';
 import { paths } from '../../routes/paths';
-import { IColumn, ITask } from '../../models/api';
+import { IBoardById, IColumn, IColumnById, ITask } from '../../models/api';
 
 import './board.css';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { TaskSlice } from '../../store/reducers/TaskReducer';
 
+const emptyBoard = {
+  id: '',
+  title: '',
+  description: '',
+  columns: [],
+};
+
 export function Board() {
-  const [columns, setColumns] = useState<IColumn[]>([]);
+  // const [columns, setColumns] = useState<IColumn[]>([]);
+  const [board, setBoard] = useState<IBoardById>(emptyBoard);
+  const [currentTasks, setCurrentTasks] = useState<ITask[]>([]);
   const [isColumnsLoad, setIsColumnsLoad] = useState<boolean>(false);
   const [isModalActive, setIsModalActive] = useState<boolean>(false);
 
-  const { id } = useParams();
+  const { id: boardId } = useParams();
 
   const dispatch = useAppDispatch();
   const { getCurrentBoard } = BoardSlice.actions;
   const { deleteColumn } = ColumnSlice.actions;
   const { taskColumns } = useAppSelector((state) => state.ColumnReducer);
 
-  const getColumns = async () => {
+  const getBoard = async () => {
     try {
-      const columns: IColumn[] = await api.column.getAll({ boardId: id as string });
-      setColumns(columns);
+      const board: IBoardById = await api.board.get({ boardId: boardId as string });
+      // console.log(board);
+      setBoard(board);
       setIsColumnsLoad(true);
     } catch (e) {
       // TODO Error Modal
+      // TODO 404 - redirect 404 page
     }
   };
 
+  // const getColumns = async () => {
+  //   try {
+  //     const columns: IColumn[] = await api.column.getAll({ boardId: boardId as string });
+  //     setColumns(columns);
+  //     setIsColumnsLoad(true);
+  //   } catch (e) {
+  //     // TODO Error Modal
+  //   }
+  // };
+
   const deleteColumnOnBackend = async (columnId: string) => {
     try {
-      await api.column.delete({ boardId: id as string, columnId: columnId });
-      const updatedColumns = columns.filter((column) => column.id !== columnId);
-      setColumns(updatedColumns);
+      await api.column.delete({ boardId: board.id, columnId: columnId });
+      const updatedBoard = Object.assign({}, board);
+      updatedBoard.columns = updatedBoard.columns.filter((column) => column.id !== columnId);
+      setBoard(updatedBoard);
     } catch (e) {
       // TODO Error Modal
     }
   };
 
   const handleCreateColumn = (data: IColumn) => {
-    const updatedColumns = columns.slice();
-    updatedColumns.push(data);
-    setColumns(updatedColumns);
+    const newColumn: IColumnById = Object.assign({ tasks: [] }, data);
+    const updatedBoard = Object.assign({}, board);
+    updatedBoard.columns.push(newColumn);
+    setBoard(updatedBoard);
   };
 
-  const deleteCurrentColumn = (id: string) => {
-    deleteColumnOnBackend(id).then();
-    dispatch(deleteColumn(id));
+  const deleteCurrentColumn = (columnId: string) => {
+    deleteColumnOnBackend(columnId).then();
+    dispatch(deleteColumn(columnId));
   };
 
   useEffect(() => {
-    getColumns().then();
-    if (id) {
-      dispatch(getCurrentBoard(id));
-    }
+    getBoard().then();
+    // getColumns().then();
+    dispatch(getCurrentBoard(board.id));
   }, []);
 
   const getTasks = async (boardId: string, columnId: string) => {
@@ -81,17 +103,14 @@ export function Board() {
     }
   };
 
-  const [currentTasks, setCurrentTasks] = useState<ITask[]>([]);
-
   const updateTask = async (
     data: ITaskDataUpdate,
     id: string,
     columnId: string,
     boardId: string
   ) => {
-    let res;
     try {
-      res = await api.task.update({ boardId: boardId, columnId: columnId, taskId: id }, data);
+      await api.task.update({ boardId: boardId, columnId: columnId, taskId: id }, data);
       // getTasks(boardId, columnId);
       setCurrentTasks([]);
     } catch (e) {
@@ -104,20 +123,16 @@ export function Board() {
     const { source, destination } = result;
 
     if (source.droppableId !== destination.droppableId) {
-      const sourceColumn = columns.filter((column) => column.id === source.droppableId)[0];
-      const destColumn = columns.filter((column) => column.id === destination.droppableId)[0];
+      const sourceColumn = board.columns.filter((column) => column.id === source.droppableId)[0];
+      const destColumn = board.columns.filter((column) => column.id === destination.droppableId)[0];
       let sourceItems: ITask[] | undefined;
-      if (id) {
-        await getTasks(id, sourceColumn.id).then(
-          (res) => (sourceItems = res?.sort((a, b) => a.order - b.order))
-        );
-      }
+      await getTasks(board.id, sourceColumn.id).then(
+        (res) => (sourceItems = res?.sort((a, b) => a.order - b.order))
+      );
       let destItems: ITask[] | undefined;
-      if (id) {
-        await getTasks(id, destColumn.id).then(
-          (res) => (destItems = res?.sort((a, b) => a.order - b.order))
-        );
-      }
+      await getTasks(board.id, destColumn.id).then(
+        (res) => (destItems = res?.sort((a, b) => a.order - b.order))
+      );
       const [removed] = sourceItems!.splice(source.index, 1);
       // destItems!.splice(destination.index, 0, removed);
       // destItems?.map((item, i) => (item.order = i + 1));
@@ -132,13 +147,11 @@ export function Board() {
         )
       );
     } else {
-      const column = columns.filter((column) => column.id === source.droppableId)[0];
+      const column = board.columns.filter((column) => column.id === source.droppableId)[0];
       let copiedItems: ITask[] | undefined;
-      if (id) {
-        await getTasks(id, column.id).then(
-          (res) => (copiedItems = res?.sort((a, b) => a.order - b.order))
-        );
-      }
+      await getTasks(board.id, column.id).then(
+        (res) => (copiedItems = res?.sort((a, b) => a.order - b.order))
+      );
       const [removed] = copiedItems!.splice(source.index, 1);
       // copiedItems!.splice(destination.index, 0, removed);
       // copiedItems?.map((item, i) => (item.order = i + 1));
@@ -154,30 +167,40 @@ export function Board() {
     <>
       <Header />
       <main className={'board-main'}>
-        <h1>Board Page</h1>
-        <NavLink to={paths.main}>back to Main page</NavLink>
         {!isColumnsLoad ? (
           <Spinner />
         ) : (
-          <DragDropContext onDragEnd={onDragEnd}>
-            <Grid container overflow="auto" flexWrap="nowrap" alignItems="flex-start" height="75%">
-              {columns
-                .sort((a, b) => a.order - b.order)
-                .map(({ id, title, order }) => (
-                  <TasksColumn
-                    id={id}
-                    key={id}
-                    title={title}
-                    order={order}
-                    onClick={() => deleteCurrentColumn(id)}
-                    currentTasks={currentTasks}
-                  />
-                ))}
-              <ButtonComponent onClick={() => setIsModalActive(true)} sx={{ minWidth: '20vw' }}>
-                <Typography>Add new table</Typography>
-              </ButtonComponent>
-            </Grid>
-          </DragDropContext>
+          <>
+            <NavLink to={paths.main}>back to Main page</NavLink>
+            <h1>{board.title}</h1>
+            <h4>{board.description}</h4>
+            <DragDropContext onDragEnd={onDragEnd}>
+              <Grid
+                container
+                overflow="auto"
+                flexWrap="nowrap"
+                alignItems="flex-start"
+                height="75%"
+              >
+                {board.columns
+                  .sort((a, b) => a.order - b.order)
+                  .map(({ id, title, order }) => (
+                    <TasksColumn
+                      board={board}
+                      id={id}
+                      key={id}
+                      title={title}
+                      order={order}
+                      onClick={() => deleteCurrentColumn(id)}
+                      currentTasks={currentTasks}
+                    />
+                  ))}
+                <ButtonComponent onClick={() => setIsModalActive(true)} sx={{ minWidth: '20vw' }}>
+                  <Typography>Add new table</Typography>
+                </ButtonComponent>
+              </Grid>
+            </DragDropContext>
+          </>
         )}
       </main>
       <CreateModal

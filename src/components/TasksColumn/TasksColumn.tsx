@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { Box, Card, CardContent, CardHeader, Grid, IconButton, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -23,17 +22,19 @@ import { ConfirmModal } from '../ConfirmModal';
 import api from '../../utils/ApiBackend';
 import { useAppDispatch, useAppSelector } from '../../redux-hooks';
 import { TaskSlice } from '../../store/reducers/TaskReducer';
-import { IColumn, ITask, ITaskCreate } from '../../models/api';
+import { IBoardById, IColumn, ITask, ITaskCreate } from '../../models/api';
 
 import './tasks-column.css';
 
 export interface ITasksColumn extends IColumn {
+  board: IBoardById;
   onClick?: () => void;
   dragProvider?: DroppableProvided;
   currentTasks?: ITask[];
 }
 
 export const TasksColumn = ({
+  board,
   id,
   title,
   order,
@@ -49,8 +50,6 @@ export const TasksColumn = ({
   const [changedText, setChangedText] = useState<string>('');
   const [isCreateModalActive, setIsCreateModalActive] = useState(false);
   const [isConfirmModalActive, setIsConfirmModalActive] = useState(false);
-
-  const { id: boardId } = useParams();
 
   const dispatch = useAppDispatch();
   const { deleteTask: deleteTaskTasks } = TaskSlice.actions;
@@ -76,7 +75,7 @@ export const TasksColumn = ({
   const updateColumn = async (title: string, order: number) => {
     try {
       const updatedColumn: IColumn = await api.column.update(
-        { boardId: boardId as string, columnId: id },
+        { boardId: board.id, columnId: id },
         { title: title, order: order }
       );
       setColumnOrder(updatedColumn.order);
@@ -87,7 +86,7 @@ export const TasksColumn = ({
 
   const getTasks = async () => {
     try {
-      const tasks: ITask[] = await api.task.getAll({ boardId: boardId as string, columnId: id });
+      const tasks: ITask[] = await api.task.getAll({ boardId: board.id, columnId: id });
       setTasks(tasks);
       setIsTasksLoad(true);
     } catch (e) {
@@ -98,7 +97,7 @@ export const TasksColumn = ({
   const handleCreateTask = async (data: ITaskCreate) => {
     try {
       const newTask: ITask = await api.task.get({
-        boardId: boardId as string,
+        boardId: board.id,
         columnId: id,
         taskId: data.id,
       });
@@ -114,7 +113,7 @@ export const TasksColumn = ({
   const deleteTask = async (taskId: string) => {
     try {
       await api.task.delete({
-        boardId: boardId as string,
+        boardId: board.id,
         columnId: id,
         taskId: taskId,
       });
