@@ -99,30 +99,43 @@ export function Board() {
       const destColumn = columns.filter((column) => column.id === destination.droppableId)[0];
       let sourceItems: ITask[] | undefined;
       if (id) {
-        await getTasks(id, sourceColumn.id).then((res) => (sourceItems = res));
+        await getTasks(id, sourceColumn.id).then(
+          (res) => (sourceItems = res?.sort((a, b) => a.order - b.order))
+        );
       }
       let destItems: ITask[] | undefined;
       if (id) {
-        await getTasks(id, destColumn.id).then((res) => (destItems = res));
+        await getTasks(id, destColumn.id).then(
+          (res) => (destItems = res?.sort((a, b) => a.order - b.order))
+        );
       }
       const [removed] = sourceItems!.splice(source.index, 1);
-      destItems!.splice(destination.index, 0, removed);
-      destItems?.map((item, i) => (item.order = i + 1));
+      // destItems!.splice(destination.index, 0, removed);
+      // destItems?.map((item, i) => (item.order = i + 1));
+      removed.order = destination.index + 1;
+      console.log(removed);
+      removed.columnId = destColumn.id;
+      console.log(destColumn.id);
+      console.log(removed);
       console.log(destItems);
-      destItems?.map(({ boardId, columnId, order, id, description, title, userId }) =>
+
+      [removed].map(({ boardId, columnId, order, id, description, title, userId }) =>
         updateTaskTitle({ boardId, columnId, description, order, title, userId }, id)
       );
     } else {
       const column = columns.filter((column) => column.id === source.droppableId)[0];
       let copiedItems: ITask[] | undefined;
       if (id) {
-        await getTasks(id, column.id).then((res) => (copiedItems = res));
+        await getTasks(id, column.id).then(
+          (res) => (copiedItems = res?.sort((a, b) => a.order - b.order))
+        );
       }
       const [removed] = copiedItems!.splice(source.index, 1);
-      copiedItems!.splice(destination.index, 0, removed);
-      copiedItems?.map((item, i) => (item.order = i + 1));
-      console.log(copiedItems);
-      copiedItems?.map(({ boardId, columnId, order, id, description, title, userId }) =>
+      // copiedItems!.splice(destination.index, 0, removed);
+      // copiedItems?.map((item, i) => (item.order = i + 1));
+      // console.log(copiedItems);
+      removed.order = destination.index + 1;
+      [removed].map(({ boardId, columnId, order, id, description, title, userId }) =>
         updateTaskTitle({ boardId, columnId, description, order, title, userId }, id)
       );
     }
