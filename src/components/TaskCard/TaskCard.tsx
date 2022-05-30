@@ -119,7 +119,6 @@ export const TaskCard = (props: ITaskCard) => {
           width: '90%',
           overflow: 'visible',
           m: '10px 0px',
-          // border: `${props.done ? '3px solid #34eb6e' : ''}`,
           ...props.dragProvider?.draggableProps.style,
         }}
         onClick={() => {

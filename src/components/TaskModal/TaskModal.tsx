@@ -52,12 +52,12 @@ export const TaskModal = ({
     const files = e.target.files;
     if (files) {
       for (let i = 0; i < files?.length; i++) {
-        console.log(files[i].name);
+        // console.log(files[i].name);
         setTaskFiles((taskFiles) => [
           ...taskFiles,
           { fileName: files[i].name, fileSize: files[i].size },
         ]);
-        console.log(taskFiles);
+        // console.log(taskFiles);
       }
     }
   };
