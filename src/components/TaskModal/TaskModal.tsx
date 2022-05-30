@@ -88,7 +88,7 @@ export const TaskModal = ({
         message={errorMessage}
       ></SnackBarComponent>
       <ModalComponent active={isActive} setActive={setIsActive} isArrow>
-        <Card sx={{ height: '75vh', width: '50vw', p: '15px' }}>
+        <Card sx={{ height: '75vh', width: '50vw', p: '15px', bgcolor: '#fbf6e1' }}>
           <TextAreaComponent
             className="task-modal__textarea task-modal__title"
             value={taskTitle}
@@ -105,7 +105,7 @@ export const TaskModal = ({
             }}
           />
           <Grid>
-            <Typography variant="h6">Description:</Typography>
+            <Typography variant="h6">{t('description_task_modal')}</Typography>
             <TextAreaComponent
               className="task-modal__textarea task-modal__description"
               value={taskDescription}
@@ -128,7 +128,7 @@ export const TaskModal = ({
                   setIsFocused(false);
                 }}
               >
-                <Typography>Save</Typography>
+                <Typography>{t('save')}</Typography>
               </ButtonComponent>
               <ButtonComponent
                 onClick={() => {
@@ -136,12 +136,12 @@ export const TaskModal = ({
                   setIsFocused(false);
                 }}
               >
-                <Typography>Cancel</Typography>
+                <Typography>{t('cancel')}</Typography>
               </ButtonComponent>
             </Grid>
           </Grid>
-          <Grid container flexDirection="column" alignItems="flex-start">
-            Files:
+          <Grid container flexDirection="column" alignItems="flex-start" rowGap={2}>
+            {t('files')}
             {taskFiles.map(({ fileName, fileSize }, i) => (
               <div key={`${fileName} - ${fileSize} - ${i}`}>
                 <div>Name: {fileName}</div>
@@ -149,7 +149,6 @@ export const TaskModal = ({
               </div>
             ))}
             <UploadButton onChange={handleAddFile} />
-            <Typography>Add new file</Typography>
           </Grid>
         </Card>
       </ModalComponent>

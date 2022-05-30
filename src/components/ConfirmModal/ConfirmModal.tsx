@@ -1,5 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import React, { ReactElement } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { ButtonComponent } from '../Button';
 import { ModalComponent } from '../Modal';
 
@@ -27,6 +29,8 @@ export const ConfirmModal = ({
   title,
   confirmAction,
 }: IConfirmModal) => {
+  const { t } = useTranslation();
+
   return (
     <ModalComponent active={active} setActive={setActive}>
       <Box>
@@ -37,11 +41,11 @@ export const ConfirmModal = ({
           {children}
         </Box>
         <Box display="flex" justifyContent="space-between">
-          <ButtonComponent variant="contained" color="primary" onClick={confirmAction}>
-            {confirmText || 'Yes'}
+          <ButtonComponent variant="contained" color="error" onClick={confirmAction}>
+            {confirmText || t('yes')}
           </ButtonComponent>
-          <ButtonComponent variant="contained" color="error" onClick={() => setActive(false)}>
-            {cancelText || 'No'}
+          <ButtonComponent variant="contained" color="primary" onClick={() => setActive(false)}>
+            {cancelText || t('no')}
           </ButtonComponent>
         </Box>
       </Box>

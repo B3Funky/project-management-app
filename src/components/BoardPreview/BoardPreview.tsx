@@ -102,7 +102,7 @@ export const BoardPreview = ({ id, title, description, onDelete, onClick }: IBoa
         setActive={setIsConfirmModalActive}
         confirmAction={() => (onDelete ? deleteBoard() : null)}
       >
-        <div>Do you agree to delete this board?</div>
+        <div>{t('agree_delete_board')}</div>
       </ConfirmModal>
     </>
   );

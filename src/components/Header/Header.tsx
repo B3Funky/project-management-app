@@ -5,6 +5,7 @@ import {
   Toolbar,
   IconButton,
   MenuItem,
+  Button,
   Box,
   Menu,
   Tooltip,
@@ -12,7 +13,7 @@ import {
   ThemeProvider,
   useScrollTrigger,
 } from '@mui/material';
-import { AddCircle, AccountCircle, Logout, Settings } from '@mui/icons-material';
+import { AddCircle, AccountCircle, Logout, Settings, ArrowCircleLeft } from '@mui/icons-material';
 import { createTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 
@@ -43,20 +44,20 @@ const transition = '0.5s';
 
 interface IHeaderProps {
   isProfilePage?: boolean;
+  goBack?: boolean;
 }
 
 export function Header(props: IHeaderProps) {
-  const scrollTrigger = useScrollTrigger({ disableHysteresis: true, threshold: 0 });
+  const [openModal, setOpenModal] = useState(false);
+  const [anchorAccountMenu, setAnchorAccountMenu] = useState<null | HTMLElement>(null);
 
   const { t } = useTranslation();
-
-  const [openModal, setOpenModal] = useState(false);
+  const navigate = useNavigate();
+  const scrollTrigger = useScrollTrigger({ disableHysteresis: true, threshold: 0 });
 
   const handleCreateNewBoard = () => {
     setOpenModal(true);
   };
-
-  const [anchorAccountMenu, setAnchorAccountMenu] = useState<null | HTMLElement>(null);
 
   const handleAccountMenuClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorAccountMenu(event.currentTarget);
@@ -66,7 +67,6 @@ export function Header(props: IHeaderProps) {
     setAnchorAccountMenu(null);
   };
 
-  const navigate = useNavigate();
   const handleLogout = useCallback(() => {
     handleAccountMenuClose();
     signout();
@@ -76,6 +76,10 @@ export function Header(props: IHeaderProps) {
   const handleEditProfile = useCallback(() => {
     handleAccountMenuClose();
     navigate(paths.profile);
+  }, [navigate]);
+
+  const handleGoBack = useCallback(() => {
+    navigate(paths.main);
   }, [navigate]);
 
   return (
@@ -97,6 +101,17 @@ export function Header(props: IHeaderProps) {
               }
               transition={transition}
             />
+
+            {props.goBack && (
+              <Button
+                variant="contained"
+                disableElevation
+                startIcon={<ArrowCircleLeft />}
+                onClick={handleGoBack}
+              >
+                {t('back')}
+              </Button>
+            )}
 
             <Box>
               {!props.isProfilePage && (

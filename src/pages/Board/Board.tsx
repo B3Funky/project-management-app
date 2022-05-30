@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink, useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Grid, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
@@ -208,7 +208,7 @@ export function Board() {
 
   return (
     <>
-      <Header />
+      <Header goBack={true} />
       <SnackBarComponent
         isOpen={Boolean(isRequestError)}
         setIsOpen={setIsRequestError}
@@ -219,7 +219,6 @@ export function Board() {
           <Spinner />
         ) : (
           <>
-            <NavLink to={paths.main}>back to Main page</NavLink>
             <h1>{board.title}</h1>
             <h4>{board.description}</h4>
             <DragDropContext onDragEnd={onDragEnd}>
@@ -244,7 +243,7 @@ export function Board() {
                     />
                   ))}
                 <ButtonComponent onClick={() => setIsModalActive(true)} sx={{ minWidth: '20vw' }}>
-                  <Typography>Add new table</Typography>
+                  <Typography>{t('add_new_table')}</Typography>
                 </ButtonComponent>
               </Grid>
             </DragDropContext>

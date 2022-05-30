@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Alert, Grid, Snackbar } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
@@ -143,7 +143,7 @@ export function Profile() {
       >
         {t('delete_user_confirm')}
       </ConfirmModal>
-      <Header isProfilePage={true} />
+      <Header isProfilePage={true} goBack={true} />
       <Grid
         height="100%"
         container
@@ -182,14 +182,13 @@ export function Profile() {
           {t('change_user_data')}
         </ButtonComponent>
         <ButtonComponent
-          size="large"
+          size="medium"
           variant="contained"
           color="error"
           onClick={handleOpenDeleteModal}
         >
           {t('delete_user')}
         </ButtonComponent>
-        <NavLink to={paths.main}>{t('back_to_main_page')}</NavLink>
       </Grid>
     </>
   );

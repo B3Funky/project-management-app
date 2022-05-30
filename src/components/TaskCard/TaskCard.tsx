@@ -28,7 +28,7 @@ export interface ITaskCardFiles {
 
 const isHoveredStyle = {
   position: 'absolute',
-  top: '0',
+  top: '2px',
   p: '0',
 };
 
@@ -158,30 +158,30 @@ export const TaskCard = (props: ITaskCard) => {
       </Card>
       <IconButton
         sx={{
-          right: '0',
+          right: '6px',
           visibility: isHovered ? 'visible' : 'hidden',
           ...isHoveredStyle,
         }}
         onClick={() => handleTitleFocus()}
       >
-        <EditIcon fontSize="small" />
+        <EditIcon fontSize="small" sx={{ color: '#1e6e2e' }} />
       </IconButton>
       <IconButton
         sx={{
-          left: '0',
+          left: '6px',
           visibility: isHovered ? 'visible' : 'hidden',
           ...isHoveredStyle,
         }}
         onClick={() => setIsDeleteModalActive(true)}
       >
-        <CancelIcon fontSize="small" />
+        <CancelIcon fontSize="small" sx={{ color: '#cd5d5d' }} />
       </IconButton>
       <ConfirmModal
         active={isDeleteModalActive}
         setActive={setIsDeleteModalActive}
         confirmAction={() => (props.deleteTask ? props.deleteTask(props.id) : null)}
       >
-        <div>Do you agree to delete this task?</div>
+        <div>{t('agree_delete_task')}</div>
       </ConfirmModal>
       <TaskModal
         card={props}

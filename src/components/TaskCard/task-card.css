@@ -1,10 +1,18 @@
 .task-card__title {
+  width: 90%;
+  margin-top: 4px;
   resize: none;
-  border: none;
   overflow: hidden;
   padding: 3px;
   cursor: pointer;
   min-height: 35px;
+  outline: none;
+  border: solid 1px #fff;
+  border-radius: 4px;
+}
+
+.task-card__title:focus {
+  border: solid 1px #666;
 }
 
 .task-card__content {

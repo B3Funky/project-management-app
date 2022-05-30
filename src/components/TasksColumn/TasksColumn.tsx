@@ -170,12 +170,12 @@ export const TasksColumn = ({
         setIsOpen={setIsRequestError}
         message={errorMessage}
       ></SnackBarComponent>
-      <Card className="column">
+      <Card className="column" sx={{ bgcolor: '#c4e7f0' }}>
         <IconButton
           onClick={() => setIsConfirmModalActive(true)}
           sx={{ position: 'absolute', top: '0', right: '0', padding: '2px' }}
         >
-          <CancelIcon fontSize="small" />
+          <CancelIcon fontSize="medium" sx={{ color: '#cd5d5d' }} />
         </IconButton>
         <CardHeader
           style={{ padding: '10px', flexDirection: 'row-reverse' }}
@@ -186,19 +186,19 @@ export const TasksColumn = ({
           }}
           classes={{ action: 'column__action' }}
           action={
-            <Grid display="flex" alignItems="center">
+            <Grid display="flex" alignItems="center" sx={{ marginTop: '7px' }}>
               <Box>
                 <ButtonComponent
                   className={`column__button ${isFocused ? 'isFocused' : ''}`}
                   onClick={submitTitle}
                 >
-                  <CheckIcon sx={{ fontSize: '14px' }} />
+                  <CheckIcon sx={{ fontSize: '15px' }} />
                 </ButtonComponent>
                 <ButtonComponent
                   className={`column__button ${isFocused ? 'isFocused' : ''}`}
                   onClick={cancelTitle}
                 >
-                  <CancelIcon fontSize="small" />
+                  <CancelIcon sx={{ fontSize: '15px' }} />
                 </ButtonComponent>
               </Box>
             </Grid>
@@ -214,7 +214,7 @@ export const TasksColumn = ({
             </>
           }
         />
-        <CardContent sx={{ p: 0, '&:last-child': { pb: 0 }, height: '84%' }}>
+        <CardContent sx={{ p: 0, '&:last-child': { pb: 0 }, height: '84%', padding: '0 10px' }}>
           {!isTasksLoad ? (
             <Spinner />
           ) : (
@@ -229,6 +229,7 @@ export const TasksColumn = ({
                   flexWrap="nowrap"
                   {...provided?.droppableProps}
                   ref={provided?.innerRef}
+                  sx={{ bgcolor: 'rgba(120,168,181,0.3)', borderRadius: '4px' }}
                 >
                   {tasks
                     .sort((a, b) => a.order - b.order)
@@ -258,7 +259,7 @@ export const TasksColumn = ({
             <Box display="flex" alignItems="center" justifyContent="space-between">
               <AddIcon fontSize="small" />
               <Typography fontSize="0.7rem" variant="body1">
-                Create task
+                {t('create_task')}
               </Typography>
             </Box>
           </ButtonComponent>
@@ -277,7 +278,7 @@ export const TasksColumn = ({
         setActive={setIsConfirmModalActive}
         confirmAction={() => (onClick ? onClick() : null)}
       >
-        <div>Do you agree to delete this column?</div>
+        <div>{t('agree_delete_column')}</div>
       </ConfirmModal>
     </>
   );
