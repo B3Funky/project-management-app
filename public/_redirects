@@ -1,0 +1,8 @@
+# Redirects from what the browser requests to what we serve
+/        /
+/login   /login
+/signup  /signup
+/main    /main
+/board/* /board/:splat
+/profile /profile
+/*       /:splat
