@@ -13,9 +13,9 @@ export const ColumnSlice = createSlice({
   name: 'board',
   initialState,
   reducers: {
-    addColumn(state, action: PayloadAction<ITasksColumn>) {
-      state.taskColumns.push(action.payload);
-    },
+    // addColumn(state, action: PayloadAction<ITasksColumn>) {
+    //   state.taskColumns.push(action.payload);
+    // },
     deleteColumn(state, action: PayloadAction<string>) {
       state.taskColumns = state.taskColumns.filter((column) => column.id !== action.payload);
     },

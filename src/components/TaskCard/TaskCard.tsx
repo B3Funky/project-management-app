@@ -7,6 +7,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { TextAreaComponent } from '../TextAreaComponent';
 import { ConfirmModal } from '../ConfirmModal';
 import { TaskModal } from '../TaskModal';
+import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 import api, { ITaskDataUpdate } from '../../utils/ApiBackend';
 import { ITask } from '../../models/api';
 
@@ -14,6 +15,8 @@ import './task-card.css';
 
 export interface ITaskCard extends ITask {
   deleteTask?: (id: string) => void;
+  dragProvider?: DraggableProvided;
+  dragSnapShot?: DraggableStateSnapshot;
 }
 
 export interface ITaskCardFiles {
@@ -99,11 +102,14 @@ export const TaskCard = (props: ITaskCard) => {
           overflow: 'visible',
           m: '10px 0px',
           // border: `${props.done ? '3px solid #34eb6e' : ''}`,
-          boxShadow: '0',
+          ...props.dragProvider?.draggableProps.style,
         }}
         onClick={() => {
           !isTitleFocused ? (setIsTaskModalActive(true), handleTitleBlur()) : null;
         }}
+        ref={props.dragProvider?.innerRef}
+        {...props.dragProvider!.draggableProps}
+        {...props.dragProvider!.dragHandleProps}
       >
         <CardContent
           sx={{
@@ -112,9 +118,10 @@ export const TaskCard = (props: ITaskCard) => {
             height: '100%',
             wordBreak: 'break-word',
           }}
+          className="task-card__content"
         >
           <TextAreaComponent
-            className={`task-card__title ${isTitleFocused ? 'isFocused' : ''}`}
+            className="task-card__title"
             value={taskTitle}
             customRef={taskTitleRef}
             onChange={(e) => setTaskTitle(e.currentTarget.value)}

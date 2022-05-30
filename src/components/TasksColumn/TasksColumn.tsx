@@ -4,6 +4,14 @@ import { Box, Card, CardContent, CardHeader, Grid, IconButton, Typography } from
 import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckIcon from '@mui/icons-material/Check';
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+  DraggableProvided,
+  DroppableProvided,
+} from 'react-beautiful-dnd';
 
 import { ButtonComponent } from '../Button';
 import { TextAreaComponent } from '../TextAreaComponent';
@@ -21,9 +29,18 @@ import './tasks-column.css';
 
 export interface ITasksColumn extends IColumn {
   onClick?: () => void;
+  dragProvider?: DroppableProvided;
+  currentTasks?: ITask[];
 }
 
-export const TasksColumn = ({ id, title, order, onClick }: ITasksColumn) => {
+export const TasksColumn = ({
+  id,
+  title,
+  order,
+  onClick,
+  dragProvider,
+  currentTasks,
+}: ITasksColumn) => {
   const [columnOrder, setColumnOrder] = useState<number>(order);
   const [tasks, setTasks] = useState<ITask[]>([]);
   const [isTasksLoad, setIsTasksLoad] = useState<boolean>(false);
@@ -43,7 +60,7 @@ export const TasksColumn = ({ id, title, order, onClick }: ITasksColumn) => {
     setChangedText(title);
     setCurrentTitle(title);
     getTasks().then();
-  }, []);
+  }, [currentTasks]);
 
   const submitTitle = () => {
     setCurrentTitle(changedText);
@@ -115,7 +132,7 @@ export const TasksColumn = ({ id, title, order, onClick }: ITasksColumn) => {
 
   return (
     <>
-      <Card className="column">
+      <Card className="column" {...dragProvider?.droppableProps} ref={dragProvider?.innerRef}>
         <IconButton
           onClick={() => setIsConfirmModalActive(true)}
           sx={{ position: 'absolute', top: '0', right: '0', padding: '2px' }}
@@ -173,8 +190,21 @@ export const TasksColumn = ({ id, title, order, onClick }: ITasksColumn) => {
             >
               {tasks
                 .sort((a, b) => a.order - b.order)
-                .map((task) => (
-                  <TaskCard {...task} key={task.id} deleteTask={() => deleteCurrentTask(task.id)} />
+                .map((task, index) => (
+                  <Draggable key={task.id} draggableId={task.id} index={index}>
+                    {(provided, snapshot) => (
+                      <>
+                        <TaskCard
+                          {...task}
+                          id={task.id}
+                          key={task.id}
+                          deleteTask={() => deleteCurrentTask(task.id)}
+                          dragProvider={provided}
+                          dragSnapShot={snapshot}
+                        />
+                      </>
+                    )}
+                  </Draggable>
                 ))}
             </Grid>
           )}
