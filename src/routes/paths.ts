@@ -6,5 +6,6 @@ export const paths = {
   board: '/board/:id',
   boardForId: '/board/',
   profile: '/profile',
+  pageNotFound: '/404',
   notFound: '/*',
 };

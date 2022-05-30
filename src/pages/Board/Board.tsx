@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink, useParams, useNavigate } from 'react-router-dom';
 import { Grid, Typography } from '@mui/material';
 
 import { Header } from '../../components/Header';
@@ -7,7 +7,7 @@ import { Spinner } from '../../components/Spinner';
 import { TasksColumn } from '../../components/TasksColumn';
 import { ButtonComponent } from '../../components/Button';
 import { CreateModal } from '../../components/CreateModal';
-import api, { ITaskDataUpdate } from '../../utils/ApiBackend';
+import api, { ITaskDataUpdate, ErrorResponse } from '../../utils/ApiBackend';
 import { useAppDispatch, useAppSelector } from '../../redux-hooks';
 import { BoardSlice } from '../../store/reducers/BoardReducer';
 import { ColumnSlice } from '../../store/reducers/ColumnReducer';
@@ -33,6 +33,7 @@ export function Board() {
   const [isModalActive, setIsModalActive] = useState<boolean>(false);
 
   const { id: boardId } = useParams();
+  const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
   const { getCurrentBoard } = BoardSlice.actions;
@@ -46,8 +47,12 @@ export function Board() {
       setBoard(board);
       setIsColumnsLoad(true);
     } catch (e) {
-      // TODO Error Modal
-      // TODO 404 - redirect 404 page
+      if (e instanceof ErrorResponse) {
+        // TODO Error Modal
+        if (e.status === 400 || e.status === 404) {
+          navigate(paths.pageNotFound);
+        }
+      }
     }
   };
 
