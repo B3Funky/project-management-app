@@ -2,24 +2,40 @@
   "translation": {
     "en": "EN",
     "ru": "RU",
-    "welcome_to_react": "Добро пожаловать в Реакт!",
-    "to_board_page": "к Доске",
+    "main_header": "Доски",
     "create_new_board": "Создать новую доску",
     "account_of_current_user": "Профиль пользователя",
     "edit_profile": "Редактировать профиль",
+    "back_to_main_page": "Назад на Основную страницу",
     "sign_out": "Выйти",
     "footer": {
       "developed": "Разработано:"
     },
     "change_user_data": "Сохранить изменения",
     "delete_user_confirm": "Вы действительно хотите удалить пользователя?",
-    "profile_page": "Страница пользователя",
+    "profile_page": "Редактирование профиля",
     "delete_user": "Удалить пользователя",
     "changed_user": "Данные успешно сохранены",
+    "name_input_label": "Имя",
+    "login_input_label": "Логин",
+    "password_input_label": "Пароль",
+    "submit_button": "Отправить",
+    "error": "Ошибка",
+    "signIn_page": {
+      "header": "Вход",
+      "no_account": "Нет аккаунта?",
+      "link_to_signUp_page": "Регистрация"
+    },
+    "signUp_page": {
+      "header": "Регистрация",
+      "have_an_account": "Уже есть аккаунт?",
+      "link_to_signIn_page": "Вход"
+    },
     "welcome": {
       "buttons": {
         "signIn": "Вход",
-        "signUp": "Регистрация"
+        "signUp": "Регистрация",
+        "toMainPage": "На основную страницу"
       },
       "h1": "Управление проектами",
       "h2": "от Team 50",

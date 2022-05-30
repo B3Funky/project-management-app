@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { Alert, AlertTitle, Grid } from '@mui/material';
 import { NavLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { SignHeader } from '../../components/SignHeader';
 import { paths } from '../../routes/paths';
@@ -14,6 +15,7 @@ export function Login() {
   const isFormFilled = useMemo(() => Boolean(login && password), [login, password]);
   const [error, setError] = useState('');
 
+  const { t } = useTranslation();
   const handleLogin = useLogin(isFormFilled, setError, login, password);
 
   const handleChangeLogin = useCallback(
@@ -43,12 +45,18 @@ export function Login() {
         justifyContent="center"
         alignItems="center"
       >
-        <h2>Sign In</h2>
         <Grid item>
-          <InputComponent label="Login" onChange={handleChangeLogin} />
+          <h2>{t('signIn_page.header')}</h2>
         </Grid>
         <Grid item>
-          <InputComponent label="Password" type="password" onChange={handleChangePassword} />
+          <InputComponent label={t('login_input_label')} onChange={handleChangeLogin} />
+        </Grid>
+        <Grid item>
+          <InputComponent
+            label={t('password_input_label')}
+            type="password"
+            onChange={handleChangePassword}
+          />
         </Grid>
         <Grid item>
           <ButtonComponent
@@ -57,24 +65,22 @@ export function Login() {
             variant="contained"
             type="submit"
           >
-            Submit
+            {t('submit_button')}
           </ButtonComponent>
         </Grid>
         {Boolean(error) && (
           <Grid item>
             <Alert severity="error">
-              <AlertTitle>Error</AlertTitle>
+              <AlertTitle>{t('error')}</AlertTitle>
               {error}
             </Alert>
           </Grid>
         )}
         <Grid item>
           <p>
-            Don&apos;t have an account? <NavLink to={paths.signUp}>Sign Up</NavLink>
+            {t('signIn_page.no_account')}{' '}
+            <NavLink to={paths.signUp}>{t('signIn_page.link_to_signUp_page')}</NavLink>
           </p>
-        </Grid>
-        <Grid item>
-          <NavLink to={paths.main}>to Main page</NavLink>
         </Grid>
       </Grid>
     </>

@@ -117,10 +117,18 @@ export function Profile() {
         rowGap={4}
       >
         <h2>{t('profile_page')}</h2>
-        <InputComponent label="Name" value={user?.name} onChange={handleChangeUserName} />
-        <InputComponent label="Login" value={user?.login} onChange={handleChangeUserLogin} />
         <InputComponent
-          label="Password"
+          label={t('name_input_label')}
+          value={user?.name}
+          onChange={handleChangeUserName}
+        />
+        <InputComponent
+          label={t('login_input_label')}
+          value={user?.login}
+          onChange={handleChangeUserLogin}
+        />
+        <InputComponent
+          label={t('password_input_label')}
           type="password"
           value={password}
           onChange={handleChangePassword}
@@ -141,7 +149,7 @@ export function Profile() {
         >
           {t('delete_user')}
         </ButtonComponent>
-        <NavLink to={paths.main}>back to Main page</NavLink>
+        <NavLink to={paths.main}>{t('back_to_main_page')}</NavLink>
       </Grid>
     </>
   );

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { getAccessToken } from 'axios-jwt';
 
 import { Welcome } from '../pages/Welcome';
 import { Login } from '../pages/Login';
@@ -9,14 +10,32 @@ import { Board } from '../pages/Board';
 import { Profile } from '../pages/Profile';
 import { NotFound } from '../pages/NotFound';
 import { paths } from './paths';
-import { checkAuth } from '../utils/check-auth';
+import checkAuth from '../utils/checkAuth';
 
 export function AppRoutes() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const accessToken = getAccessToken();
 
   useEffect(() => {
-    checkAuth(navigate);
-  }, []);
+    if (location.pathname !== paths.welcome) {
+      if (!accessToken) {
+        if (location.pathname !== paths.login && location.pathname !== paths.signUp) {
+          navigate(paths.welcome);
+        }
+      } else {
+        checkAuth().then((isAuth) => {
+          if (isAuth) {
+            if (location.pathname === paths.login || location.pathname === paths.signUp) {
+              navigate(paths.main);
+            }
+          } else if (location.pathname !== paths.login && location.pathname !== paths.signUp) {
+            navigate(paths.welcome);
+          }
+        });
+      }
+    }
+  }, [accessToken, location.pathname, navigate]);
 
   return (
     <Routes>

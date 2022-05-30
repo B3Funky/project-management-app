@@ -1,4 +1,4 @@
-import { AxiosInstance, AxiosPromise, AxiosError } from 'axios';
+import { AxiosInstance, AxiosPromise, AxiosError, AxiosResponse } from 'axios';
 import { axiosInstance } from './api';
 import {
   IUser,
@@ -10,42 +10,64 @@ import {
   ITaskCreate,
   ITaskUpdate,
 } from '../models/api';
+import { paths } from '../routes/paths';
+
+export class ErrorResponse {
+  readonly status: number;
+  readonly message: string | string[];
+
+  constructor(response: AxiosResponse) {
+    this.status = response.status;
+    this.message = response.data.message;
+  }
+}
 
 function errorHandler(e: unknown) {
   if (e instanceof AxiosError) {
-    if (e.response?.status === 401) {
-      return e.response.data.message;
+    if (e.response) {
+      if (e.response.status === 401) {
+        if (
+          window.location.pathname !== paths.welcome &&
+          window.location.pathname !== paths.login &&
+          window.location.pathname !== paths.signUp
+        ) {
+          window.location.replace(paths.welcome);
+        }
+      }
+      return new ErrorResponse(e.response);
+
       // Unauthorized
+      // e.response.status: 401
       // e.response.data.message: "Unauthorized"
-      // TODO Redirect to Welcome page
-    } else if (e.response?.status === 400) {
-      return e.response.data.message;
+
       // Bad Request
+      // e.response.status: 400
       // e.response.data.message: [
       //   "name must be a string",
       //   "login must be a string",
       //   "password must be a string"
       // ]
       //  e.response.data.error: "Bad Request"
-    } else if (e.response?.status === 404) {
-      return e.response.data.message;
+
       // Not found
+      // e.response.status: 404
       // e.response.data.message: "<...> was not founded!"
       // or wrong url
       // e.response.data.message: "Cannot GET <url>",
       // e.response.data.error: "Not Found"
-    } else if (e.response?.status === 409) {
-      return e.response.data.message;
+
       // Conflict
+      // e.response.status: 409
       // e.response.data.error: "File already exists!"
-    } else if (e.response?.status === 500) {
-      return e.response.data.message;
+
       // Internal server error
+      // e.response.status: 500
       // e.response.data.error: "Internal server error"
       // For example: Comes when trying to set a login that already exists
-    } else {
-      return e.response?.data.message;
       // others errors
+    } else {
+      return e;
+      // unknown error
     }
   } else {
     return e;
