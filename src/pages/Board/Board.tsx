@@ -67,14 +67,13 @@ export function Board() {
     }
   }, []);
 
-  const [currentTasks, setCurrentTasks] = useState<ITask[]>([]);
-
   const getTasks = async (boardId: string, columnId: string) => {
     try {
       const tasks: ITask[] = await api.task.getAll({
         boardId: boardId as string,
         columnId: columnId,
       });
+      setCurrentTasks(tasks);
       return tasks;
       // setCurrentTasks(tasks);
     } catch (e) {
@@ -82,9 +81,18 @@ export function Board() {
     }
   };
 
-  const updateTaskTitle = async (data: ITaskDataUpdate, id: string) => {
+  const [currentTasks, setCurrentTasks] = useState<ITask[]>([]);
+
+  const updateTask = async (
+    data: ITaskDataUpdate,
+    id: string,
+    columnId: string,
+    boardId: string
+  ) => {
+    let res;
     try {
-      await api.task.update({ boardId: data.boardId, columnId: data.columnId, taskId: id }, data);
+      res = await api.task.update({ boardId: boardId, columnId: columnId, taskId: id }, data);
+      getTasks(boardId, columnId);
     } catch (e) {
       // TODO Error Modal
     }
@@ -113,14 +121,14 @@ export function Board() {
       // destItems!.splice(destination.index, 0, removed);
       // destItems?.map((item, i) => (item.order = i + 1));
       removed.order = destination.index + 1;
-      console.log(removed);
-      removed.columnId = destColumn.id;
-      console.log(destColumn.id);
-      console.log(removed);
-      console.log(destItems);
 
       [removed].map(({ boardId, columnId, order, id, description, title, userId }) =>
-        updateTaskTitle({ boardId, columnId, description, order, title, userId }, id)
+        updateTask(
+          { boardId, columnId: destColumn.id, description, order, title, userId },
+          id,
+          columnId,
+          boardId
+        )
       );
     } else {
       const column = columns.filter((column) => column.id === source.droppableId)[0];
@@ -133,10 +141,9 @@ export function Board() {
       const [removed] = copiedItems!.splice(source.index, 1);
       // copiedItems!.splice(destination.index, 0, removed);
       // copiedItems?.map((item, i) => (item.order = i + 1));
-      // console.log(copiedItems);
       removed.order = destination.index + 1;
       [removed].map(({ boardId, columnId, order, id, description, title, userId }) =>
-        updateTaskTitle({ boardId, columnId, description, order, title, userId }, id)
+        updateTask({ boardId, columnId, description, order, title, userId }, id, columnId, boardId)
       );
     }
   };
@@ -164,6 +171,7 @@ export function Board() {
                         order={order}
                         onClick={() => deleteCurrentColumn(id)}
                         dragProvider={provided}
+                        currentTasks={currentTasks}
                       />
                     )}
                   </Droppable>

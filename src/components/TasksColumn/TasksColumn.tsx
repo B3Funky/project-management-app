@@ -30,9 +30,17 @@ import './tasks-column.css';
 export interface ITasksColumn extends IColumn {
   onClick?: () => void;
   dragProvider?: DroppableProvided;
+  currentTasks?: ITask[];
 }
 
-export const TasksColumn = ({ id, title, order, onClick, dragProvider }: ITasksColumn) => {
+export const TasksColumn = ({
+  id,
+  title,
+  order,
+  onClick,
+  dragProvider,
+  currentTasks,
+}: ITasksColumn) => {
   const [columnOrder, setColumnOrder] = useState<number>(order);
   const [tasks, setTasks] = useState<ITask[]>([]);
   const [isTasksLoad, setIsTasksLoad] = useState<boolean>(false);
@@ -52,7 +60,7 @@ export const TasksColumn = ({ id, title, order, onClick, dragProvider }: ITasksC
     setChangedText(title);
     setCurrentTitle(title);
     getTasks().then();
-  }, []);
+  }, [currentTasks]);
 
   const submitTitle = () => {
     setCurrentTitle(changedText);
