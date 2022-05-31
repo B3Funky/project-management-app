@@ -1,0 +1,17 @@
+.column__title {
+  width: 75%;
+  height: 22px;
+  resize: none;
+  overflow: hidden;
+  font-size: 20px;
+  background-color: #c4e7f0;
+  border: solid 1px #c4e7f0;
+  border-radius: 4px;
+  outline: none;
+  padding: 5px 10px;
+}
+
+.column__title:focus {
+  background-color: #fff;
+  border: solid 1px #666;
+}

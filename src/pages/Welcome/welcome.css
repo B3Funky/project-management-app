@@ -1,0 +1,147 @@
+.welcome-header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  box-sizing: border-box;
+  padding: 40px;
+  transition: 0.3s;
+}
+
+.welcome-header-mini {
+  background-color: white;
+  padding: 15px;
+  box-shadow: rgb(0 0 0 / 20%) 0 2px 4px -1px, rgb(0 0 0 / 14%) 0 4px 5px 0,
+    rgb(0 0 0 / 12%) 0 1px 10px 0;
+  z-index: 100;
+}
+
+.welcome-header button {
+  transition: 0.3s;
+}
+
+.welcome-header-sign-buttons-wrapper {
+  display: flex;
+}
+
+.welcome-header-sign-buttons-wrapper button {
+  white-space: nowrap;
+}
+
+.welcome-header .welcome-header-sign-buttons-wrapper button {
+  margin-left: 20px;
+}
+
+.welcome-header-mini .welcome-header-sign-buttons-wrapper button {
+  margin-left: 10px;
+}
+
+.welcome-main {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 100px 0;
+}
+
+.welcome-main-show-team {
+  height: auto;
+}
+
+.welcome-h1 {
+  font-size: 50px;
+}
+
+.welcome-about {
+  width: 50%;
+  margin-top: 50px;
+  transition: 0.5s;
+}
+
+@media (max-width: 1200px) {
+  .welcome-about {
+    width: 75%;
+  }
+}
+
+.welcome-about p {
+  max-width: 290px;
+  text-align: left;
+}
+
+.welcome-show-team {
+  margin-top: 50px;
+  color: black;
+  font-size: 18px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.welcome-show-team:hover {
+  text-decoration: underline;
+}
+
+.welcome-show-team p {
+  margin-bottom: 5px;
+}
+
+.welcome-show-team .welcome-show-team-arrow {
+  transition: 0.5s;
+}
+
+.welcome-show-team:hover .welcome-show-team-arrow {
+  transform: rotate(0.25turn);
+}
+
+.welcome-show-team-arrow-right {
+  transform: rotate(0.5turn);
+}
+
+.welcome-show-team:hover .welcome-show-team-arrow-right {
+  transform: rotate(0.75turn);
+}
+
+.welcome-team {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0 50px;
+}
+
+.welcome-team p {
+  font-size: 18px;
+  font-weight: bold;
+  padding-left: 50px;
+  padding-top: 10px;
+}
+
+@media (max-width: 1200px) {
+  .welcome-team {
+    width: 700px;
+  }
+}
+
+.welcome-dev-team {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 800px) {
+  .welcome-team {
+    width: auto;
+    align-items: center;
+  }
+
+  .welcome-dev-team {
+    flex-direction: column;
+  }
+
+  .welcome-team p {
+    padding-left: 0;
+  }
+}

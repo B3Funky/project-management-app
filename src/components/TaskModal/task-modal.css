@@ -1,0 +1,28 @@
+.task-modal__textarea {
+  position: relative;
+  resize: none;
+  overflow: hidden;
+  outline: none;
+  padding: 0 10px;
+  border: solid 1px #fbf6e1;
+  border-radius: 4px;
+  background-color: #fbf6e1;
+  width: 90%;
+}
+
+.task-modal__textarea:focus {
+  background-color: #fff;
+  border: solid 1px #666;
+}
+
+.task-modal__title {
+  font-size: 2rem;
+  min-height: 75px;
+}
+
+.task-modal__description {
+  min-height: 150px;
+  width: 90%;
+  padding: 10px;
+  background-color: #e9e6cf;
+}

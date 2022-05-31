@@ -1,0 +1,60 @@
+.background {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  z-index: -100;
+  filter: opacity(80%);
+}
+
+.background-writing-board-img {
+  position: absolute;
+  bottom: 80px;
+  right: 0;
+  height: 400px;
+  width: 400px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('../../assets/img/writing-board.png');
+  transition: 0.5s;
+}
+
+.background-circle-1 {
+  position: relative;
+  top: -420px;
+  right: -780px;
+}
+
+.background-circle-2 {
+  position: absolute;
+  top: -130px;
+  left: -310px;
+  transition: 0.5s;
+}
+
+.background-circle-3 {
+  position: absolute;
+  bottom: 140px;
+  left: 90px;
+  transition: 0.5s;
+}
+
+@media (max-width: 800px) {
+  .background-writing-board-img {
+    left: 420px;
+    height: 300px;
+    width: 300px;
+  }
+
+  .background-circle-2 {
+    top: -280px;
+    left: -210px;
+  }
+
+  .background-circle-3 {
+    bottom: 200px;
+    left: -60px;
+  }
+}

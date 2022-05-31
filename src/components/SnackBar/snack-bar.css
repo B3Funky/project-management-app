@@ -1,0 +1,14 @@
+.MuiAlert-icon {
+  display: flex;
+  align-items: center;
+}
+
+.snackbar-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.snackbar-text :first-child {
+  font-weight: bold;
+}

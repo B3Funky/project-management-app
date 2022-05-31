@@ -1,0 +1,13 @@
+.board-main {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: #f5ffeb;
+}
+
+.board-main h4 {
+  margin-bottom: 20px;
+}
